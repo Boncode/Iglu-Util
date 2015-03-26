@@ -804,6 +804,10 @@ public abstract class FileSupport {
 		return findLinesInTextFile(encoding, file, null);
 	}
 
+	public static List<Line> loadTextFile(File file) throws IOException {
+		return findLinesInTextFile(file, null);
+	}
+
     public static void saveTextFile(List<Line> lines, File file) throws IOException {
 
         FileOutputStream outputStream = new FileOutputStream(file);
@@ -912,20 +916,6 @@ public abstract class FileSupport {
 			fStream.close();
 		}
 		return retval;
-	}
-
-
-	public static void saveProperties(Properties properties, String fileName) throws IOException {
-		FileOutputStream outputStream = new FileOutputStream(fileName);
-		PrintStream printStream = new PrintStream(outputStream);
-
-		for(String propertyName : properties.stringPropertyNames()) {
-			printStream.println(propertyName + "=" + properties.getProperty(propertyName));
-		}
-
-		printStream.close();
-		outputStream.close();
-
 	}
 
 
