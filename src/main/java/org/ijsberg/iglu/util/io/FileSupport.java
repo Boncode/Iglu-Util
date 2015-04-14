@@ -809,17 +809,22 @@ public abstract class FileSupport {
 	}
 
     public static void saveTextFile(List<Line> lines, File file) throws IOException {
-
-        FileOutputStream outputStream = new FileOutputStream(file);
-        PrintStream printStream = new PrintStream(outputStream);
+		createFile(file.getPath());
+ 		FileOutputStream outputStream = new FileOutputStream(file);
+		PrintStream printStream = new PrintStream(outputStream);
+		int nrLinesSaved = 0;
         for(Line line : lines) {
-            printStream.println(line.getLine());
+            nrLinesSaved++;
+			if(lines.size() == nrLinesSaved) {
+				printStream.print(line.getLine());
+			} else {
+				printStream.println(line.getLine());
+			}
         }
 		outputStream.close();
     }
 
 	public static void saveTextFile(String text, File file) throws IOException {
-
 		FileOutputStream outputStream = new FileOutputStream(file);
 		PrintStream printStream = new PrintStream(outputStream);
 		printStream.println(text);
