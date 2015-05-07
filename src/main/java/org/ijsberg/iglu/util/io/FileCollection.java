@@ -46,4 +46,6 @@ public interface FileCollection {
 
 	int size();
 
+	void close() throws IOException;
+
 }

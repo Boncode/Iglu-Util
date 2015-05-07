@@ -120,6 +120,11 @@ public class FSFileCollection implements FileCollection {
 		return filesByRelativePathAndName.size();
 	}
 
+	@Override
+	public void close() throws IOException {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
 	Directory rootDir = new Directory("ROOT");
 
 

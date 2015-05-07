@@ -71,6 +71,18 @@ public class ListMap<K, V> implements Serializable {
 		return list;
 	}
 
+	public void putAll(Map<K, V> values) {
+		for(K key : values.keySet()) {
+			put(key, values.get(key));
+		}
+	}
+
+	public void putAll(ListMap<K, V> values) {
+		for(K key : values.keySet()) {
+			put(key, values.get(key));
+		}
+	}
+
 	public TreeMap<K, List<V>> getMap() {
 		return internalMap;
 	}

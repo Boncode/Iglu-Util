@@ -141,6 +141,11 @@ public class ZippedFileCollection implements FileCollection {
 		return filesByRelativePathAndName.size();
 	}
 
+	@Override
+	public void close() throws IOException {
+		zipFile.close();
+	}
+
 
 	Directory rootDir = new Directory("ROOT");
 

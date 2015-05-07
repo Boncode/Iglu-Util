@@ -20,6 +20,7 @@
 package org.ijsberg.iglu.util.io;
 
 import org.ijsberg.iglu.util.collection.CollectionSupport;
+import org.ijsberg.iglu.util.collection.ListMap;
 import org.ijsberg.iglu.util.formatting.PatternMatchingSupport;
 import org.ijsberg.iglu.util.misc.Line;
 import org.ijsberg.iglu.util.misc.StringSupport;
@@ -42,7 +43,7 @@ public abstract class FileSupport {
 	 * @param path path to directory
 	 * @return A list containing the found files
 	 */
-	public static ArrayList<File> getFilesInDirectoryTree(String path) {
+	public static List<File> getFilesInDirectoryTree(String path) {
 		File directory = new File(path);
 		return getContentsInDirectoryTree(directory, "*", true, false);
 	}
@@ -54,7 +55,7 @@ public abstract class FileSupport {
 	 * @param directory directory
 	 * @return a list containing the found files
 	 */
-	public static ArrayList<File> getFilesInDirectoryTree(File directory) {
+	public static List<File> getFilesInDirectoryTree(File directory) {
 		return getContentsInDirectoryTree(directory, "*", true, false);
 	}
 
@@ -78,7 +79,7 @@ public abstract class FileSupport {
 	 * @param includeRuleSet rule set defining precisely which files to include
 	 * @return A list containing the found files
 	 */
-	public static ArrayList<File> getFilesInDirectoryTree(String path, FileFilterRuleSet includeRuleSet) {
+	public static List<File> getFilesInDirectoryTree(String path, FileFilterRuleSet includeRuleSet) {
 		File file = new File(path);
 		return getContentsInDirectoryTree(file, includeRuleSet, true, false);
 	}
@@ -110,7 +111,7 @@ public abstract class FileSupport {
 	 * @param includeMask mask to match
 	 * @return a list containing the found files
 	 */
-	public static ArrayList<File> getFilesInDirectoryTree(File file, String includeMask) {
+	public static List<File> getFilesInDirectoryTree(File file, String includeMask) {
 		return getContentsInDirectoryTree(file, includeMask, true, false);
 	}
 
@@ -124,7 +125,7 @@ public abstract class FileSupport {
 	 * @param returnDirs return directories
 	 * @return a list containing the found contents
 	 */
-	private static ArrayList<File> getContentsInDirectoryTree(File directory, String includeMask, boolean returnFiles, boolean returnDirs) {
+	private static List<File> getContentsInDirectoryTree(File directory, String includeMask, boolean returnFiles, boolean returnDirs) {
 		return getContentsInDirectoryTree(directory, new FileFilterRuleSet(directory.getPath()).setIncludeFilesWithNameMask(includeMask), returnFiles, returnDirs);
 	}
 
@@ -138,36 +139,54 @@ public abstract class FileSupport {
 	 * @param returnDirs return directories
 	 * @return a list containing the found contents
 	 */
-	private static ArrayList<File> getContentsInDirectoryTree(File directory, FileFilterRuleSet ruleSet, boolean returnFiles, boolean returnDirs) {
-		ArrayList<File> result = new ArrayList<File>();
+	private static List<File> getContentsInDirectoryTree(File directory, FileFilterRuleSet ruleSet, boolean returnFiles, boolean returnDirs) {
+//		long time = System.currentTimeMillis();
+		ListMap<String, File> sortedResult = getSortedContentsInDirectoryTree(directory, ruleSet, returnFiles, returnDirs);
+//		System.out.println("resp. time: " + (System.currentTimeMillis() - time));
+		return sortedResult.values();
+	}
+
+	/**
+	 * Retrieves contents from a directory and its subdirectories matching a given rule set.
+	 *
+	 * @param directory directory
+	 * @param ruleSet file name to match
+	 * @param returnFiles return files
+	 * @param returnDirs return directories
+	 * @return a list containing the found contents
+	 */
+	private static ListMap<String, File> getSortedContentsInDirectoryTree(File directory, FileFilterRuleSet ruleSet, boolean returnFiles, boolean returnDirs) {
+		ListMap<String, File> sortedResult = new ListMap<String, File>();
+		//ArrayList<File> result = new ArrayList<File>();
 		if (directory != null && directory.exists() && directory.isDirectory()) {
+//			long time = System.currentTimeMillis();
 			File[] files = directory.listFiles();
+//			System.out.println("Dir: " + directory + " resp. time list: " + (System.currentTimeMillis() - time));
 			if (files != null) {
 				for (int i = 0; i < files.length; i++) {
 
 					if (files[i].isDirectory()) {
 						if (returnDirs && ruleSet.fileMatchesRules(files[i])) {
-							result.add(files[i]);
+							sortedResult.put(files[i].getName(), files[i]);
 						}
-						result.addAll(getContentsInDirectoryTree(files[i], ruleSet, returnFiles, returnDirs));
+						sortedResult.putAll(getSortedContentsInDirectoryTree(files[i], ruleSet, returnFiles, returnDirs));
 					}
 					else if (returnFiles && ruleSet.fileMatchesRules(files[i])) {
-						result.add(files[i]);
+						sortedResult.put(files[i].getName(), files[i]);
 					}
 				}
 			}
 		}
-		return result;
+		return sortedResult;
 	}
 
-	
 	/**
 	 * Retrieves all directories from a directory and its subdirectories.
 	 *
 	 * @param path path to directory
 	 * @return A list containing the found directories
 	 */
-	public static ArrayList<File> getDirectoriesInDirectoryTree(String path) {
+	public static List<File> getDirectoriesInDirectoryTree(String path) {
 		File file = new File(path);
 		return getContentsInDirectoryTree(file, "*", false, true);
 	}
@@ -180,7 +199,7 @@ public abstract class FileSupport {
 	 * @param includeMask file name to match
 	 * @return A list containing the found directories
 	 */
-	public static ArrayList<File> getDirectoriesInDirectoryTree(String path, String includeMask) {
+	public static List<File> getDirectoriesInDirectoryTree(String path, String includeMask) {
 		File file = new File(path);
 		return getContentsInDirectoryTree(file, includeMask, false, true);
 	}
@@ -193,7 +212,7 @@ public abstract class FileSupport {
 	 * @param includeMask file name to match
 	 * @return a list containing the found files
 	 */
-	public static ArrayList<File> getFilesAndDirectoriesInDirectoryTree(String path, String includeMask) {
+	public static List<File> getFilesAndDirectoriesInDirectoryTree(String path, String includeMask) {
 		File file = new File(path);
 		return getContentsInDirectoryTree(file, includeMask, true, true);
 	}
@@ -314,7 +333,9 @@ public abstract class FileSupport {
 			InputStream in = zipFile.getInputStream(entry);
 			if(!entry.isDirectory()) {
 				File file = new File(path + "/" + entry.getName());
-				file.mkdirs();
+				if(file.getParent() != null) {
+					new File(file.getParent()).mkdirs();
+				}
 				OutputStream out = new FileOutputStream(file);
 				try {
 					StreamSupport.absorbInputStream(in, out);
@@ -485,7 +506,7 @@ public abstract class FileSupport {
 		return zipfile.getEntry(fileName);
 	}
 
-
+	//TODO zipfile not closed
     public static ArrayList<ZipEntry> getContentsFromZipFile(ZipFile zipFile, FileFilterRuleSet ruleSet) {
         ArrayList<ZipEntry> result = new ArrayList<ZipEntry>();
 
@@ -599,8 +620,9 @@ public abstract class FileSupport {
 		if (!overwriteExisting && newFile.exists()) {
 			throw new IOException("file '" + newFile.getName() + "' already exists");
 		} else {
-			//newFile.mkdirs();
-			newFile.getParentFile().mkdirs();
+			if(file.getParent() != null) {
+				newFile.getParentFile().mkdirs();
+			}
 			newFile.createNewFile();
 		}
 		byte[] buffer = new byte[COPY_BUFFER];
@@ -618,11 +640,15 @@ public abstract class FileSupport {
 		in.close();
 	}
 
-	public static void copyDirectory(String fileName, String newFileName, boolean overwriteExisting) throws IOException {
+	public static void copyDirectory(String directoryName, String newDirectoryName, boolean overwriteExisting) throws IOException {
 
-		List<File> files = getFilesInDirectoryTree(fileName);
-		for(File file : files) {
-			copyFile(file, newFileName, overwriteExisting);
+		File newDirectory = new File(newDirectoryName);
+		newDirectory.mkdirs();
+		//List<File> files = getFilesInDirectoryTree(directoryName);
+		FileCollection fileCollection = new FSFileCollection(directoryName, new FileFilterRuleSet());
+
+		for(String fileName : fileCollection.getFileNames()) {
+			copyFile(directoryName + "/" + fileName, newDirectoryName + "/" + fileName, overwriteExisting);
 		}
 
 	}
@@ -972,5 +998,12 @@ public abstract class FileSupport {
 			}
 		}
 		printUsage();
+	}
+
+	public static void deleteFilesFromDir(String path, String mask) {
+		List<File> files = getFilesInDirectoryTree(path, mask);
+		for(File file : files) {
+			deleteFile(file);
+		}
 	}
 }
