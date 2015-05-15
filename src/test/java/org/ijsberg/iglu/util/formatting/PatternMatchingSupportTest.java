@@ -20,6 +20,7 @@
 package org.ijsberg.iglu.util.formatting;
 
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
@@ -65,6 +66,11 @@ public class PatternMatchingSupportTest {
 
 		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("hopla.mask", ".*mask"));
 		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("hopla.mask.mask", ".*mask"));
+	}
+
+	@Test
+	public void testIndexOf() {
+		assertEquals(24, PatternMatchingSupport.indexOf("analysis-infrastructure-0.9.0-SNAPSHOT-distribution.zip", "[0-9]*\\.[0-9]*\\.[0-9]*"));
 	}
 
 }

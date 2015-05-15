@@ -29,12 +29,13 @@ public class ZipFileStreamProvider implements FileStreamProvider {
 
 	private ZipOutputStream out;
 	private BufferedOutputStream bufferedOut;
+	private FileOutputStream fileOut;
 
 	public ZipFileStreamProvider(String fileName) {
 		try {
-			File f = new File(fileName);
-			new File(f.getParent()).mkdirs();
-			out = new ZipOutputStream(new FileOutputStream(f));
+			File f = FileSupport.createFile(fileName);
+			fileOut = new FileOutputStream(f);
+			out = new ZipOutputStream(fileOut);
 			bufferedOut = new BufferedOutputStream(out);
 		} catch (IOException e) {
 			throw new RuntimeException("unable to save to " + fileName, e);
@@ -65,6 +66,7 @@ public class ZipFileStreamProvider implements FileStreamProvider {
 			closeCurrentStream();
 			bufferedOut.close();
 			out.close();
+			fileOut.close();
 		} catch (IOException e) {
 			throw new RuntimeException("unable to close zipfile", e);
 		}

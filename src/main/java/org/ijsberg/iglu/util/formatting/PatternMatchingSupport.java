@@ -91,6 +91,16 @@ public abstract class PatternMatchingSupport {
 		return retval;
 	}
 
+	public static int indexOf(String val, String regexp) {
+		Pattern p = Pattern.compile(regexp);
+		Matcher matcher = p.matcher(val);
+
+		if (matcher.find()) {
+			return matcher.start();
+		}
+		return -1;
+	}
+
 	
 	
 	/**
@@ -111,7 +121,7 @@ public abstract class PatternMatchingSupport {
 
 		return (valueMatchesRegularExpression(val, expCopy));
 	}
-	
+
 
 
 }
