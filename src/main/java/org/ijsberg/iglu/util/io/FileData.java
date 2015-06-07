@@ -201,7 +201,10 @@ public class FileData {
 	 */
 	public String getFullFileName() {
 		return (!"".equals(path) ? path + '/' : "") + fileName;
+	}
 
+	public String getFullFileNameWithoutExtension() {
+		return (!"".equals(path) ? path + '/' : "") + fileNameNoExt;
 	}
 
 	/**

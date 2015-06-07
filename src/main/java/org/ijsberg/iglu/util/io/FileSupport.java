@@ -591,7 +591,10 @@ public abstract class FileSupport {
 	 */
 	public static boolean deleteFile(File file) {
 		deleteContentsInDirectoryTree(file, null);
-		return file.delete();
+		boolean result = file.delete();
+		//System.out.println("deleting file " + file + ", result: " + result);
+
+		return result;
 	}
 
 	/**
