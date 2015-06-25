@@ -612,17 +612,18 @@ public abstract class FileSupport {
 	public static void copyFile(File file, String newFileName, boolean overwriteExisting) throws IOException {
 
 		if (!file.exists()) {
-			throw new IOException("file '" + file.getName() + "' does not exist");
+			throw new IOException("file '" + file.getAbsolutePath() + "' does not exist");
 		}
 		if (file.isDirectory()) {
-			throw new IOException('\'' + file.getName() + "' is a directory");
+			copyDirectory(file.getAbsolutePath(), newFileName, overwriteExisting);
+			return;
 		}
 		File newFile = new File(newFileName);
 		if(newFile.isDirectory()) {
 			newFile = new File(newFileName + '/' + file.getName());
 		}
 		if (!overwriteExisting && newFile.exists()) {
-			throw new IOException("file '" + newFile.getName() + "' already exists");
+			throw new IOException("file '" + newFile.getAbsolutePath() + "' already exists");
 		} else {
 			if(file.getParent() != null) {
 				newFile.getParentFile().mkdirs();
