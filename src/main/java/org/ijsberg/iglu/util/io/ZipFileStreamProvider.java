@@ -30,8 +30,10 @@ public class ZipFileStreamProvider implements FileStreamProvider {
 	private ZipOutputStream out;
 	private BufferedOutputStream bufferedOut;
 	private FileOutputStream fileOut;
+	private String fileName;
 
 	public ZipFileStreamProvider(String fileName) {
+		this.fileName = fileName;
 		try {
 			File f = FileSupport.createFile(fileName);
 			fileOut = new FileOutputStream(f);
@@ -79,7 +81,7 @@ public class ZipFileStreamProvider implements FileStreamProvider {
 			out.putNextEntry(e);
 			return bufferedOut;
 		} catch (IOException e) {
-			throw new RuntimeException("unable to save to " + fileName, e);
+			throw new RuntimeException("unable to save " + fileName + " to " + this.fileName, e);
 		}
 	}
 }
