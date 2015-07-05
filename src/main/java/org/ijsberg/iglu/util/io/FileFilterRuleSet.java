@@ -142,8 +142,8 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 
         try {
             return
-                    fileMatchesRules(getComparableFileName(fileName)) &&
-                        includeBecauseOfContainedTextLine(fileContents) &&
+                    (fileMatchesRules(getComparableFileName(fileName)) ||
+                        includeBecauseOfContainedTextLine(fileContents)) &&
                         !excludeBecauseOfContainedTextLine(fileContents);
 
         } catch (IOException ioe) {
@@ -176,8 +176,8 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 	}
 
 	private boolean includeBecauseOfContainedTextLine(String fileContents) throws IOException {
-		boolean retval = includeFilesContainingText == null ||
-                includeFilesContainingText.length == 0 ||
+		boolean retval = includeFilesContainingText != null &&
+                includeFilesContainingText.length != 0 &&
                 occurenceFound(fileContents, includeFilesContainingText);
 		return retval;
 	}
