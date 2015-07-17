@@ -366,7 +366,7 @@ public abstract class FileSupport {
 			while(entries.hasMoreElements()) {
 				ZipEntry entry2 = entries.nextElement();
 				System.out.println(entry2.getName());
-			}                              */
+			}  */
 			if (entry == null) {
 	            throw new IOException("entry " + fileName + " not found in jar " + zipFile.getName());
 			}
@@ -868,7 +868,6 @@ public abstract class FileSupport {
 
     //TODO read text file from zip
 	public static ArrayList<Line> getLinesInTextFile(String encoding, File file) throws IOException {
-		ArrayList<Line> lines = new ArrayList<Line>();
 		FileInputStream inputStream = new FileInputStream(file);
 		InputStreamReader inputReader = null;
 		if(encoding != null) {
@@ -877,11 +876,26 @@ public abstract class FileSupport {
 			inputReader = new InputStreamReader(inputStream);
 		}
 		//FileReader fileReader = new FileReader(file);
+		ArrayList<Line> lines = getLinesFromText(file.getName(), inputReader);
+		return lines;
+	}
+
+	public static ArrayList<Line> getLinesFromText(String fileName, String input) throws IOException {
+		StringReader reader = new StringReader(input);
+
+		//FileReader fileReader = new FileReader(file);
+		ArrayList<Line> lines = getLinesFromText(fileName, reader);
+		return lines;
+	}
+
+	public static ArrayList<Line> getLinesFromText(String fileName, Reader inputReader) throws IOException {
+		ArrayList<Line> lines = new ArrayList<Line>();
 		BufferedReader reader = new BufferedReader(inputReader);
-		String line; int count = 0;
+		String line;
+		int count = 0;
 		while ((line = reader.readLine()) != null) {
 			count++;
-			lines.add(new Line(file.getName(), count, line));
+			lines.add(new Line(fileName, count, line));
 		}
 		reader.close();
 		return lines;

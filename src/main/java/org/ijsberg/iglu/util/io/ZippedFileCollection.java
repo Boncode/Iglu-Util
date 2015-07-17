@@ -81,6 +81,7 @@ public class ZippedFileCollection implements FileCollection {
 
     @Override
     public String getFileContentsByName(String fileName) throws IOException {
+		//fails if relativeDir not OK
         return FileSupport.getTextFileFromZip(relativeDir + fileName, zipFile);
     }
 
