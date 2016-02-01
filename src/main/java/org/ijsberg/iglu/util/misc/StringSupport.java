@@ -124,7 +124,6 @@ public abstract class StringSupport {
 		StringBuffer buf = new StringBuffer(haystack);
 		for (int i = 0; i < needle.length; i++) {
 			//TODO not very elegant
-
 			replaceAll(buf, needle[i], newNeedle[i]);
 		}
 		return buf.toString();
@@ -186,7 +185,7 @@ public abstract class StringSupport {
 
 	public static int count(String haystack, String needle) {
 		if (needle == null || "".equals(needle)) {
-			throw new IllegalArgumentException("string to count not be empty");
+			throw new IllegalArgumentException("string to count may not be empty");
 		}
 		int idx = haystack.indexOf(needle);
 		int count = 0;

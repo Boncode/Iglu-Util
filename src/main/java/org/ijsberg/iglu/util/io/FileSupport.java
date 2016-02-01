@@ -875,15 +875,12 @@ public abstract class FileSupport {
 		} else {
 			inputReader = new InputStreamReader(inputStream);
 		}
-		//FileReader fileReader = new FileReader(file);
 		ArrayList<Line> lines = getLinesFromText(file.getName(), inputReader);
 		return lines;
 	}
 
 	public static ArrayList<Line> getLinesFromText(String fileName, String input) throws IOException {
 		StringReader reader = new StringReader(input);
-
-		//FileReader fileReader = new FileReader(file);
 		ArrayList<Line> lines = getLinesFromText(fileName, reader);
 		return lines;
 	}
