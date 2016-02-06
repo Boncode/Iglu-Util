@@ -108,15 +108,16 @@ public class ZippedFileCollection implements FileCollection {
 
         for (ZipEntry zipEntry : zipEntries) {
             String relativePathAndName = FileSupport.convertToUnixStylePath(zipEntry.getName());
-
+			//System.out.println("=====> " + relativeDir + "=" + relativePathAndName);
 			if(relativePathAndName.startsWith(relativeDir)) {
 				relativePathAndName = relativePathAndName.substring(relativeDir.length());
+
+				if (relativePathAndName.startsWith("/")) {
+					relativePathAndName = relativePathAndName.substring(1);
+				}
+				filesByRelativePathAndName.put(relativePathAndName, zipEntry);
+				rootDir.addFile(relativePathAndName);
 			}
-			if(relativePathAndName.startsWith("/")) {
-				relativePathAndName = relativePathAndName.substring(1);
-			}
-			filesByRelativePathAndName.put(relativePathAndName, zipEntry);
-			rootDir.addFile(relativePathAndName);
 		}
 	}
 

@@ -157,7 +157,11 @@ public abstract class FileSupport {
 	 */
 	private static ListMap<String, File> getSortedContentsInDirectoryTree(File directory, FileFilterRuleSet ruleSet, boolean returnFiles, boolean returnDirs) {
 		ListMap<String, File> sortedResult = new ListMap<String, File>();
-		//ArrayList<File> result = new ArrayList<File>();
+
+//		System.out.println("==============> " + ruleSet);
+
+//		System.out.println("===> " + (directory != null && directory.exists() && directory.isDirectory()));
+
 		if (directory != null && directory.exists() && directory.isDirectory()) {
 //			long time = System.currentTimeMillis();
 			File[] files = directory.listFiles();
@@ -172,6 +176,7 @@ public abstract class FileSupport {
 						sortedResult.putAll(getSortedContentsInDirectoryTree(files[i], ruleSet, returnFiles, returnDirs));
 					}
 					else if (returnFiles && ruleSet.fileMatchesRules(files[i])) {
+//						System.out.println(files[i].getName());
 						sortedResult.put(files[i].getName(), files[i]);
 					}
 				}
@@ -777,6 +782,14 @@ public abstract class FileSupport {
 		String retval = StringSupport.replaceAll(path, "\\", "/");
 		retval = StringSupport.replaceAll(retval, new String[]{"///", "//"}, new String[]{"/", "/"});
 		return retval;
+	}
+
+	public static String getUnixStyleAbsolutePath(File file) {
+		String retval = file.getAbsolutePath();
+		if(retval.length() >= 2 && retval.charAt(1) == ':') {
+			retval = retval.substring(2);
+		}
+		return convertToUnixStylePath(retval);
 	}
 
 	public static String getFileNameFromPath(String path) {

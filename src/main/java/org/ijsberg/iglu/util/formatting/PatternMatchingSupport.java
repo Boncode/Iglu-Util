@@ -66,12 +66,12 @@ public abstract class PatternMatchingSupport {
 		try {
 			return m.matches();
 		} catch (StackOverflowError e) {
+			//FIXME
 			e.printStackTrace();
-			System.out.println("-> [" + val + "][" + regexp + "]");
-			System.out.println("-> " + val.length());
-			System.exit(0);
+			System.out.println("value [" + val + "] regexp [" + regexp + "]");
+			System.out.println("value length " + val.length());
+			throw e;
 		}
-		return false;
 	}
 
 	public static List<int[]> getRangesMatchingRegularExpression(String val, String regexp) {
