@@ -163,6 +163,9 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 	private boolean fileMatchesRules(String fileName, String fileContents) {
 
         try {
+
+//			System.out.println(fileName + " ====> " + fileMatchesRules(fileName) + " : " + (includeBecauseOfContainedTextLine(fileContents)) + " : " + !excludeBecauseOfContainedTextLine(fileContents));
+
             return
                     (fileMatchesRules(fileName) &&
 							(includeBecauseOfContainedTextLine(fileContents)) &&
@@ -200,8 +203,8 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 	}
 
 	private boolean includeBecauseOfContainedTextLine(String fileContents) throws IOException {
-		boolean retval = includeFilesContainingText != null &&
-                includeFilesContainingText.length != 0 &&
+		boolean retval = includeFilesContainingText == null ||
+                includeFilesContainingText.length == 0 ||
                 occurenceFound(fileContents, includeFilesContainingText);
 		return retval;
 	}
@@ -284,7 +287,7 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 //				"base directory: " + baseDir + "\n" +
                 "include names: " + includeFilesWithNameMask + "\n" +
                 "include lines containing: " + ArraySupport.format("\"", "\"", includeFilesContainingText, ",") + "\n" +
-                "exclude names: " + ArraySupport.format("\"", "\"", excludeFilesContainingText, ", ") + "\n" +
+                "exclude names: " + excludeFilesWithNameMask + "\n" +
                 "exclude lines containing: " + ArraySupport.format("\"", "\"", excludeFilesContainingText, ", ") + "\n";
     }
 	

@@ -521,6 +521,7 @@ public abstract class FileSupport {
             ZipEntry zipEntry = zipEntries.nextElement();
 
 			if(ruleSet.fileMatchesRules(zipEntry, zipFile)) {
+//				System.out.println("=========================================");
                 result.add(zipEntry);
             }
         }
