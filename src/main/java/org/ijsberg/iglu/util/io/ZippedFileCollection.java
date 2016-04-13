@@ -116,7 +116,9 @@ public class ZippedFileCollection implements FileCollection {
 				}
 				filesByRelativePathAndName.put(relativePathAndName, zipEntry);
 				rootDir.addFile(relativePathAndName);
-			}
+			}/* else {
+				System.out.println("====> " + relativePathAndName + " -- " + relativeDir);
+			}*/
 		}
 	}
 

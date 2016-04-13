@@ -155,7 +155,10 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
                     includeBecauseOfInBaseDir(fileName) &&
 					includeBecauseOfName(fileName) &&
                             !excludeBecauseOfName(fileName);
-//			System.out.println(retval);
+//		if(fileName.contains("WorkItems")) {
+//			System.out.println(fileName + " ====> " + includeBecauseOfInBaseDir(fileName) + " : "
+//					+ (includeBecauseOfName(fileName)) + " : " + !excludeBecauseOfName(fileName));
+//		}
 		return retval;
     }
 
@@ -164,6 +167,9 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 
         try {
 
+//			if(fileName.contains("WorkItems")) {
+//				System.out.println(fileName + " --> " + fileMatchesRules(fileName) + " : " + (includeBecauseOfContainedTextLine(fileContents)) + " : " + !excludeBecauseOfContainedTextLine(fileContents));
+//			}
 //			System.out.println(fileName + " ====> " + fileMatchesRules(fileName) + " : " + (includeBecauseOfContainedTextLine(fileContents)) + " : " + !excludeBecauseOfContainedTextLine(fileContents));
 
             return
@@ -187,9 +193,9 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 				PatternMatchingSupport.valueMatchesWildcardExpression(fileName, includeFilesWithNameMask)
 		//		|| PatternMatchingSupport.valueMatchesWildcardExpression(fileName, "*/" + includeFilesWithNameMask)
 		;
-
-//		System.out.println(includeFilesWithNameMask + ":" + fileName + ":" + retval);
-
+//		if(fileName.contains("WorkItems")) {
+//			System.out.println(includeFilesWithNameMask + ":" + fileName + ":" + retval);
+//		}
 		return retval;
 	}
 

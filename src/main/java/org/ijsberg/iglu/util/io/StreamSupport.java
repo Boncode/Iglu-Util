@@ -63,4 +63,8 @@ public abstract class StreamSupport {
 			output.write(buf, 0, len);
 		}
 	}
+
+	public static void writeToOutputStream(byte[] contents, OutputStream output) throws IOException {
+		output.write(contents, 0, contents.length);
+	}
 }

@@ -319,6 +319,10 @@ public abstract class FileSupport {
 	public static void zip(String path, String zipFileName, String includeMask) throws IOException {
 		String zipFilePath = convertToUnixStylePath(path);
 		List<File> files = getFilesInDirectoryTree(path, includeMask);
+		zip(zipFileName, zipFilePath, files);
+	}
+
+	private static void zip(String zipFileName, String zipFilePath, List<File> files) throws IOException {
 		FileStreamProvider output = new ZipFileStreamProvider(zipFileName);
 		for (File file : files) {
 			String fullFileName = convertToUnixStylePath(file.getPath());
@@ -329,7 +333,6 @@ public abstract class FileSupport {
 		}
 		output.close();
 	}
-
 
 
 	public static void unzip(String path, ZipFile zipFile) throws IOException {
@@ -499,6 +502,11 @@ public abstract class FileSupport {
 		} finally {
 			input.close();
 		}
+	}
+
+	public static void copyFileResource(byte[] fileContents, OutputStream output) throws IOException{
+
+		StreamSupport.writeToOutputStream(fileContents, output);
 	}
 
 	public static boolean containsFileInZip(String fileName, ZipFile zipFile) {
@@ -989,9 +997,6 @@ public abstract class FileSupport {
 	public static void main(String[] args) throws Exception {
 		//TODO error message if root dir does not exist
 
-		zip("C:\\util\\keys\\", "C:\\util\\keys.zip", "*.*");
-		System.exit(0);
-
 		if (args.length >= 2) {
 			if (args[0].startsWith("-d")) {
 				if (args.length == 3) {
@@ -1035,5 +1040,16 @@ public abstract class FileSupport {
 		for(File file : files) {
 			deleteFile(file);
 		}
+	}
+
+	public static void saveFileCollectionToZip(FileCollection fileCollection, String zipFileName) throws IOException {
+		FileStreamProvider output = new ZipFileStreamProvider(zipFileName);
+		for(String fileName : fileCollection.getFileNames()) {
+			byte[] fileContents = fileCollection.getFileByName(fileName);
+			OutputStream outputStream = output.createOutputStream(fileName);
+			copyFileResource(fileContents, outputStream);
+			output.closeCurrentStream();
+		}
+		output.close();
 	}
 }
