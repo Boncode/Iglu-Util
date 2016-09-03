@@ -33,6 +33,7 @@ import java.util.zip.ZipFile;
 public class ZippedFileCollection implements FileCollection {
 
     private Map<String, ZipEntry> filesByRelativePathAndName = new TreeMap<String, ZipEntry>();
+	private Map<String, ZipEntry> filesNoDirectoriesByRelativePathAndName = new TreeMap<String, ZipEntry>();
     private FileFilterRuleSet includedFilesRuleSet;
     private ZipFile zipFile;
 
@@ -74,6 +75,11 @@ public class ZippedFileCollection implements FileCollection {
         return new ArrayList<String>(filesByRelativePathAndName.keySet());
     }
 
+//	@Override
+	public List<String> getFileNotDirectoryNames() {
+		return new ArrayList<String>(filesNoDirectoriesByRelativePathAndName.keySet());
+	}
+
     @Override
     public byte[] getFileByName(String fileName) throws IOException {
         return FileSupport.getBinaryFromZip(relativeDir + fileName, zipFile);
@@ -113,6 +119,9 @@ public class ZippedFileCollection implements FileCollection {
 
 				if (relativePathAndName.startsWith("/")) {
 					relativePathAndName = relativePathAndName.substring(1);
+				}
+				if(!zipEntry.isDirectory()) {
+					filesNoDirectoriesByRelativePathAndName.put(relativePathAndName, zipEntry);
 				}
 				filesByRelativePathAndName.put(relativePathAndName, zipEntry);
 				rootDir.addFile(relativePathAndName);

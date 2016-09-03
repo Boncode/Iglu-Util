@@ -60,6 +60,23 @@ public class NumberFormatterTest {
 
 
 	@Test
+	public void testFormatFloatNegative() {
+		String result = new NumberFormatter().format((float)-1.0, 1);
+		assertEquals("-1.0", result);
+
+		result = new NumberFormatter().format((float)-1.00, 1);
+		assertEquals("-1.0", result);
+
+		result = new NumberFormatter().format((float)66.533333, 1);
+		assertEquals("66.5", result);
+
+		result = new NumberFormatter().format((float)0, 1);
+		assertEquals("0.0", result);
+	}
+
+
+
+		@Test
 	public void testFormatInt() {
 		String result = new NumberFormatter(',', '.').format(666666);
 		assertEquals("666.666", result);

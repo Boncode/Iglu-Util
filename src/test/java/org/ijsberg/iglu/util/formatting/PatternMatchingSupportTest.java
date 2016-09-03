@@ -73,5 +73,10 @@ public class PatternMatchingSupportTest {
 		assertEquals(24, PatternMatchingSupport.indexOf("analysis-infrastructure-0.9.0-SNAPSHOT-distribution.zip", "[0-9]*\\.[0-9]*\\.[0-9]*"));
 	}
 
+	@Test
+	public void testValueMatchesRegularExpression() {
+		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("/bla/javascript.js", "(.*\\.html|.*\\.js)"));
+	}
+
 }
 

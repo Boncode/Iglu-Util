@@ -660,18 +660,33 @@ public abstract class FileSupport {
 	}
 
 	public static void copyDirectory(String directoryName, String newDirectoryName, boolean overwriteExisting) throws IOException {
-
+		File srcDir = new File(directoryName);
+		if(!srcDir.exists()) {
+			throw new FileNotFoundException(srcDir.getAbsolutePath() + " does not exist");
+		}
 		File newDirectory = new File(newDirectoryName);
 		newDirectory.mkdirs();
-		//List<File> files = getFilesInDirectoryTree(directoryName);
 		FileCollection fileCollection = new FSFileCollection(directoryName, new FileFilterRuleSet());
-
 		for(String fileName : fileCollection.getFileNames()) {
 			copyFile(directoryName + "/" + fileName, newDirectoryName + "/" + fileName, overwriteExisting);
 		}
-
 	}
 
+	public static void copyDirectoryFromZipFile(String zipFileName, String sourceDirectoryName, String newDirectoryName, boolean overwriteExisting) throws IOException {
+		File srcFile = new File(zipFileName);
+		if(!srcFile.exists()) {
+			throw new FileNotFoundException(srcFile.getAbsolutePath() + " does not exist");
+		}
+		File newDirectory = new File(newDirectoryName);
+		newDirectory.mkdirs();
+		ZippedFileCollection fileCollection = new ZippedFileCollection(zipFileName, new FileFilterRuleSet().setIncludeFilesWithNameMask(sourceDirectoryName + "/*"));
+		for(String fileName : fileCollection.getFileNotDirectoryNames()) {
+			byte[] fileContents = fileCollection.getFileByName(fileName);
+			FileData fileData = new FileData(fileName);
+			File newFile =  new File(newDirectoryName + "/" + fileData.getFileName());
+			saveBinaryFile(fileContents, newFile);
+		}
+	}
 
 	/**
 	 * Deletes from a directory all files and subdirectories targeted by a given mask.
@@ -882,6 +897,11 @@ public abstract class FileSupport {
 		PrintStream printStream = new PrintStream(outputStream);
 		printStream.println(text);
 		outputStream.close();
+	}
+
+	public static void saveBinaryFile(byte[] fileContents, File file) throws IOException {
+		FileOutputStream outputStream = new FileOutputStream(file);
+		copyFileResource(fileContents, outputStream);
 	}
 
 	public static ArrayList<Line> getLinesInTextFile(File file) throws IOException {
