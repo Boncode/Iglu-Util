@@ -70,6 +70,10 @@ public class ZippedFileCollection implements FileCollection {
 		refreshFiles();
 	}
 
+	public ZippedFileCollection(File file, FileFilterRuleSet fileFilter) throws IOException {
+		this(new ZipFile(file), fileFilter);
+	}
+
 	@Override
     public List<String> getFileNames() {
         return new ArrayList<String>(filesByRelativePathAndName.keySet());
@@ -114,7 +118,7 @@ public class ZippedFileCollection implements FileCollection {
 
         for (ZipEntry zipEntry : zipEntries) {
             String relativePathAndName = FileSupport.convertToUnixStylePath(zipEntry.getName());
-			if(relativePathAndName.startsWith(relativeDir)) {
+			if(relativePathAndName.startsWith(relativeDir) || relativePathAndName.startsWith("/" + relativeDir)) {
 				relativePathAndName = relativePathAndName.substring(relativeDir.length());
 
 				if (relativePathAndName.startsWith("/")) {
