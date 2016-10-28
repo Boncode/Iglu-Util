@@ -40,9 +40,12 @@ public class ZippedFileCollection implements FileCollection {
 	private String relativeDir = "";
 
     public ZippedFileCollection(String zipFileName, FileFilterRuleSet fileFilterRuleSet) throws IOException {
-
         this(new ZipFile(zipFileName), fileFilterRuleSet);
     }
+
+	public ZippedFileCollection(String zipFileName, String relativeDir, FileFilterRuleSet fileFilterRuleSet) throws IOException {
+		this(new ZipFile(zipFileName), relativeDir, fileFilterRuleSet);
+	}
 
 	public ZippedFileCollection(File file) throws IOException {
 		this(new ZipFile(file), new FileFilterRuleSet().setIncludeFilesWithNameMask("*.*"));
@@ -66,7 +69,8 @@ public class ZippedFileCollection implements FileCollection {
 				this.relativeDir += "/";
 			}
 		}
-		fileFilterRuleSet.setBaseDir(this.relativeDir);
+//		System.out.println("====================> " + relativeDir);
+		//fileFilterRuleSet.setBaseDir(this.relativeDir);
 		refreshFiles();
 	}
 
@@ -115,6 +119,8 @@ public class ZippedFileCollection implements FileCollection {
 		rootDir = new Directory("ROOT");
 
         List<ZipEntry> zipEntries = FileSupport.getContentsFromZipFile(zipFile, includedFilesRuleSet);
+//		System.out.println(zipFile.getName());
+//		System.out.println(includedFilesRuleSet);
 
         for (ZipEntry zipEntry : zipEntries) {
             String relativePathAndName = FileSupport.convertToUnixStylePath(zipEntry.getName());
@@ -129,9 +135,9 @@ public class ZippedFileCollection implements FileCollection {
 				}
 				filesByRelativePathAndName.put(relativePathAndName, zipEntry);
 				rootDir.addFile(relativePathAndName);
-			}/* else {
-				System.out.println("====> " + relativePathAndName + " -- " + relativeDir);
-			}*/
+			}/* else {*/
+				//System.out.println("====> " + relativePathAndName + " -- " + relativeDir);
+			/*}*/
 		}
 	}
 

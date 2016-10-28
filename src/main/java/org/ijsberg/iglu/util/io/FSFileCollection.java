@@ -46,7 +46,7 @@ public class FSFileCollection implements FileCollection {
 
         this.includedFilesRuleSet = fileFilterRuleSet;
 
-		fileFilterRuleSet.setBaseDir(this.baseDir);
+//		fileFilterRuleSet.setBaseDir(this.baseDir);
 
         refreshFiles();
     }

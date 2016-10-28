@@ -85,7 +85,7 @@ public class SearchAndReplace {
 
         FileCollection fileCollection = new FSFileCollection(
                 BASE_DIR,
-                new FileFilterRuleSet(BASE_DIR).setIncludeFilesWithNameMask("*.process|*.wsdl|*.xsd|*.substvar"));
+                new FileFilterRuleSet().setIncludeFilesWithNameMask("*.process|*.wsdl|*.xsd|*.substvar"));
         for(String fileName : fileCollection.getFileNames()) {
             String newFileName = StringSupport.replaceAll(fileName, originalNames, destinationNames);
             String fileContents = FileSupport.getTextFileFromFS(new File(BASE_DIR + "/" + fileName));

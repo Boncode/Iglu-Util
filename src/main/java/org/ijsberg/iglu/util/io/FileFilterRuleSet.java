@@ -53,19 +53,12 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 	private String[] excludeFilesContainingText = new String[0];
 
 
-	public FileFilterRuleSet(String baseDir) {
+	public FileFilterRuleSet() {
 		super();
-		setBaseDir(baseDir);
 	}
 
 	private String getComparableFileName(File file) {
 		String fileName = FileSupport.convertToUnixStylePath(file.getPath());
-/*		System.out.println("----------------- " + fileName);
-		if(baseDir != null) {
-			if(fileName.startsWith(baseDir)) {
-				fileName = fileName.substring(baseDir.length());
-			}
-		}*/
 		return fileName;
 	}
 
@@ -87,11 +80,6 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 			return unixStyleFileName.startsWith(baseDir);
 		}*/
 		return true;
-	}
-
-
-	public FileFilterRuleSet() {
-		super();
 	}
 
 
@@ -266,16 +254,6 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
             String ... excludeFilesContainingText) {
 		this.excludeFilesContainingText = excludeFilesContainingText;
 		return this;
-	}
-
-	public FileFilterRuleSet setBaseDir(String baseDir) {
-/*		if(baseDir != null && !"".equals(baseDir)) {
-			this.baseDir = FileSupport.convertToUnixStylePath(baseDir);
-			if(!this.baseDir.endsWith("/")) {
-				this.baseDir += "/";
-			}
-		}
-*/		return this;
 	}
 
 	public String getBaseDir() {

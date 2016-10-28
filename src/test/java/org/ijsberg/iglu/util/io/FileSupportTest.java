@@ -39,30 +39,30 @@ public class FileSupportTest extends DirStructureDependentTest {
 	public void testReplaceStringsInFilesInDirectoryTree() throws Exception {
 
 		List<File> files = FileSupport.getFilesInDirectoryTree(dirStructRoot,
-				new FileFilterRuleSet(dirStructRoot).setIncludeFilesWithNameMask("*.html").
+				new FileFilterRuleSet().setIncludeFilesWithNameMask("*.html").
 						setIncludeFilesContainingText("IJsberg"));
 
 		assertEquals(15, files.size());
 
 		files = FileSupport.getFilesInDirectoryTree(dirStructRoot,
-				new FileFilterRuleSet(dirStructRoot).setIncludeFilesWithNameMask("*.html").
+				new FileFilterRuleSet().setIncludeFilesWithNameMask("*.html").
 						setIncludeFilesContainingText("Boncode"));
 
 		assertEquals(0, files.size());
 
 		FileSupport.replaceStringsInFilesInDirectoryTree(
-				dirStructRoot, new FileFilterRuleSet(dirStructRoot).setIncludeFilesWithNameMask("*.html"),
+				dirStructRoot, new FileFilterRuleSet().setIncludeFilesWithNameMask("*.html"),
 				"IJsberg", "Boncode");
 
 
 		files = FileSupport.getFilesInDirectoryTree(dirStructRoot,
-				new FileFilterRuleSet(dirStructRoot).setIncludeFilesWithNameMask("*.html").
+				new FileFilterRuleSet().setIncludeFilesWithNameMask("*.html").
 						setIncludeFilesContainingText("IJsberg"));
 
 		assertEquals(0, files.size());
 
 		files = FileSupport.getFilesInDirectoryTree(dirStructRoot,
-				new FileFilterRuleSet(dirStructRoot).setIncludeFilesWithNameMask("*.html").
+				new FileFilterRuleSet().setIncludeFilesWithNameMask("*.html").
 						setIncludeFilesContainingText("Boncode"));
 
 		assertEquals(15, files.size());

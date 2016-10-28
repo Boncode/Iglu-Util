@@ -126,7 +126,7 @@ public abstract class FileSupport {
 	 * @return a list containing the found contents
 	 */
 	private static List<File> getContentsInDirectoryTree(File directory, String includeMask, boolean returnFiles, boolean returnDirs) {
-		return getContentsInDirectoryTree(directory, new FileFilterRuleSet(directory.getPath()).setIncludeFilesWithNameMask(includeMask), returnFiles, returnDirs);
+		return getContentsInDirectoryTree(directory, new FileFilterRuleSet().setIncludeFilesWithNameMask(includeMask), returnFiles, returnDirs);
 	}
 
 
@@ -529,7 +529,6 @@ public abstract class FileSupport {
             ZipEntry zipEntry = zipEntries.nextElement();
 
 			if(ruleSet.fileMatchesRules(zipEntry, zipFile)) {
-//				System.out.println("=========================================");
                 result.add(zipEntry);
             }
         }
