@@ -32,22 +32,14 @@ import java.util.TreeMap;
 public class FSFileCollection implements FileCollection {
 
     private String baseDir;
-//    private String absSourceRoot;
-    private Charset charSet;
 
-//    private List<File> files;
     private Map<String, File> filesByRelativePathAndName = new TreeMap<String, File>();
     private FileFilterRuleSet includedFilesRuleSet;
 
     public FSFileCollection(String baseDir, FileFilterRuleSet fileFilterRuleSet) {
 
         this.baseDir = FileSupport.convertToUnixStylePath(baseDir);
-//        this.absSourceRoot = FileSupport.convertToUnixStylePath(baseDir + "/" + relativeSourceRoot);
-
         this.includedFilesRuleSet = fileFilterRuleSet;
-
-//		fileFilterRuleSet.setBaseDir(this.baseDir);
-
         refreshFiles();
     }
 
