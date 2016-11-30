@@ -80,6 +80,17 @@ public abstract class ArraySupport {
 		return format(null, array, separator);
 	}
 
+
+	public static final StringFormatter defaultFormatter = new StringFormatter() {
+		@Override
+		public String formatString(Object type) {
+			if(type == null) {
+				return "null";
+			}
+			return type.toString();
+		}
+	};
+
 	/**
 	 * @param itemPrefix
 	 * @param array
@@ -87,16 +98,26 @@ public abstract class ArraySupport {
 	 * @return
 	 */
 	public static String format(String itemPrefix, Object[] array, String separator) {
+		return format(itemPrefix, array, defaultFormatter, separator);
+	}
+
+
+	/**
+	 * @param itemPrefix
+	 * @param array
+	 * @param separator
+	 * @return
+	 */
+	public static String format(String itemPrefix, Object[] array, StringFormatter stringFormatter, String separator) {
 		if (array == null) {
 			return "";
 		}
 		StringBuffer retval = new StringBuffer();
 		for (int i = 0; i < array.length; i++) {
-			retval.append((itemPrefix != null ? itemPrefix : "") + array[i] + (i + 1 != array.length ? separator : ""));
+			retval.append((itemPrefix != null ? itemPrefix : "") + stringFormatter.formatString(array[i]) + (i + 1 != array.length ? separator : ""));
 		}
 		return retval.toString();
 	}
-
 
 	/**
 	 * @param itemPrefix

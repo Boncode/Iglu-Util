@@ -73,6 +73,16 @@ public abstract class CollectionSupport {
 	}
 
 	/**
+	 *
+	 * @param coll
+	 * @param separator item separator
+	 * @return formatted collection
+	 */
+	public static <T> String format(Collection<T> coll, StringFormatter<T> formatter, String separator) {
+		return format(null, coll, formatter, separator);
+	}
+
+	/**
 	 * @param itemPrefix
 	 * @param coll
 	 * @param separator item separator
@@ -81,6 +91,17 @@ public abstract class CollectionSupport {
 	public static String format(String itemPrefix, Collection coll, String separator) {
 		if (coll == null) return "";
 		return ArraySupport.format(itemPrefix, coll.toArray(), separator);
+	}
+
+	/**
+	 * @param itemPrefix
+	 * @param coll
+	 * @param separator item separator
+	 * @return formatted collection
+	 */
+	public static String format(String itemPrefix, Collection coll, StringFormatter stringFormatter, String separator) {
+		if (coll == null) return "";
+		return ArraySupport.format(itemPrefix, coll.toArray(), stringFormatter, separator);
 	}
 
 	/**

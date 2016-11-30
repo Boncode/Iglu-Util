@@ -31,13 +31,12 @@ import java.util.TreeMap;
  */
 public class FSFileCollection implements FileCollection {
 
-    private String baseDir;
+    protected String baseDir;
 
-    private Map<String, File> filesByRelativePathAndName = new TreeMap<String, File>();
-    private FileFilterRuleSet includedFilesRuleSet;
+    protected Map<String, File> filesByRelativePathAndName = new TreeMap<String, File>();
+    protected FileFilterRuleSet includedFilesRuleSet;
 
     public FSFileCollection(String baseDir, FileFilterRuleSet fileFilterRuleSet) {
-
         this.baseDir = FileSupport.convertToUnixStylePath(baseDir);
         this.includedFilesRuleSet = fileFilterRuleSet;
         refreshFiles();
@@ -45,7 +44,7 @@ public class FSFileCollection implements FileCollection {
 
     @Override
     public List<String> getFileNames() {
-        refreshFiles();
+//        refreshFiles();
         return new ArrayList<String>(filesByRelativePathAndName.keySet());
     }
 
@@ -92,15 +91,20 @@ public class FSFileCollection implements FileCollection {
         List<File> files = FileSupport.getFilesInDirectoryTree(baseDir, includedFilesRuleSet);
 
         for (File file : files) {
-            String relativePathAndName = FileSupport.convertToUnixStylePath(file.getPath()).substring(
-                    baseDir.length());
-			if(relativePathAndName.startsWith("/")) {
-				relativePathAndName = relativePathAndName.substring(1);
-			}
+			String relativePathAndName = getRelativePathAndName(file);
 			filesByRelativePathAndName.put(relativePathAndName, file);
 			rootDir.addFile(relativePathAndName);
         }
     }
+
+	protected String getRelativePathAndName(File file) {
+		String relativePathAndName = FileSupport.convertToUnixStylePath(file.getPath()).substring(
+                baseDir.length());
+		if(relativePathAndName.startsWith("/")) {
+            relativePathAndName = relativePathAndName.substring(1);
+        }
+		return relativePathAndName;
+	}
 
 	@Override
 	public String getDescription() {

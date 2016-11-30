@@ -86,7 +86,9 @@ public class FileFilterRuleSetTest extends DirStructureDependentTest {
 	@Test
 	public void testFileMatchesRulesForContentsExcludes() throws Exception {
 		
-		File file = new File(dirStructRoot + "WWW/cornerstone/index.html");
+		File file = new File(dirStructRoot + "WWW/c" +
+				"" +
+				"ornerstone/index.html");
 		assertTrue(file.exists());
 		
 		/*FileFilterRuleSet ruleSet = new FileFilterRuleSet("*.html", "* /_d0/*", "*", "");

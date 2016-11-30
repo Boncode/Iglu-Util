@@ -16,7 +16,7 @@ public class FileWatcher {
     private final int timeToWaitBeforeHandlingFileEvent;
     private WatchService watchService;
 
-    public FileWatcher(final int timeToWaitBeforeHandlingFileEvent, final File[] directories) {
+    public FileWatcher(final int timeToWaitBeforeHandlingFileEvent, final File ... directories) {
         this.paths = convertDirLocToPath(directories);
         this.keys = new HashMap<WatchKey, Path>();
         this.timeToWaitBeforeHandlingFileEvent = timeToWaitBeforeHandlingFileEvent;
@@ -58,7 +58,8 @@ public class FileWatcher {
             for (final Path path : paths) {
                 final WatchKey key = path.register(watchService, StandardWatchEventKinds.ENTRY_CREATE,
                         StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_DELETE);
-                System.out.println("WatcherService is registered to path: " + path.toAbsolutePath());
+                listedDirectories.add(path.toFile());
+//                System.out.println("WatcherService is registered to path: " + path.toAbsolutePath());
                 keys.put(key, path);
             }
         } catch (final IOException e) {
@@ -85,13 +86,16 @@ public class FileWatcher {
     public void stopWatcher() {
         System.out.println("Stopping " + this.getClass()
                 .getSimpleName());
+
+//        new Exception().printStackTrace();
+
         try {
             watchService.close();
         } catch (final IOException e) {
             System.out.println("Error while closing watch service");
         }
         final Thread handlerThreadRef = this.handlerThread;
-        if (handlerThreadRef != null) {
+        if (handlerThreadRef != null && handlerThreadRef != Thread.currentThread()) {
             try {
                 handlerThread.join();
             } catch (final InterruptedException e) {
@@ -124,13 +128,6 @@ public class FileWatcher {
         doHandleWatchEvents(watchKey, watcherHandler);
     }
 
-    /*
-    file created ? ignore
-    file modified ? process
-    dir created ? register
-    dir deleted ? unregister
-
-     */
 
     private class FileToHandle {
         private File file;
