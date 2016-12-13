@@ -58,6 +58,14 @@ public class ListMap<K, V> implements Serializable {
 		return list;
 	}
 
+	public List<V> putDistinct(K key, V value) {
+		List<V> list = createOrRetrieveList(key);
+		if(!list.contains(value)) {
+			put(key, value);
+		}
+		return list;
+	}
+
 	public List<V> put(K key, V ... values) {
 		return put(key, Arrays.asList(values));
 	}

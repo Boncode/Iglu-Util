@@ -29,7 +29,7 @@ public class DirectoryWatchingFSFileCollection extends FSFileCollection implemen
         directories = FileSupport.getDirectoriesInDirectoryTree(baseDir);
 
         if(fileWatcher == null) {
-            fileWatcher = new FileWatcher(20, directories.toArray(new File[]{}));
+            fileWatcher = new FileWatcher(500, directories.toArray(new File[]{}));
         } else {
             fileWatcher.stopWatcher();
         }
