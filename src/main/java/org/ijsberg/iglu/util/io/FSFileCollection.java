@@ -77,12 +77,6 @@ public class FSFileCollection implements FileCollection {
 		return rootDir;
 	}
 
-	@Override
-	public void setFileFilter(FileFilterRuleSet fileFilter) {
-		this.includedFilesRuleSet = fileFilter;
-		refreshFiles();
-	}
-
 	public void refreshFiles() {
 
         filesByRelativePathAndName.clear();

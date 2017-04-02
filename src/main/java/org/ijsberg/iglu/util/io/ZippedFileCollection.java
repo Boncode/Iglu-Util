@@ -113,8 +113,7 @@ public class ZippedFileCollection implements FileCollection {
 		return retval;
 	}
 
-	@Override
-	public void refreshFiles() {
+	protected void refreshFiles() {
         filesByRelativePathAndName.clear();
 		rootDir = new Directory("ROOT");
 
@@ -146,12 +145,6 @@ public class ZippedFileCollection implements FileCollection {
 		return rootDir;
 	}
 
-	@Override
-	public void setFileFilter(FileFilterRuleSet fileFilter) {
-		this.includedFilesRuleSet = fileFilter;
-		refreshFiles();
-	}
-
 
 	@Override
 	public String getDescription() {
@@ -170,5 +163,9 @@ public class ZippedFileCollection implements FileCollection {
 
 
 	Directory rootDir = new Directory("ROOT");
+
+	public String getRootFileName() {
+		return zipFile.getName();
+	}
 
 }

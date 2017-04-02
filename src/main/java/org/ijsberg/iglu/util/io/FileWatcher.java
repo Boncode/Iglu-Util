@@ -204,6 +204,7 @@ public class FileWatcher {
                     System.out.println(e.getMessage());
                 } catch (final Throwable t) {
                     System.out.println("unable to handle file event");
+                    t.printStackTrace();
                     if (t instanceof Error) {
                         throw (Error) t;
                     }

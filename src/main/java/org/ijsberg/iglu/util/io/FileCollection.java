@@ -38,10 +38,6 @@ public interface FileCollection {
 
 	Directory getRootDirectory();
 
-	void setFileFilter(FileFilterRuleSet fileFilter);
-
-	void refreshFiles();
-
 	String getDescription();
 
 	int size();

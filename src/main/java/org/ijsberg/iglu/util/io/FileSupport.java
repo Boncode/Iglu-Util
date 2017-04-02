@@ -26,6 +26,7 @@ import org.ijsberg.iglu.util.misc.Line;
 import org.ijsberg.iglu.util.misc.StringSupport;
 
 import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -140,9 +141,7 @@ public abstract class FileSupport {
 	 * @return a list containing the found contents
 	 */
 	private static List<File> getContentsInDirectoryTree(File directory, FileFilterRuleSet ruleSet, boolean returnFiles, boolean returnDirs) {
-//		long time = System.currentTimeMillis();
 		ListMap<String, File> sortedResult = getSortedContentsInDirectoryTree(directory, ruleSet, returnFiles, returnDirs);
-//		System.out.println("resp. time: " + (System.currentTimeMillis() - time));
 		return sortedResult.values();
 	}
 
@@ -157,15 +156,8 @@ public abstract class FileSupport {
 	 */
 	private static ListMap<String, File> getSortedContentsInDirectoryTree(File directory, FileFilterRuleSet ruleSet, boolean returnFiles, boolean returnDirs) {
 		ListMap<String, File> sortedResult = new ListMap<String, File>();
-
-//		System.out.println("==============> " + ruleSet);
-
-//		System.out.println("===> " + (directory != null && directory.exists() && directory.isDirectory()));
-
 		if (directory != null && directory.exists() && directory.isDirectory()) {
-//			long time = System.currentTimeMillis();
 			File[] files = directory.listFiles();
-//			System.out.println("Dir: " + directory + " resp. time list: " + (System.currentTimeMillis() - time));
 			if (files != null) {
 				for (int i = 0; i < files.length; i++) {
 
@@ -353,28 +345,15 @@ public abstract class FileSupport {
 					in.close();
 				}
 			}
-
-
-
 		}
-
 	}
 
 
 	public static byte[] getBinaryFromZip(String fileName, ZipFile zipFile) throws IOException {
 
-
         ZipEntry entry = zipFile.getEntry(FileSupport.convertToUnixStylePath(fileName));
         if (entry == null) {
 			entry = zipFile.getEntry("/" + FileSupport.convertToUnixStylePath(fileName));
-
-/*			System.out.println("entry " + fileName + " not found in jar " + zipFile.getName());
-
-			Enumeration<? extends ZipEntry> entries = zipFile.entries();
-			while(entries.hasMoreElements()) {
-				ZipEntry entry2 = entries.nextElement();
-				System.out.println(entry2.getName());
-			}  */
 			if (entry == null) {
 	            throw new IOException("entry " + fileName + " not found in jar " + zipFile.getName());
 			}
@@ -386,6 +365,29 @@ public abstract class FileSupport {
         finally {
             in.close();
         }
+	}
+
+	public static void putTextFileInZip(String zipFileName, String targetFileName, String fileContents) throws IOException {
+
+		File tmpFile = File.createTempFile("FileSupport", "replaceBinaryInZip");
+		FileSupport.writeTextFile(tmpFile.getPath(), fileContents);
+		Path tmpFilePath = Paths.get(tmpFile.getPath());
+		Path zipFilePath = Paths.get(zipFileName);
+		FileSystem fs = null;
+		try {
+			fs = FileSystems.newFileSystem(zipFilePath, null);
+			Path fileInsideZipPath = fs.getPath(targetFileName);
+			if(Files.exists(fileInsideZipPath)) {
+				Files.delete(fileInsideZipPath);
+			}
+			Files.copy(tmpFilePath, fileInsideZipPath);
+			fs.close();
+		} catch (IOException e) {
+			if(fs != null && fs.isOpen()){
+				fs.close();
+			}
+			throw e;
+		}
 	}
 
     public static byte[] getBinaryFromJar(String fileName, String jarFileName) throws IOException {
@@ -419,12 +421,7 @@ public abstract class FileSupport {
 				if (dir.exists() && dir.isDirectory()) {
 					Collection<File> jars = FileSupport.getFilesInDirectoryTree(dir, "*.jar");
 					for(File jar : jars) {
-						try {
-							retval = getBinaryFromJar(fileName, jar.getPath());
-						}
-						catch (IOException ioe) {
-							//FIXME
-						}
+						retval = getBinaryFromJar(fileName, jar.getPath());
 						if (retval != null) {
 							return retval;
 						}
