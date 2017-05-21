@@ -34,7 +34,7 @@ import org.junit.Before;
 public abstract class DirStructureDependentTest {
 
 	protected static final String BASE_RELATIVE_DIR_PATH = "org/ijsberg/iglu/util/io/directory structure/";
-	protected static final String RELATIVE_DIR_PATH = BASE_RELATIVE_DIR_PATH + "root/";
+	protected static final String RELATIVE_DIR_PATH = BASE_RELATIVE_DIR_PATH;
 	protected static File tmpDir;
 	protected static String dirStructRoot;
 

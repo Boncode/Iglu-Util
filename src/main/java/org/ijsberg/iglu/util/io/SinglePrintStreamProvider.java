@@ -51,4 +51,9 @@ public class SinglePrintStreamProvider implements FileStreamProvider {
 	public OutputStream createOutputStream(String fileName) {
 		return out;
 	}
+
+	@Override
+	public String getPath() {
+		return null;
+	}
 }

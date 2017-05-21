@@ -58,7 +58,7 @@ public class ZipFileStreamProvider implements FileStreamProvider {
 			bufferedOut.flush();
 			out.closeEntry();
 		} catch (IOException e) {
-			throw new RuntimeException("unable to close zipfile entry", e);
+//			throw new RuntimeException("unable to close zipfile entry", e);
 		}
 	}
 
@@ -70,7 +70,7 @@ public class ZipFileStreamProvider implements FileStreamProvider {
 			out.close();
 			fileOut.close();
 		} catch (IOException e) {
-			throw new RuntimeException("unable to close zipfile", e);
+			//throw new RuntimeException("unable to close zipfile", e);
 		}
 	}
 
@@ -83,5 +83,10 @@ public class ZipFileStreamProvider implements FileStreamProvider {
 		} catch (IOException e) {
 			throw new RuntimeException("unable to save " + fileName + " to " + this.fileName, e);
 		}
+	}
+
+	@Override
+	public String getPath() {
+		return fileName;
 	}
 }

@@ -33,4 +33,6 @@ public interface FileStreamProvider {
 	void close();
 
 	OutputStream createOutputStream(String fileName);
+
+	String getPath();
 }

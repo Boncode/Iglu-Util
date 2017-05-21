@@ -107,9 +107,6 @@ public class ZippedFileCollection implements FileCollection {
 	@Override
 	public boolean containsFile(String fileName) {
 		boolean retval = filesByRelativePathAndName.containsKey(FileSupport.convertToUnixStylePath(fileName));
-		if(!retval) {
-//			System.out.println(FileSupport.convertToUnixStylePath(fileName) + " NOT FOUND in " + filesByRelativePathAndName.keySet());
-		}
 		return retval;
 	}
 
@@ -118,8 +115,6 @@ public class ZippedFileCollection implements FileCollection {
 		rootDir = new Directory("ROOT");
 
         List<ZipEntry> zipEntries = FileSupport.getContentsFromZipFile(zipFile, includedFilesRuleSet);
-//		System.out.println(zipFile.getName());
-//		System.out.println(includedFilesRuleSet);
 
         for (ZipEntry zipEntry : zipEntries) {
             String relativePathAndName = FileSupport.convertToUnixStylePath(zipEntry.getName());
@@ -134,9 +129,7 @@ public class ZippedFileCollection implements FileCollection {
 				}
 				filesByRelativePathAndName.put(relativePathAndName, zipEntry);
 				rootDir.addFile(relativePathAndName);
-			}/* else {*/
-				//System.out.println("====> " + relativePathAndName + " -- " + relativeDir);
-			/*}*/
+			}
 		}
 	}
 
@@ -144,7 +137,6 @@ public class ZippedFileCollection implements FileCollection {
 	public Directory getRootDirectory() {
 		return rootDir;
 	}
-
 
 	@Override
 	public String getDescription() {
@@ -160,7 +152,6 @@ public class ZippedFileCollection implements FileCollection {
 	public void close() throws IOException {
 		zipFile.close();
 	}
-
 
 	Directory rootDir = new Directory("ROOT");
 

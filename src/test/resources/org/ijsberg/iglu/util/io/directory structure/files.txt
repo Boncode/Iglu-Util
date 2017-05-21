@@ -167,3 +167,5 @@ root/WWW/route2.gif
 root/WWW/route_desc_header.gif
 root/WWW/test.txt
 root/WWW/visie.html
+root/source.zip
+root/target.zip

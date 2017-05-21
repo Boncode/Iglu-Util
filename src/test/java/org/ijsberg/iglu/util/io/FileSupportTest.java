@@ -73,20 +73,15 @@ public class FileSupportTest extends DirStructureDependentTest {
 
 		File file = new File(dirStructRoot);
 		
-
-//		System.out.println(file.getAbsolutePath());
 		assertTrue(file.exists());
-
 		List<File> foundFiles = FileSupport.getFilesInDirectoryTree(dirStructRoot);
 		
-		assertEquals(169, foundFiles.size());
-		
-//		CollectionSupport.print(foundFiles);
+		assertEquals(171, foundFiles.size());
 
 		String testDirPath = dirStructRoot + '/';
 
 		foundFiles = FileSupport.getFilesInDirectoryTree(dirStructRoot);
-		assertEquals(169, foundFiles.size());
+		assertEquals(171, foundFiles.size());
 
 	}
 
@@ -203,10 +198,10 @@ public class FileSupportTest extends DirStructureDependentTest {
 		input = FileSupport.getInputStreamFromClassLoader("test/ijsberg.jpg");
 
 		//a dir can be loaded
-		input = FileSupport.getInputStreamFromClassLoader(RELATIVE_DIR_PATH + "WWW");
+		input = FileSupport.getInputStreamFromClassLoader(RELATIVE_DIR_PATH + "/root/WWW");
 		//(input.available produces NullPointer on Apple)
 		
-		input = FileSupport.getInputStreamFromClassLoader(RELATIVE_DIR_PATH + "WWW/route.gif");
+		input = FileSupport.getInputStreamFromClassLoader(RELATIVE_DIR_PATH + "/root/WWW/route.gif");
 		
 		byte[] thing = StreamSupport.absorbInputStream(input);
 
@@ -242,5 +237,24 @@ public class FileSupportTest extends DirStructureDependentTest {
 		assertEquals("", FileSupport.getDirNameFromPath("hop"));
 	}
 
-	
+	@Test
+	public void testMergeZipFiles() throws IOException {
+		FileCollection sourceFileCollection = null;
+		FileCollection targetFileCollection = null;
+		try {
+			sourceFileCollection = new ZippedFileCollection(new File(tmpDir.getPath() + "/root/source.zip"));
+			targetFileCollection = new ZippedFileCollection(new File(tmpDir.getPath() + "/root/target.zip"));
+			assertEquals(5, targetFileCollection.size());
+		} finally {
+			targetFileCollection.close();
+		}
+		try {
+			FileSupport.mergeInZipFile(tmpDir.getPath() + "/root/target.zip", sourceFileCollection);
+			targetFileCollection = new ZippedFileCollection(new File(tmpDir.getPath() + "/root/target.zip"));
+			assertEquals(11, targetFileCollection.size());
+		} finally {
+			sourceFileCollection.close();
+			targetFileCollection.close();
+		}
+	}
 }

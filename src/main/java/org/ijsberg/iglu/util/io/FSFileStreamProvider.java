@@ -48,6 +48,11 @@ public class FSFileStreamProvider implements FileStreamProvider {
 	}
 
 	@Override
+	public String getPath() {
+		return path;
+	}
+
+	@Override
 	public void closeCurrentStream() {
 		if(currentStream != null) {
 			try {
