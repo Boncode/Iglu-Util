@@ -23,8 +23,7 @@ import org.ijsberg.iglu.util.collection.ArraySupport;
 import org.ijsberg.iglu.util.io.*;
 import org.ijsberg.iglu.util.misc.StringSupport;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -275,6 +274,14 @@ public class CommandShell implements Transceiver {
 	public static int execute(String command, String[] envVars, File dir) throws IOException {
 		return execute(getCommandArrayForCurrentOS(command), envVars, dir, new Forwarder(System.out));
 	}
+
+	public static String executeAndGatherOutput(String command, File dir) throws IOException {
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		execute(getCommandArrayForCurrentOS(command), null, dir, new Forwarder(byteArrayOutputStream));
+		return new String(byteArrayOutputStream.toByteArray());
+	}
+
 
 	private static String[] getCommandArrayForCurrentOS(String command) {
 		String osName = System.getProperty("os.name");
