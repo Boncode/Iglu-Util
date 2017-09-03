@@ -102,39 +102,29 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 	 */
 	public boolean fileMatchesRules(File file) {
 
-        try {
-            if(file.exists()) {
-                if(includeFilesContainingText.length == 0 && excludeFilesContainingText.length == 0) {
-                    return fileMatchesRules(
-							getComparableFileName(file));
-                } else {
-                    return fileMatchesRules(
-							getComparableFileName(file),
-                            FileSupport.getTextFileFromFS(file));
-                }
-            }
-        } catch (IOException ioe) {
-			//FIXME
-            //at the moment file does not match rules
-        }
+		if(file.exists()) {
+			if(includeFilesContainingText.length == 0 && excludeFilesContainingText.length == 0) {
+				return fileMatchesRules(
+						getComparableFileName(file));
+			} else {
+				return fileMatchesRules(
+						getComparableFileName(file),
+						file);
+			}
+		}
 		return false;
 	}
 
     public boolean fileMatchesRules(ZipEntry entry, ZipFile zipFile) {
 
-        try {
-                if(includeFilesContainingText.length == 0 && excludeFilesContainingText.length == 0) {
-                    return fileMatchesRules(
-							getComparableFileName(entry));
-                } else {
-                    return fileMatchesRules(
-							getComparableFileName(entry),
-                            FileSupport.getTextFileFromZip(entry.getName(), zipFile));
-                }
-        } catch (IOException ioe) {
-            //at the moment file does not match rules
-        }
-        return false;
+		if(includeFilesContainingText.length == 0 && excludeFilesContainingText.length == 0) {
+			return fileMatchesRules(
+					getComparableFileName(entry));
+		} else {
+			return fileMatchesRules(
+					getComparableFileName(entry),
+					entry, zipFile);
+		}
     }
 
     private boolean fileMatchesRules(String fileName) {
@@ -143,33 +133,37 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
                     includeBecauseOfInBaseDir(fileName) &&
 					includeBecauseOfName(fileName) &&
                             !excludeBecauseOfName(fileName);
-//		if(fileName.contains("WorkItems")) {
-//			System.out.println(fileName + " ====> " + includeBecauseOfInBaseDir(fileName) + " : "
-//					+ (includeBecauseOfName(fileName)) + " : " + !excludeBecauseOfName(fileName));
-//		}
 		return retval;
     }
 
 
-	private boolean fileMatchesRules(String fileName, String fileContents) {
-
+	private boolean fileMatchesRules(String fileName, File file) {
         try {
-
-//			if(fileName.contains("WorkItems")) {
-//				System.out.println(fileName + " --> " + fileMatchesRules(fileName) + " : " + (includeBecauseOfContainedTextLine(fileContents)) + " : " + !excludeBecauseOfContainedTextLine(fileContents));
-//			}
-//			System.out.println(fileName + " ====> " + fileMatchesRules(fileName) + " : " + (includeBecauseOfContainedTextLine(fileContents)) + " : " + !excludeBecauseOfContainedTextLine(fileContents));
-
-            return
-                    (fileMatchesRules(fileName) &&
-							(includeBecauseOfContainedTextLine(fileContents)) &&
-                        !excludeBecauseOfContainedTextLine(fileContents));
-
+			if(fileMatchesRules(fileName)) {
+				String fileContents = FileSupport.getTextFileFromFS(file);
+				return
+					(includeBecauseOfContainedTextLine(fileContents)) &&
+					!excludeBecauseOfContainedTextLine(fileContents);
+			}
         } catch (IOException ioe) {
             //at the moment file does not match rules
         }
         return false;
     }
+
+	private boolean fileMatchesRules(String fileName, ZipEntry entry, ZipFile zipFile) {
+		try {
+			if(fileMatchesRules(fileName)) {
+				String fileContents = FileSupport.getTextFileFromZip(entry.getName(), zipFile);
+				return
+						(includeBecauseOfContainedTextLine(fileContents)) &&
+								!excludeBecauseOfContainedTextLine(fileContents);
+			}
+		} catch (IOException ioe) {
+			//at the moment file does not match rules
+		}
+		return false;
+	}
 
 	private boolean includeBecauseOfName(String fileName) {
 
