@@ -282,6 +282,25 @@ public class CommandShell implements Transceiver {
 		return new String(byteArrayOutputStream.toByteArray());
 	}
 
+	public enum GuessedOS {
+		WINDOWS_95,
+		WINDOWS,
+		UNIX_FLAVOUR
+	}
+
+	public static GuessedOS guessOS() {
+		String osName = System.getProperty("os.name");
+		if ("Windows 95".equals(osName)) {
+			return GuessedOS.WINDOWS_95;
+		}
+		else if (osName.startsWith("Windows")) {
+			return GuessedOS.WINDOWS;
+		}
+		else {
+			return GuessedOS.UNIX_FLAVOUR;
+		}
+	}
+
 
 	private static String[] getCommandArrayForCurrentOS(String command) {
 		String osName = System.getProperty("os.name");

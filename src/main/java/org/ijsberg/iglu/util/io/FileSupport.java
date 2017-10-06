@@ -856,6 +856,12 @@ public abstract class FileSupport {
 		return retval;
 	}
 
+	public static String convertToWindowsStylePath(String path) {
+		String retval = StringSupport.replaceAll(path, "/", "\\");
+		retval = StringSupport.replaceAll(retval, "\\\\", "\\");
+		return retval;
+	}
+
 	public static String getUnixStyleAbsolutePath(File file) {
 		String retval = file.getAbsolutePath();
 		if(retval.length() >= 2 && retval.charAt(1) == ':') {

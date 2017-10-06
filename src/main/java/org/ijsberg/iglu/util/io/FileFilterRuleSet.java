@@ -168,16 +168,14 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 	private boolean includeBecauseOfName(String fileName) {
 
 		//System.out.print(baseDir + " : ");
-		//System.out.println(includeFilesWithNameMask + " <-- " + fileName);
+//		System.out.println(includeFilesWithNameMask + " <-- " + fileName);
 
 
 		boolean retval = includeFilesWithNameMask == null || "*".equals(includeFilesWithNameMask) ||
 				PatternMatchingSupport.valueMatchesWildcardExpression(fileName, includeFilesWithNameMask)
 		//		|| PatternMatchingSupport.valueMatchesWildcardExpression(fileName, "*/" + includeFilesWithNameMask)
 		;
-//		if(fileName.contains("WorkItems")) {
-//			System.out.println(includeFilesWithNameMask + ":" + fileName + ":" + retval);
-//		}
+//		System.out.println(retval);
 		return retval;
 	}
 
