@@ -47,10 +47,10 @@ selecteer files op basis van naam en/of inhoud
 public class FileFilterRuleSet implements Cloneable, Serializable {
 
 //	private String baseDir = null;
-    private String includeFilesWithNameMask;
-	private String excludeFilesWithNameMask = "";
-	private String[] includeFilesContainingText = new String[0];
-	private String[] excludeFilesContainingText = new String[0];
+    protected String includeFilesWithNameMask;
+	protected String excludeFilesWithNameMask = "";
+	protected String[] includeFilesContainingText = new String[0];
+	protected String[] excludeFilesContainingText = new String[0];
 
 
 	public FileFilterRuleSet() {
@@ -83,8 +83,8 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 	}
 
 
-	private FileFilterRuleSet(String includeFilesWithNameMask, String excludeFilesWithNameMask,
-			String[] includeFilesContainingLineMask, String[] excludeFilesContainingLineMask, String baseDir) {
+	protected FileFilterRuleSet(String includeFilesWithNameMask, String excludeFilesWithNameMask,
+								String[] includeFilesContainingLineMask, String[] excludeFilesContainingLineMask, String baseDir) {
 		super();
 		this.includeFilesWithNameMask = includeFilesWithNameMask;
 		this.excludeFilesWithNameMask = excludeFilesWithNameMask;
@@ -104,7 +104,7 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 
 		if(file.exists()) {
 			if(includeFilesContainingText.length == 0 && excludeFilesContainingText.length == 0) {
-				return fileMatchesRules(
+				return fileNameMatchesRules(
 						getComparableFileName(file));
 			} else {
 				return fileMatchesRules(
@@ -118,7 +118,7 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
     public boolean fileMatchesRules(ZipEntry entry, ZipFile zipFile) {
 
 		if(includeFilesContainingText.length == 0 && excludeFilesContainingText.length == 0) {
-			return fileMatchesRules(
+			return fileNameMatchesRules(
 					getComparableFileName(entry));
 		} else {
 			return fileMatchesRules(
@@ -127,19 +127,10 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 		}
     }
 
-    private boolean fileMatchesRules(String fileName) {
-
-            boolean retval =
-                    includeBecauseOfInBaseDir(fileName) &&
-					includeBecauseOfName(fileName) &&
-                            !excludeBecauseOfName(fileName);
-		return retval;
-    }
-
 
 	private boolean fileMatchesRules(String fileName, File file) {
         try {
-			if(fileMatchesRules(fileName)) {
+			if(fileNameMatchesRules(fileName)) {
 				String fileContents = FileSupport.getTextFileFromFS(file);
 				return
 					(includeBecauseOfContainedTextLine(fileContents)) &&
@@ -153,7 +144,7 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 
 	private boolean fileMatchesRules(String fileName, ZipEntry entry, ZipFile zipFile) {
 		try {
-			if(fileMatchesRules(fileName)) {
+			if(fileNameMatchesRules(fileName)) {
 				String fileContents = FileSupport.getTextFileFromZip(entry.getName(), zipFile);
 				return
 						(includeBecauseOfContainedTextLine(fileContents)) &&
@@ -163,6 +154,15 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 			//at the moment file does not match rules
 		}
 		return false;
+	}
+
+	private boolean fileNameMatchesRules(String fileName) {
+
+		boolean retval =
+				includeBecauseOfInBaseDir(fileName) &&
+						includeBecauseOfName(fileName) &&
+						!excludeBecauseOfName(fileName);
+		return retval;
 	}
 
 	private boolean includeBecauseOfName(String fileName) {
