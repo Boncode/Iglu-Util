@@ -975,7 +975,7 @@ public abstract class StringSupport {
 	public static String getStackTrace(Throwable t, int depth, String prefix) {
 		StringBuffer retval = new StringBuffer();
 		int nrWritten = 0;
-		retval.append(t.toString() + " with message: " + t.getMessage());
+		retval.append(t.toString());
 		StackTraceElement[] elements = t.getStackTrace();
 		for (int i = 0; nrWritten < depth && i < elements.length; i++) {
 			String line = elements[i].toString();
