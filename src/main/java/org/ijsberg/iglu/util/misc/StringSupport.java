@@ -942,12 +942,21 @@ public abstract class StringSupport {
 	 * @return
 	 */
 	public static String getRootCauseAndStackTrace(Throwable t, int depth) {
-
 		while(t.getCause() != null) {
 			t = t.getCause();
 		}
-		return t.toString() + "\n" + getStackTrace(t, depth, null);
+		return getStackTrace(t, depth, null);
 	}
+
+	public static String getFullStackTrace(Throwable cause, int depth) {
+		StringBuffer retval = new StringBuffer();
+		while (cause != null) {
+			retval.append("\n" + StringSupport.getStackTrace(cause, depth) + "\n");
+			cause = cause.getCause();
+		}
+		return retval.toString();
+	}
+
 
 	/**
 	 * Retrieves stack trace from throwable.

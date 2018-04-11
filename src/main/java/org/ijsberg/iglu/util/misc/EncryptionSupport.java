@@ -1,0 +1,26 @@
+package org.ijsberg.iglu.util.misc;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+/**
+ * Created by jeroe on 01/02/2018.
+ */
+public class EncryptionSupport {
+
+    public static String encryptWithMD5(String pass){
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            byte[] passBytes = pass.getBytes();
+            messageDigest.reset();
+            byte[] digested = messageDigest.digest(passBytes);
+            StringBuffer sb = new StringBuffer();
+            for(int i = 0; i < digested.length; i++){
+                sb.append(Integer.toHexString(0xff & digested[i]));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new SecurityException("unable to encrypt string", e);
+        }
+    }
+}

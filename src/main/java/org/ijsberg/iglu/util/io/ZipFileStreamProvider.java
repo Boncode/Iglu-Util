@@ -70,7 +70,7 @@ public class ZipFileStreamProvider implements FileStreamProvider {
 			out.close();
 			fileOut.close();
 		} catch (IOException e) {
-			//throw new RuntimeException("unable to close zipfile", e);
+			throw new RuntimeException("unable to close zipfile", e);
 		}
 	}
 

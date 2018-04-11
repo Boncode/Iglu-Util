@@ -22,6 +22,7 @@ package org.ijsberg.iglu.util.misc;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Helper class for encoding and decoding byte arrays.
@@ -106,10 +107,11 @@ public abstract class EncodingSupport {
 		try {
 			while ((line = reader.readLine()) != null) {
 				byte[] rawData = line.getBytes();
-
-
 				int n = 0;
 				for (int i = 0; i < rawData.length; i += 4) {
+					if(i + 3 >= rawData.length) {
+						throw new UnsupportedEncodingException("encoded data is not properly base64 encoded");
+					}
 					n = (base64Chars.indexOf(rawData[i]) << 18) |
 							(base64Chars.indexOf(rawData[i + 1]) << 12);
 
@@ -127,7 +129,7 @@ public abstract class EncodingSupport {
 			}
 		}
 		catch (IOException ioe) {
-			throw new IllegalStateException("exception while reading input with message: " + ioe);
+			throw new IllegalStateException("exception while reading input with message: " + ioe.getMessage(), ioe);
 		}
 		if (actualLength != length) {
 			byte[] actualRetval = new byte[actualLength];
@@ -135,5 +137,21 @@ public abstract class EncodingSupport {
 			return actualRetval;
 		}
 		return retval;
+	}
+
+	public static String encodeXor(String s, String key) {
+		return encodeBase64(xorWithKey(s.getBytes(), key.getBytes()));
+	}
+
+	public static String decodeXor(String s, String key) {
+		return new String(xorWithKey(decodeBase64(s), key.getBytes()));
+	}
+
+	private static byte[] xorWithKey(byte[] a, byte[] key) {
+		byte[] out = new byte[a.length];
+		for (int i = 0; i < a.length; i++) {
+			out[i] = (byte) (a[i] ^ key[i%key.length]);
+		}
+		return out;
 	}
 }
