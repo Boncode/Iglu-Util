@@ -537,7 +537,6 @@ public abstract class FileSupport {
 
 		//TODO make sure that files exist
 		InputStream input = getInputStreamFromClassLoader(pathToResource);
-
 		try {
 			StreamSupport.absorbInputStream(input, output);
 		} finally {
@@ -556,7 +555,6 @@ public abstract class FileSupport {
 	}
 
 	public static void copyFileResource(byte[] fileContents, OutputStream output) throws IOException{
-
 		StreamSupport.writeToOutputStream(fileContents, output);
 	}
 
