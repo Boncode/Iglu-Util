@@ -159,4 +159,8 @@ public class ZippedFileCollection implements FileCollection {
 		return zipFile.getName();
 	}
 
+
+	public String getZipFileName() {
+		return zipFile.getName();
+	}
 }
