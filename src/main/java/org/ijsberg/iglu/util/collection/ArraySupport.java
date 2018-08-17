@@ -19,6 +19,8 @@
 
 package org.ijsberg.iglu.util.collection;
 
+import org.ijsberg.iglu.util.io.Printer;
+
 import java.io.PrintStream;
 import java.util.Arrays;
 
@@ -68,8 +70,27 @@ public abstract class ArraySupport {
 	 * @param separator
 	 */
 	public static void print(Object[] array, PrintStream out, String separator) {
-		out.print(format(array, separator));
+		print(null, null, array, separator, out);
 	}
+
+
+
+	public static void print(String itemPrefix, String itemPostfix, Object[] array, String separator, PrintStream out) {
+		if (array == null) {
+			return;
+		}
+		for (int i = 0; i < array.length; i++) {
+			out.print(itemPrefix != null ? itemPrefix : "");
+			if(array[i] instanceof Printer) {
+				((Printer)array[i]).print(out);
+			} else {
+				out.print(array[i]);
+			}
+			out.print(itemPostfix != null ? itemPostfix : "");
+			out.print(i + 1 != array.length ? separator : "");
+		}
+	}
+
 
 	/**
 	 * @param array

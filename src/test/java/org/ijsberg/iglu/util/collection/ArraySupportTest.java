@@ -56,4 +56,10 @@ public class ArraySupportTest {
 		assertEquals("- one, - two, - three", result);
 	}
 
+	@Test
+	public void testFormat_prefix_postfix() throws Exception {
+		Object[] array = new String[]{"one","two","three"};
+		String result = ArraySupport.format("[", "]", array, ", ");
+		assertEquals("[one], [two], [three]", result);
+	}
 }

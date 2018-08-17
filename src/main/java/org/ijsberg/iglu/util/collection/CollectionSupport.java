@@ -59,7 +59,7 @@ public abstract class CollectionSupport {
 	 * @param separator item separator
 	 */
 	public static void print(Collection coll, PrintStream out, String separator) {
-		out.print(format(coll, separator));
+		ArraySupport.print(null, null, coll.toArray(), separator, out);
 	}
 
 	/**
