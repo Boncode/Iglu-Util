@@ -929,6 +929,7 @@ public abstract class FileSupport {
 	}
 
     public static void saveTextFile(List<Line> lines, File file) throws IOException {
+
 		createFile(file.getPath());
  		FileOutputStream outputStream = new FileOutputStream(file);
 		PrintStream printStream = new PrintStream(outputStream);

@@ -51,7 +51,7 @@ public class ListMap<K, V> implements Serializable {
 	
 	public List<V> put(K key, V value) {
         if(!(key instanceof Comparable)) {
-            throw new ClassCastException("key K must implement Comparable");
+            throw new ClassCastException("key of type " + key.getClass().getSimpleName() + " K must implement Comparable");
         }
 		List<V> list = createOrRetrieveList(key);
 		list.add(value);
