@@ -495,6 +495,19 @@ public abstract class FileSupport {
 		return StreamSupport.absorbInputStream(getInputStreamFromClassLoader(path));
 	}
 
+	public static List<String> loadTextFromClassLoader(String path) throws IOException {
+		List<String> retval = new ArrayList<>();
+		byte[] bytes = FileSupport.getBinaryFromClassLoader(path);
+		String string = new String(bytes);
+		StringReader reader = new StringReader(string);
+		BufferedReader bf = new BufferedReader(reader);
+		String line;
+		while((line = bf.readLine()) != null) {
+			retval.add(line);
+		}
+		return retval;
+	}
+
 	/**
 	 *
 	 * @param path path with regular path separators ('/')
