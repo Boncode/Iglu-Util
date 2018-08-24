@@ -20,7 +20,7 @@
 package org.ijsberg.iglu.util.io;
 
 import org.ijsberg.iglu.util.collection.CollectionSupport;
-import org.ijsberg.iglu.util.collection.ListMap;
+import org.ijsberg.iglu.util.collection.ListTreeMap;
 import org.ijsberg.iglu.util.formatting.PatternMatchingSupport;
 import org.ijsberg.iglu.util.misc.Line;
 import org.ijsberg.iglu.util.misc.StringSupport;
@@ -141,7 +141,7 @@ public abstract class FileSupport {
 	 * @return a list containing the found contents
 	 */
 	private static List<File> getContentsInDirectoryTree(File directory, FileFilterRuleSet ruleSet, boolean returnFiles, boolean returnDirs) {
-		ListMap<String, File> sortedResult = getSortedContentsInDirectoryTree(directory, ruleSet, returnFiles, returnDirs);
+		ListTreeMap<String, File> sortedResult = getSortedContentsInDirectoryTree(directory, ruleSet, returnFiles, returnDirs);
 		return sortedResult.values();
 	}
 
@@ -154,8 +154,8 @@ public abstract class FileSupport {
 	 * @param returnDirs return directories
 	 * @return a list containing the found contents
 	 */
-	private static ListMap<String, File> getSortedContentsInDirectoryTree(File directory, FileFilterRuleSet ruleSet, boolean returnFiles, boolean returnDirs) {
-		ListMap<String, File> sortedResult = new ListMap<String, File>();
+	private static ListTreeMap<String, File> getSortedContentsInDirectoryTree(File directory, FileFilterRuleSet ruleSet, boolean returnFiles, boolean returnDirs) {
+		ListTreeMap<String, File> sortedResult = new ListTreeMap<String, File>();
 		if (directory != null && directory.exists() && directory.isDirectory()) {
 			File[] files = directory.listFiles();
 			if (files != null) {
