@@ -40,6 +40,10 @@ public class ListTreeMap<K, V> implements ListMap<K, V> {
 		}
 	}
 
+	public void createEntry(K key) {
+		createOrRetrieveList(key);
+	}
+
 	protected List<V> createOrRetrieveList(K key) {
 		List<V> list = internalMap.get(key);
 		if(list == null) {
