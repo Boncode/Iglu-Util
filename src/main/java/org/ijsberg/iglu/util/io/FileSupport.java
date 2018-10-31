@@ -399,7 +399,7 @@ public abstract class FileSupport {
 			fs = FileSystems.newFileSystem(zipFilePath, null);
 			for(String fileToCopyName : filesToMerge.getFileNames()) {
 				String fileToCopyPath = tmpDir.getPath() + "/" + fileToCopyName;
-				saveBinaryFile(filesToMerge.getFileByName(fileToCopyName), FileSupport.createFile(fileToCopyPath));
+				saveBinaryFile(filesToMerge.getFileContents(fileToCopyName), FileSupport.createFile(fileToCopyPath));
 				Path tmpFilePath = Paths.get(fileToCopyPath);
 				Path fileInsideZipPath = fs.getPath(fileToCopyName);
 				if(Files.exists(fileInsideZipPath)) {
@@ -740,7 +740,7 @@ public abstract class FileSupport {
 		newDirectory.mkdirs();
 		ZippedFileCollection fileCollection = new ZippedFileCollection(zipFileName, new FileFilterRuleSet().setIncludeFilesWithNameMask(sourceDirectoryName + "/*"));
 		for(String fileName : fileCollection.getFileNotDirectoryNames()) {
-			byte[] fileContents = fileCollection.getFileByName(fileName);
+			byte[] fileContents = fileCollection.getFileContents(fileName);
 			FileData fileData = new FileData(fileName);
 			File newFile =  new File(newDirectoryName + "/" + fileData.getFileName());
 			saveBinaryFile(fileContents, newFile);
@@ -1041,7 +1041,7 @@ public abstract class FileSupport {
 	public static ArrayList<Line> findLinesInFileCollection(FileCollection files, String regexp) throws IOException {
 		ArrayList<Line> lines = new ArrayList<Line>();
 		for(String fileName : files.getFileNames()) {
-			String fileData = files.getFileContentsByName(fileName);
+			String fileData = files.getFileContentsAsString(fileName);
 			lines.addAll(findLinesInTextFile(fileName, fileData, regexp));
 		}
 		return lines;
@@ -1135,7 +1135,7 @@ public abstract class FileSupport {
 	public static void saveFileCollectionToZip(FileCollection fileCollection, String zipFileName) throws IOException {
 		FileStreamProvider output = new ZipFileStreamProvider(zipFileName);
 		for(String fileName : fileCollection.getFileNames()) {
-			byte[] fileContents = fileCollection.getFileByName(fileName);
+			byte[] fileContents = fileCollection.getFileContents(fileName);
 			OutputStream outputStream = output.createOutputStream(fileName);
 			copyFileResource(fileContents, outputStream);
 			output.closeCurrentStream();

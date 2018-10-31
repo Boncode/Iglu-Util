@@ -89,12 +89,18 @@ public class ZippedFileCollection implements FileCollection {
 	}
 
     @Override
-    public byte[] getFileByName(String fileName) throws IOException {
+    public byte[] getFileContents(String fileName) throws IOException {
         return FileSupport.getBinaryFromZip(relativeDir + fileName, zipFile);
     }
 
+	/**
+	 * Converts bytes in file to String, using default encoding
+	 * @param fileName
+	 * @return
+	 * @throws IOException
+	 */
     @Override
-    public String getFileContentsByName(String fileName) throws IOException {
+    public String getFileContentsAsString(String fileName) throws IOException {
 		//fails if relativeDir not OK
         return FileSupport.getTextFileFromZip(relativeDir + fileName, zipFile);
     }

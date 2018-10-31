@@ -21,7 +21,6 @@ package org.ijsberg.iglu.util.io;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +48,7 @@ public class FSFileCollection implements FileCollection {
     }
 
     @Override
-    public byte[] getFileByName(String fileName) throws IOException {
+    public byte[] getFileContents(String fileName) throws IOException {
         return FileSupport.getBinaryFromFS(filesByRelativePathAndName.get(fileName));
     }
 
@@ -58,8 +57,8 @@ public class FSFileCollection implements FileCollection {
     }
 
     @Override
-    public String getFileContentsByName(String fileName) throws IOException {
-        return new String(getFileByName(fileName));
+    public String getFileContentsAsString(String fileName) throws IOException {
+        return new String(getFileContents(fileName));
     }
 
 	@Override

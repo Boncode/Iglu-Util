@@ -28,9 +28,9 @@ public interface FileCollection {
 
     List<String> getFileNames();
 
-    byte[] getFileByName(String fileName) throws IOException;
+    byte[] getFileContents(String fileName) throws IOException;
 
-    String getFileContentsByName(String fileName) throws IOException;
+    String getFileContentsAsString(String fileName) throws IOException;
 
 	FileFilterRuleSet getFileFilter();
 
