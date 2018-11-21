@@ -156,7 +156,7 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 		return false;
 	}
 
-	private boolean fileNameMatchesRules(String fileName) {
+	public boolean fileNameMatchesRules(String fileName) {
 
 		boolean retval =
 				includeBecauseOfInBaseDir(fileName) &&
