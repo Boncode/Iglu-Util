@@ -612,8 +612,11 @@ public abstract class FileSupport {
 			if(file.getParent() != null) {
 				File path = new File(file.getParent());
 				path.mkdirs();
+			} try {
+				file.createNewFile();
+			} catch (IOException e) {
+				throw new IOException("file " + filename + " cannot be created", e);
 			}
-			file.createNewFile();
 		}
 		return file;
 	}
