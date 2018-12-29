@@ -117,7 +117,17 @@ public class FSFileCollection implements FileCollection {
 	Directory rootDir = new Directory("ROOT");
 
 
+	public void delete(String fileName) throws IOException {
+		File file = filesByRelativePathAndName.get(fileName);
+		java.nio.file.Files.delete(file.toPath());
+		refreshFiles();
+		//filesByRelativePathAndName.remove(fileName);
+		//rootDir.addFile();
+		//System.out.println("deleting file: " + file.getAbsolutePath() + ": " + FileSupport.deleteFile(file));
+	}
 
-
-
+	public void save(String fileName, byte[] fileContents) throws IOException {
+		FileSupport.createFile(baseDir + "/" + fileName);
+		FileSupport.saveBinaryFile(fileContents, new File(baseDir + "/" + fileName));
+	}
 }

@@ -991,12 +991,15 @@ public abstract class FileSupport {
 			inputReader = new InputStreamReader(inputStream);
 		}
 		ArrayList<Line> lines = getLinesFromText(file.getName(), inputReader);
+		inputReader.close();
+		inputStream.close();
 		return lines;
 	}
 
 	public static ArrayList<Line> getLinesFromText(String fileName, String input) throws IOException {
 		StringReader reader = new StringReader(input);
 		ArrayList<Line> lines = getLinesFromText(fileName, reader);
+		reader.close();
 		return lines;
 	}
 
