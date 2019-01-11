@@ -912,25 +912,29 @@ public abstract class FileSupport {
 		return file;
 	}
 
-	public static List<Line> convertToTextFile(String input) throws IOException {
+	public static List<Line> convertToTextFile(String input) {
 		return convertToTextFile(input, false);
 	}
 
-	public static List<Line> convertToTextFile(String input, boolean skipEmpty) throws IOException {
+	public static List<Line> convertToTextFile(String input, boolean skipEmpty) {
 
 		return convertToTextFile(null, input, skipEmpty);
 	}
 
-	public static List<Line> convertToTextFile(String fileName, String input, boolean skipEmpty) throws IOException {
+	public static List<Line> convertToTextFile(String fileName, String input, boolean skipEmpty) {
 
 		BufferedReader reader = new BufferedReader(new StringReader(input));
 		List<Line> lines = new ArrayList<Line>();
 		String line; int count = 0;
-		while ((line = reader.readLine()) != null) {
-			count++;
-			if(!skipEmpty || !line.trim().isEmpty()) {
-				lines.add(new Line(fileName, count, line));
+		try {
+			while ((line = reader.readLine()) != null) {
+				count++;
+				if (!skipEmpty || !line.trim().isEmpty()) {
+					lines.add(new Line(fileName, count, line));
+				}
 			}
+		} catch (IOException ioe) {
+			throw new RuntimeException("unexpected exception while reading from StringReader", ioe);
 		}
 		return lines;
 	}
@@ -960,6 +964,10 @@ public abstract class FileSupport {
         }
 		outputStream.close();
     }
+
+	public static void saveTextFile(String text, String fileName) throws IOException {
+		saveTextFile(text, createFile(fileName));
+	}
 
 	public static void saveTextFile(String text, File file) throws IOException {
 		FileOutputStream outputStream = new FileOutputStream(file);

@@ -72,6 +72,10 @@ public class Directory {
 		return subdirectories.values();
 	}
 
+	public Directory getSubdir(String name) {
+		return subdirectories.get(name);
+	}
+
 	public String toString() {
 		return directoryName;
 	}

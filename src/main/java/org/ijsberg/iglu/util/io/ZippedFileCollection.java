@@ -159,7 +159,7 @@ public class ZippedFileCollection implements FileCollection {
 		zipFile.close();
 	}
 
-	Directory rootDir = new Directory("ROOT");
+	private Directory rootDir = new Directory("ROOT");
 
 	public String getRootFileName() {
 		return zipFile.getName();
