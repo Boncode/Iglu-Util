@@ -220,7 +220,6 @@ public class CommandShell implements Transceiver {
 		    proc = rt.exec(commandArray, alternativeEnvVars, workingDir);
         } catch (Exception e) {
             System.out.println("unable to execute command: " + ArraySupport.format(commandArray, ", "));
-            e.printStackTrace();
             throw new RuntimeException("unable to execute command: " + ArraySupport.format(commandArray, ", "), e);
         }
 
