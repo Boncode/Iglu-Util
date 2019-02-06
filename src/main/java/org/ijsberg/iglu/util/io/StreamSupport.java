@@ -56,11 +56,13 @@ public abstract class StreamSupport {
 	 * @throws IOException
 	 */
 	public static void absorbInputStream(InputStream input, OutputStream output) throws IOException {
-		int available;
-		while ((available = input.available()) > 0) {
-			byte[] buf = new byte[available < BUF_SIZE ? available : BUF_SIZE];
-			int len = input.read(buf);
-			output.write(buf, 0, len);
+		int len = 0;
+		while (len != -1) {
+			byte[] buf = new byte[BUF_SIZE];
+			len = input.read(buf);
+			if(len > 0) {
+				output.write(buf, 0, len);
+			}
 		}
 	}
 
