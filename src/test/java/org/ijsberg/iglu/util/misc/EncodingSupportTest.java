@@ -20,6 +20,11 @@
 package org.ijsberg.iglu.util.misc;
 
 
+import org.junit.Test;
+
 public class EncodingSupportTest {
+    @Test
+    public void encodeXor() {
+    }
 }
 
