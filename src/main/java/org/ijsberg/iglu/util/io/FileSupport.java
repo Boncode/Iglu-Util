@@ -649,8 +649,8 @@ public abstract class FileSupport {
 	 *
 	 * @param path
 	 */
-	public static void emptyDirectory(String path) {
-		deleteContentsInDirectoryTree(path, null);
+	public static boolean emptyDirectory(String path) {
+		return deleteContentsInDirectoryTree(path, null);
 	}
 
 	/**
@@ -757,8 +757,8 @@ public abstract class FileSupport {
 	 * @param path
 	 * @param includeMask
 	 */
-	public static void deleteContentsInDirectoryTree(String path, String includeMask) {
-		deleteContentsInDirectoryTree(new File(path), includeMask);
+	public static boolean deleteContentsInDirectoryTree(String path, String includeMask) {
+		return deleteContentsInDirectoryTree(new File(path), includeMask);
 	}
 
 	/**
@@ -768,17 +768,19 @@ public abstract class FileSupport {
 	 * @param root
 	 * @param includeMask
 	 */
-	public static void deleteContentsInDirectoryTree(File root, String includeMask) {
+	public static boolean deleteContentsInDirectoryTree(File root, String includeMask) {
+		boolean success = true;
 		Collection<File> files = getContentsInDirectoryTree(root, includeMask, true, true);
 		for(File file : files) {
 			if (file.exists()) {//file may meanwhile have been deleted
 				if (file.isDirectory()) {
 					//empty directory
-					emptyDirectory(file.getAbsolutePath());
+					success = success && emptyDirectory(file.getAbsolutePath());
 				}
-				file.delete();
+				success = success && file.delete();
 			}
 		}
+		return success;
 	}
 
 	/**

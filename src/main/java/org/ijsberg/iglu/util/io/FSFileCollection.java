@@ -130,4 +130,10 @@ public class FSFileCollection implements FileCollection {
 		FileSupport.createFile(baseDir + "/" + fileName);
 		FileSupport.saveBinaryFile(fileContents, new File(baseDir + "/" + fileName));
 	}
+
+	public void copyTo(String newBaseDir) throws IOException {
+		for(String fileName : getFileNames()) {
+			FileSupport.copyFile(baseDir + "/" + fileName, newBaseDir + "/" + fileName, true);
+		}
+	}
 }
