@@ -329,7 +329,7 @@ public abstract class FileSupport {
 
 	public static void unzip(String path, ZipFile zipFile) throws IOException {
 
-		ArrayList<ZipEntry> entries = getContentsFromZipFile(zipFile, new FileFilterRuleSet().setIncludeFilesWithNameMask("*.*"));
+		ArrayList<ZipEntry> entries = getContentsFromZipFile(zipFile, new FileFilterRuleSet().setIncludeFilesWithNameMask("*"));
 		for(ZipEntry entry : entries) {
 			InputStream in = zipFile.getInputStream(entry);
 			if(!entry.isDirectory()) {
