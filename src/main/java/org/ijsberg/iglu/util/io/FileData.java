@@ -95,8 +95,8 @@ public class FileData {
 	 * @param fullFileName
 	 */
 	public void setFullFileName(String fullFileName) {
-		fullFileName = StringSupport.replaceAll(fullFileName, "\\", "/");
-		fullFileName = StringSupport.replaceAll(fullFileName, "//", "/");
+
+		fullFileName = FileSupport.convertToUnixStylePath(fullFileName);
 		int lastFileSeparator = fullFileName.lastIndexOf('/');
 
 		if (lastFileSeparator != -1) {

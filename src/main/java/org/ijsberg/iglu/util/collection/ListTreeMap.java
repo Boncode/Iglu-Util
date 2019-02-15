@@ -76,7 +76,7 @@ public class ListTreeMap<K, V> implements ListMap<K, V> {
 
 	public List<V> put(K key, List<V> values) {
 		if(!(key instanceof Comparable)) {
-			throw new ClassCastException("key K must implement Comparable");
+			throw new ClassCastException("key " + key.getClass().getSimpleName() + " must implement Comparable");
 		}
 		List<V> list = createOrRetrieveList(key);
 		list.addAll(values);

@@ -35,9 +35,9 @@ public class ListHashMap<K, V> implements Serializable, ListMap<K, V> {
 
     @Override
     public List<V> put(K key, V value) {
-        if(!(key instanceof Comparable)) {
+        /*if(!(key instanceof Comparable)) {
             throw new ClassCastException("key of type " + key.getClass().getSimpleName() + " K must implement Comparable");
-        }
+        }*/
         List<V> list = createOrRetrieveList(key);
         list.add(value);
         return list;
@@ -59,10 +59,10 @@ public class ListHashMap<K, V> implements Serializable, ListMap<K, V> {
 
     @Override
     public List<V> put(K key, List<V> values) {
-        if(!(key instanceof Comparable)) {
+/*        if(!(key instanceof Comparable)) {
             throw new ClassCastException("key K must implement Comparable");
         }
-        List<V> list = createOrRetrieveList(key);
+*/        List<V> list = createOrRetrieveList(key);
         list.addAll(values);
         return list;
     }

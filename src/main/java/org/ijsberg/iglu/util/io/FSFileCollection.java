@@ -114,6 +114,11 @@ public class FSFileCollection implements FileCollection {
 		//To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	@Override
+	public String getName() {
+		return baseDir;
+	}
+
 	Directory rootDir = new Directory("ROOT");
 
 

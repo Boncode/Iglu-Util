@@ -44,4 +44,5 @@ public interface FileCollection {
 
 	void close() throws IOException;
 
+	String getName();
 }
