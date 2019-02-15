@@ -159,6 +159,11 @@ public class ZippedFileCollection implements FileCollection {
 		zipFile.close();
 	}
 
+	@Override
+	public String getName() {
+		return zipFile.getName();
+	}
+
 	private Directory rootDir = new Directory("ROOT");
 
 	public String getRootFileName() {
