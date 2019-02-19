@@ -35,9 +35,6 @@ public class ListHashMap<K, V> implements Serializable, ListMap<K, V> {
 
     @Override
     public List<V> put(K key, V value) {
-        /*if(!(key instanceof Comparable)) {
-            throw new ClassCastException("key of type " + key.getClass().getSimpleName() + " K must implement Comparable");
-        }*/
         List<V> list = createOrRetrieveList(key);
         list.add(value);
         return list;
@@ -59,10 +56,7 @@ public class ListHashMap<K, V> implements Serializable, ListMap<K, V> {
 
     @Override
     public List<V> put(K key, List<V> values) {
-/*        if(!(key instanceof Comparable)) {
-            throw new ClassCastException("key K must implement Comparable");
-        }
-*/        List<V> list = createOrRetrieveList(key);
+        List<V> list = createOrRetrieveList(key);
         list.addAll(values);
         return list;
     }
@@ -105,10 +99,6 @@ public class ListHashMap<K, V> implements Serializable, ListMap<K, V> {
         return internalMap.keySet();
     }
 
-    /*    public Set<K> descendingKeySet() {
-            return internalMap.descendingKeySet();
-        }
-    */
     @Override
     public int size() {
         //nr of items
@@ -118,7 +108,6 @@ public class ListHashMap<K, V> implements Serializable, ListMap<K, V> {
         }
         return retval;
     }
-
 
     @Override
     public Collection<List<V>> lists() {
@@ -134,29 +123,6 @@ public class ListHashMap<K, V> implements Serializable, ListMap<K, V> {
         return retval;
     }
 
- /*   public List<V> valuesDescending() {
-        List<V> retval = new ArrayList<V>();
-        for(K key : internalMap.descendingKeySet()) {
-            retval.addAll(internalMap.get(key));
-        }
-        return retval;
-    }*/
-
-    /*    public List<V> getTop(int x) {
-
-            List<V> retval = new ArrayList<V>();
-            for(List<V> values : internalMap.descendingMap().values()) {
-                if(retval.size() == x) {
-                    return retval;
-                } else if (values.size() < x - retval.size()) {
-                    retval.addAll(values);
-                } else {
-                    retval.addAll(values.subList(0, x - retval.size()));
-                }
-            }
-            return retval;
-        }
-    */
     @Override
     public V removeFirst(K key) {
 
