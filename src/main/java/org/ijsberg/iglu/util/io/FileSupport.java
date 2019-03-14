@@ -326,6 +326,16 @@ public abstract class FileSupport {
 		output.close();
 	}
 
+	public static void zip(String zipFileName, FileCollection fileCollection) throws IOException {
+		FileStreamProvider output = new ZipFileStreamProvider(zipFileName);
+		for (String fileName : fileCollection.getFileNames()) {
+			OutputStream outputStream = output.createOutputStream(fileName);
+			copyFileResource(fileCollection.getFileContents(fileName), outputStream);
+			output.closeCurrentStream();
+		}
+		output.close();
+	}
+
 	public static void unzip(String path, ZipFile zipFile, FileFilterRuleSet ruleSet) throws IOException{
 
 		ArrayList<ZipEntry> entries = getContentsFromZipFile(zipFile, ruleSet);
@@ -566,12 +576,12 @@ public abstract class FileSupport {
 	 * @param output
 	 * @throws IOException
 	 */
-	public static void copyClassLoadableResource(String pathToResource, OutputStream output) throws IOException{
+	public static int copyClassLoadableResource(String pathToResource, OutputStream output) throws IOException{
 
 		//TODO make sure that files exist
 		InputStream input = getInputStreamFromClassLoader(pathToResource);
 		try {
-			StreamSupport.absorbInputStream(input, output);
+			return StreamSupport.absorbInputStream(input, output);
 		} finally {
 			input.close();
 		}

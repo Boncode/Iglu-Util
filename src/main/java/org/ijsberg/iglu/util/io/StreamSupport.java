@@ -55,15 +55,18 @@ public abstract class StreamSupport {
 	 * @param output
 	 * @throws IOException
 	 */
-	public static void absorbInputStream(InputStream input, OutputStream output) throws IOException {
+	public static int absorbInputStream(InputStream input, OutputStream output) throws IOException {
+		int bytesAbsorbed = 0;
 		int len = 0;
 		while (len != -1) {
 			byte[] buf = new byte[BUF_SIZE];
 			len = input.read(buf);
 			if(len > 0) {
 				output.write(buf, 0, len);
+				bytesAbsorbed += len;
 			}
 		}
+		return bytesAbsorbed;
 	}
 
 	public static void writeToOutputStream(byte[] contents, OutputStream output) throws IOException {
