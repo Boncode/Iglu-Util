@@ -419,6 +419,12 @@ public abstract class FileSupport {
 		}
 	}
 
+	public static void mergeZipFiles(String zipFileName1, String zipFileName2, String targetZipFileName) throws IOException {
+		copyFile(zipFileName1, targetZipFileName, true);
+		ZippedFileCollection fileCollection = new ZippedFileCollection(zipFileName2, new FileFilterRuleSet().setIncludeFilesWithNameMask("*"));
+		mergeInZipFile(targetZipFileName, fileCollection);
+	}
+
 	public static void mergeInZipFile(String zipFileName, FileCollection filesToMerge) throws IOException {
 
 		File tmpDir = createTmpDir("mergeInZipfile");
@@ -432,10 +438,13 @@ public abstract class FileSupport {
 				saveBinaryFile(filesToMerge.getFileContents(fileToCopyName), FileSupport.createFile(fileToCopyPath));
 				Path tmpFilePath = Paths.get(fileToCopyPath);
 				Path fileInsideZipPath = fs.getPath(fileToCopyName);
+				//System.out.println(fileInsideZipPath);
 				if(Files.exists(fileInsideZipPath)) {
 					Files.delete(fileInsideZipPath);
 				} else {
-					Files.createDirectories(fileInsideZipPath.getParent());
+					if(fileInsideZipPath.getParent() != null) {
+						Files.createDirectories(fileInsideZipPath.getParent());
+					}
 				}
 				Files.copy(tmpFilePath, fileInsideZipPath);
 			}
