@@ -63,4 +63,6 @@ public interface ListMap<K, V> extends Serializable {
     boolean containsKey(K key);
 
     int indexOf(K key, V value);
+
+    void clear();
 }

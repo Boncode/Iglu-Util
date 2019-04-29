@@ -485,12 +485,18 @@ public abstract class FileSupport {
 */
     public static byte[] getBinaryFromJar(String fileName, String jarFileName) throws IOException {
        //zipfile is opened for READ on instantiation
-        ZipFile zipfile = new ZipFile(jarFileName);
-        try {
+		ZipFile zipfile = null;
+		try {
+			zipfile = new ZipFile(jarFileName);
             return getBinaryFromZip(fileName, zipfile);
         }
+        catch (IOException e) {
+        	throw new IOException("unable to read " + fileName + " from " + jarFileName, e);
+		}
         finally {
-            zipfile.close();
+            if(zipfile != null) {
+            	zipfile.close();
+            }
         }
     }
 
@@ -722,6 +728,12 @@ public abstract class FileSupport {
 	 */
 	public static void copyFile(String fileName, String newFileName, boolean overwriteExisting) throws IOException {
 		copyFile(new File(fileName), newFileName, overwriteExisting);
+	}
+
+	public static void moveFile(String fileName, String newFileName, boolean overwriteExisting) throws IOException {
+		File sourceFile = new File(fileName);
+		copyFile(new File(fileName), newFileName, overwriteExisting);
+		sourceFile.delete();
 	}
 
 	public static void copyFile(File file, String newFileName, boolean overwriteExisting) throws IOException {

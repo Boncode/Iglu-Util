@@ -202,4 +202,9 @@ public class ListTreeMap<K, V> implements ListMap<K, V> {
 		return (values = get(key)) == null ? -1 : values.indexOf(value);
 	}
 
+	@Override
+	public void clear() {
+		internalMap.clear();
+	}
+
 }

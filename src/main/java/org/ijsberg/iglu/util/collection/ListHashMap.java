@@ -167,4 +167,9 @@ public class ListHashMap<K, V> implements Serializable, ListMap<K, V> {
         return (values = get(key)) == null ? -1 : values.indexOf(value);
     }
 
+    @Override
+    public void clear() {
+        internalMap.clear();
+    }
+
 }
