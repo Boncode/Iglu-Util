@@ -491,7 +491,7 @@ public abstract class FileSupport {
             return getBinaryFromZip(fileName, zipfile);
         }
         catch (IOException e) {
-        	throw new IOException("unable to read " + fileName + " from " + jarFileName, e);
+        	throw new IOException("unable to read '" + fileName + "' from " + jarFileName, e);
 		}
         finally {
             if(zipfile != null) {
