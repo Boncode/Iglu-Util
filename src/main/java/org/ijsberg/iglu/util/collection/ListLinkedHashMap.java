@@ -206,4 +206,10 @@ public class ListLinkedHashMap<K, V> implements Serializable, ListMap<K, V> {
         internalMap.clear();
     }
 
+
+    public ListLinkedHashMap<K, V> append(K key, V ... values) {
+        put(key, values);
+        return this;
+    }
+
 }
