@@ -26,8 +26,13 @@ import org.ijsberg.iglu.util.misc.Line;
 import org.ijsberg.iglu.util.misc.StringSupport;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.file.*;
 import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -553,6 +558,54 @@ public abstract class FileSupport {
 		return retval;
 	}
 
+	public static List<String> getResourceFolderFiles (String folder) {
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		URL url = loader.getResource(folder);
+		String path = url.getPath();
+		return Arrays.asList(new File(path).list());
+	}
+
+
+	public static List<String> getResourceFolderFiles(Class clazz, String path) throws URISyntaxException, IOException {
+		URL dirURL = Thread.currentThread().getContextClassLoader().getResource(path);
+		if (dirURL != null && dirURL.getProtocol().equals("file")) {
+			/* A file path: easy enough */
+			return Arrays.asList(new File(dirURL.toURI()).list());
+		}
+
+		if (dirURL == null) {
+			/*
+			 * In case of a jar file, we can't actually find a directory.
+			 * Have to assume the same jar as clazz.
+			 */
+			String me = clazz.getName().replace(".", "/")+".class";
+			dirURL = clazz.getClassLoader().getResource(me);
+		}
+
+		if (dirURL.getProtocol().equals("jar")) {
+			/* A JAR path */
+			String jarPath = dirURL.getPath().substring(5, dirURL.getPath().indexOf("!")); //strip out only the JAR file
+			JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
+			Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
+			Set<String> result = new HashSet<String>(); //avoid duplicates in case it is a subdirectory
+			while(entries.hasMoreElements()) {
+				String name = entries.nextElement().getName();
+				if (name.startsWith(path)) { //filter according to the path
+					String entry = name.substring(path.length());
+					int checkSubdir = entry.indexOf("/");
+					if (checkSubdir >= 0) {
+						// if it is a subdirectory, we just return the directory name
+						entry = entry.substring(0, checkSubdir);
+					}
+					result.add(entry);
+				}
+			}
+			return new ArrayList<>(result);
+		}
+
+		throw new UnsupportedOperationException("Cannot list files for URL "+dirURL);
+	}
+
 	/**
 	 *
 	 * @param path path with regular path separators ('/')
@@ -594,7 +647,7 @@ public abstract class FileSupport {
 	public static int copyClassLoadableResource(String pathToResource, OutputStream output) throws IOException{
 
 		//TODO make sure that files exist
-		InputStream input = getInputStreamFromClassLoader(pathToResource);
+		InputStream input = getInputStreamFromClassLoader(convertToUnixStylePath(pathToResource));
 		try {
 			return StreamSupport.absorbInputStream(input, output);
 		} finally {
