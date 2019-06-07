@@ -542,7 +542,10 @@ public abstract class FileSupport {
 
 
 	public static byte[] getBinaryFromClassLoader(String path) throws IOException {
-		return StreamSupport.absorbInputStream(getInputStreamFromClassLoader(path));
+		InputStream in = getInputStreamFromClassLoader(path);
+		byte[] retval = StreamSupport.absorbInputStream(in);
+		in.close();
+		return retval;
 	}
 
 	public static List<String> loadTextFromClassLoader(String path) throws IOException {
@@ -1175,6 +1178,8 @@ public abstract class FileSupport {
 
 		try {
 			oOutput.writeObject(serializable);
+			oOutput.flush();
+			fStream.flush();
 		} finally {
 			oOutput.close();
 			fStream.close();
