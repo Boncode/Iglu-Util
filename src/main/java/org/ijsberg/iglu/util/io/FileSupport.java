@@ -461,33 +461,6 @@ public abstract class FileSupport {
 		}
 	}
 
-/*	public static void mergeInZipFile(String sourceZipFileName, String targetZipfileName) throws IOException {
-
-		File tmpDir = createTmpDir("mergeInZipfile");
-		Path sourceZipFilePath = Paths.get(sourceZipFileName);
-		Path targetZipFilePath = Paths.get(targetZipfileName);
-
-		FileSystem sourceFs = null;
-		try {
-			sourceFs = FileSystems.newFileSystem(sourceZipFilePath, null);
-			for(String fileToCopyName : filesToMerge.getFileNames()) {
-				String fileToCopyPath = tmpDir.getPath() + "/" + fileToCopyName;
-				saveBinaryFile(filesToMerge.getFileByName(fileToCopyName), FileSupport.createFile(fileToCopyPath));
-				Path tmpFilePath = Paths.get(fileToCopyPath);
-				Path fileInsideZipPath = fs.getPath(fileToCopyName);
-				if(Files.exists(fileInsideZipPath)) {
-					Files.delete(fileInsideZipPath);
-				}
-				Files.copy(tmpFilePath, fileInsideZipPath);
-			}
-		} finally {
-			if(fs != null && fs.isOpen()){
-				fs.close();
-			}
-			deleteFile(tmpDir);
-		}
-	}
-*/
     public static byte[] getBinaryFromJar(String fileName, String jarFileName) throws IOException {
        //zipfile is opened for READ on instantiation
 		ZipFile zipfile = null;
@@ -506,7 +479,6 @@ public abstract class FileSupport {
     }
 
     public static String getTextFileFromZip(String fileName, ZipFile zipFile) throws IOException {
-
         return new String(getBinaryFromZip(fileName, zipFile));
     }
 
