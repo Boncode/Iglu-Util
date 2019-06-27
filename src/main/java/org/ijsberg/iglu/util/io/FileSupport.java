@@ -19,6 +19,8 @@
 
 package org.ijsberg.iglu.util.io;
 
+import com.sun.org.apache.regexp.internal.RESyntaxException;
+import org.ijsberg.iglu.util.ResourceException;
 import org.ijsberg.iglu.util.collection.CollectionSupport;
 import org.ijsberg.iglu.util.collection.ListTreeMap;
 import org.ijsberg.iglu.util.formatting.PatternMatchingSupport;
@@ -54,6 +56,23 @@ public abstract class FileSupport {
 		return getContentsInDirectoryTree(directory, "*", true, false);
 	}
 
+	public static String[] listDirsInDirectory(String path) {
+		ArrayList<String> result = new ArrayList();
+		File directory = new File(path);
+		for(String fileName : directory.list()) {
+			File file = new File(path + '/' + fileName);
+			if(file.isDirectory()) {
+				result.add(fileName);
+			}
+		}
+		return result.toArray(new String[0]);
+	}
+
+	public static void assertDirExists(File dir) {
+		if(!dir.exists() || !dir.isDirectory()) {
+			throw new ResourceException(dir.getAbsolutePath() + " is not a valid directory");
+		}
+	}
 
 	/**
 	 * Retrieves all files from a directory and its subdirectories.
