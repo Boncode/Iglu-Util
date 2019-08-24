@@ -66,11 +66,7 @@ public abstract class PatternMatchingSupport {
 		try {
 			return m.matches();
 		} catch (StackOverflowError e) {
-			//FIXME
-			e.printStackTrace();
-			System.out.println("value [" + val + "] regexp [" + regexp + "]");
-			System.out.println("value length " + val.length());
-			throw e;
+			throw new IllegalArgumentException("regular expression '" + regexp + "' cannot be evaluated for value '" + val + "'", e);
 		}
 	}
 

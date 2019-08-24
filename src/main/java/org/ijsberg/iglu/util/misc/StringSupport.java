@@ -23,6 +23,7 @@ import org.ijsberg.iglu.util.collection.ArraySupport;
 import org.ijsberg.iglu.util.io.StreamSupport;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 
 /**
@@ -438,19 +439,39 @@ public abstract class StringSupport {
 
 
 	/**
-	 * keep reading until the InputStream is exhausted
+	 * keep reading until the InputStream is exhausted (end of the stream)
+	 *
+	 * @param input
+	 * @return a resulting String
+	 */
+	public static String readAvailableFromInputStream(InputStream input) throws IOException {
+		return readAvailableFromInputStream(input, Charset.defaultCharset().name());
+	}
+
+	/**
+	 * keep reading until the InputStream is exhausted (end of the stream)
+	 *
+	 * @param input
+	 * @return a resulting String
+	 */
+	public static String readAvailableFromInputStream(InputStream input, String encoding) throws IOException {
+		byte[] bytes = StreamSupport.readAvailableFromInputStream(input);
+		return new String(bytes, encoding);
+	}
+
+	/**
+	 * keep reading until the InputStream is exhausted (end of the stream)
 	 *
 	 * @param input
 	 * @return a resulting String
 	 */
 	public static String absorbInputStream(InputStream input) throws IOException {
-		byte[] bytes = StreamSupport.absorbInputStream(input);
-		return new String(bytes);
+		return absorbInputStream(input, Charset.defaultCharset().name());
 	}
 
 
 	/**
-	 * keep reading until the InputStream is exhausted
+	 * keep reading until the InputStream is exhausted (end of the stream)
 	 *
 	 * @param input
 	 * @return a resulting String

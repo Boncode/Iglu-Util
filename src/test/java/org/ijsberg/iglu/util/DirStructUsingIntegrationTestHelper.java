@@ -4,7 +4,9 @@ package org.ijsberg.iglu.util;
  * Created by J Meetsma on 23-11-2016.
  */
 
+import org.ijsberg.iglu.util.io.FileFilterRuleSet;
 import org.ijsberg.iglu.util.io.FileSupport;
+import org.ijsberg.iglu.util.io.ResourceFileCollection;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,7 +25,7 @@ public abstract class DirStructUsingIntegrationTestHelper {
     protected static File tmpDir;
     protected static String dirStructRoot;
 
-    public static File populateTmpDirectory(String relativeDir) throws Exception {
+    public static File populateTmpDirectoryUsingFilesTxt(String relativeDir) throws IOException {
 
         tmpDir = FileSupport.createTmpDir("UtilIntegrationTest");
         dirStructRoot = tmpDir.getPath() + '/';
@@ -38,7 +40,16 @@ public abstract class DirStructUsingIntegrationTestHelper {
     }
 
 
-    public static void deleteTmpDirectory(File tmpDir) throws Exception {
+    public static File populateTmpDirectory(Class clasz, String resourceDir, String relativeTargetDir) throws IOException {
+
+        ResourceFileCollection rfc = new ResourceFileCollection(clasz, resourceDir, new FileFilterRuleSet().setIncludeFilesWithNameMask("*"));
+        tmpDir = FileSupport.createTmpDir(clasz.getSimpleName());
+        dirStructRoot = tmpDir.getPath() + '/' + relativeTargetDir + "/";
+        rfc.copyTo(dirStructRoot);
+        return tmpDir;
+    }
+
+    public static void deleteTmpDirectory(File tmpDir) {
         FileSupport.deleteFile(tmpDir);
     }
 

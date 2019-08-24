@@ -126,7 +126,7 @@ public abstract class Executable implements Runnable {
 	 * @throws Throwable			in case the executable throws
 	 */
 	public Object executeTimed(long timeout) throws TimeOutException, InterruptedException, Throwable {
-		//TODO this also executes asynchronously, yet the current thread waits for it to execute
+		//this also executes asynchronously, yet the current thread waits for it to execute
 		executeAsync();
 		executeThread.join(timeout);
 		if (execException == null && !finished) {

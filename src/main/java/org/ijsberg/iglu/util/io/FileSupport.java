@@ -552,52 +552,76 @@ public abstract class FileSupport {
 		return retval;
 	}
 
-	public static List<String> getResourceFolderFiles (String folder) {
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		URL url = loader.getResource(folder);
-		String path = url.getPath();
-		return Arrays.asList(new File(path).list());
+	public static boolean resourceIsDirectory(Class clazz, String path) throws URISyntaxException {
+		URL dirURL = Thread.currentThread().getContextClassLoader().getResource(path);
+		if (dirURL != null && dirURL.getProtocol().equals("file")) {
+			return new File(dirURL.toURI()).list() != null;
+		}
+		return true;
 	}
 
+	public static List<String> getResourceFolderFilesRecursive(Class clazz, String path) throws URISyntaxException, IOException {
+		return getResourceFolderFilesRecursive(clazz, path, new FileFilterRuleSet().setIncludeFilesWithNameMask("*"));
+	}
+
+	public static List<String> getResourceFolderFilesRecursive(Class clazz, String path, FileFilterRuleSet filter) throws URISyntaxException, IOException {
+		List<String> fileNames = new ArrayList<>();
+		List<String> fileNamesInDir = getResourceFolderFiles(clazz, path);
+		for(String fileNameInDir : fileNamesInDir) {
+			String fullFileName = "".equals(path) ? fileNameInDir : path + "/" + fileNameInDir;
+			if(!resourceIsDirectory(clazz, fullFileName)) {
+				if(filter.fileNameMatchesRules(fullFileName)) {
+					fileNames.add(fullFileName);
+				}
+			} else {
+				fileNames.addAll(getResourceFolderFilesRecursive(clazz, fullFileName));
+			}
+		}
+		return fileNames;
+	}
 
 	public static List<String> getResourceFolderFiles(Class clazz, String path) throws URISyntaxException, IOException {
 		URL dirURL = Thread.currentThread().getContextClassLoader().getResource(path);
 		if (dirURL != null && dirURL.getProtocol().equals("file")) {
-			/* A file path: easy enough */
 			return Arrays.asList(new File(dirURL.toURI()).list());
-		}
+		} else {
 
-		if (dirURL == null) {
+		//if (dirURL == null) {
 			/*
 			 * In case of a jar file, we can't actually find a directory.
 			 * Have to assume the same jar as clazz.
 			 */
 			String me = clazz.getName().replace(".", "/")+".class";
 			dirURL = clazz.getClassLoader().getResource(me);
-		}
+//		}
 
-		if (dirURL.getProtocol().equals("jar")) {
-			/* A JAR path */
-			String jarPath = dirURL.getPath().substring(5, dirURL.getPath().indexOf("!")); //strip out only the JAR file
-			JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
-			Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
-			Set<String> result = new HashSet<String>(); //avoid duplicates in case it is a subdirectory
-			while(entries.hasMoreElements()) {
-				String name = entries.nextElement().getName();
-				if (name.startsWith(path)) { //filter according to the path
-					String entry = name.substring(path.length());
-					int checkSubdir = entry.indexOf("/");
-					if (checkSubdir >= 0) {
-						// if it is a subdirectory, we just return the directory name
-						entry = entry.substring(0, checkSubdir);
+			if (dirURL.getProtocol().equals("jar")) {
+				/* A JAR path */
+				String jarPath = dirURL.getPath().substring(5, dirURL.getPath().indexOf("!")); //strip out only the JAR file
+				JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
+				Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
+				Set<String> result = new HashSet<String>(); //avoid duplicates in case it is a subdirectory
+				while (entries.hasMoreElements()) {
+					JarEntry jarEntry = entries.nextElement();
+					String name = jarEntry.getName();
+					if (name.startsWith(path)) { //filter according to the path
+						String entry = name.substring(path.length());
+						int checkSubdir = entry.indexOf("/");
+						if (checkSubdir >= 0) {
+							// if it is a subdirectory, we just return the directory name
+							entry = entry.substring(0, checkSubdir);
+						}
+						result.add(entry);
 					}
-					result.add(entry);
 				}
+				return new ArrayList<>(result);
+			} else {
+				String pathToFile = dirURL.getPath().substring(0, dirURL.getPath().length() - me.length()) + path;
+				return Arrays.asList(new File(pathToFile).list());
 			}
-			return new ArrayList<>(result);
 		}
 
-		throw new UnsupportedOperationException("Cannot list files for URL "+dirURL);
+		//throw new UnsupportedOperationException("Cannot list files for path: " + path + ", URL: " + dirURL + ", protocol: " + dirURL.getProtocol());
 	}
 
 	/**
@@ -623,7 +647,6 @@ public abstract class FileSupport {
 	 */
 	public static void copyClassLoadableResourceToFileSystem(String pathToResource, String outputPath) throws IOException{
 
-		//TODO make sure that files exist
 		File outputFile = createFile(outputPath);
 		if(outputFile.isDirectory()) {
 			outputFile = new File(outputFile.getPath() + '/' + getFileNameFromPath(pathToResource));
@@ -640,7 +663,6 @@ public abstract class FileSupport {
 	 */
 	public static int copyClassLoadableResource(String pathToResource, OutputStream output) throws IOException{
 
-		//TODO make sure that files exist
 		InputStream input = getInputStreamFromClassLoader(convertToUnixStylePath(pathToResource));
 		try {
 			return StreamSupport.absorbInputStream(input, output);
@@ -765,6 +787,10 @@ public abstract class FileSupport {
 		return result;
 	}
 
+	public static boolean deleteFile(String fileName) {
+		return deleteFile(new File(fileName));
+	}
+
 	/**
 	 * Copies a file.
 	 *
@@ -777,13 +803,30 @@ public abstract class FileSupport {
 		copyFile(new File(fileName), newFileName, overwriteExisting);
 	}
 
+	public static void copyFileKeepDate(String fileName, String newFileName) throws IOException {
+		copyFile(new File(fileName), newFileName, true, true);
+	}
+
+	public static void touchFile(String fileName) throws IOException {
+		File file = createFile(fileName);
+		file.setLastModified(System.currentTimeMillis());
+	}
+
 	public static void moveFile(String fileName, String newFileName, boolean overwriteExisting) throws IOException {
 		File sourceFile = new File(fileName);
 		copyFile(new File(fileName), newFileName, overwriteExisting);
 		sourceFile.delete();
 	}
 
+	public static void copyFileKeepDate(File file, String newFileName, boolean overwriteExisting) throws IOException {
+		copyFile(file, newFileName, overwriteExisting, true);
+	}
+
 	public static void copyFile(File file, String newFileName, boolean overwriteExisting) throws IOException {
+		copyFile(file, newFileName, overwriteExisting, false);
+	}
+
+	public static void copyFile(File file, String newFileName, boolean overwriteExisting, boolean keepDate) throws IOException {
 
 		if (!file.exists()) {
 			throw new IOException("file '" + file.getAbsolutePath() + "' does not exist");
@@ -795,6 +838,9 @@ public abstract class FileSupport {
 		File newFile = new File(newFileName);
 		if(newFile.isDirectory()) {
 			newFile = new File(newFileName + '/' + file.getName());
+			if(keepDate) {
+				newFile.setLastModified(file.lastModified());
+			}
 		}
 		if (!overwriteExisting && newFile.exists()) {
 			throw new IOException("file '" + newFile.getAbsolutePath() + "' already exists");
@@ -1089,8 +1135,7 @@ public abstract class FileSupport {
 		return getLinesInTextFile(file);
 	}
 
-    //TODO read text file from zip
-	public static ArrayList<Line> getLinesInTextFile(String encoding, File file) throws IOException {
+ 	public static ArrayList<Line> getLinesInTextFile(String encoding, File file) throws IOException {
 		FileInputStream inputStream = new FileInputStream(file);
 		InputStreamReader inputReader = null;
 		if(encoding != null) {

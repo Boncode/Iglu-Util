@@ -84,15 +84,15 @@ public class FSFileCollection implements FileCollection {
         List<File> files = FileSupport.getFilesInDirectoryTree(baseDir, includedFilesRuleSet);
 
         for (File file : files) {
-			String relativePathAndName = getRelativePathAndName(file);
+			String relativePathAndName = getRelativePathAndName(baseDir, file.getPath());
 			filesByRelativePathAndName.put(relativePathAndName, file);
 			rootDir.addFile(relativePathAndName);
         }
     }
 
-	protected String getRelativePathAndName(File file) {
-		String relativePathAndName = FileSupport.convertToUnixStylePath(file.getPath()).substring(
-                baseDir.length());
+	public static String getRelativePathAndName(String baseDir, String path) {
+		String relativePathAndName = FileSupport.convertToUnixStylePath(path.substring(
+                baseDir.length()));
 		if(relativePathAndName.startsWith("/")) {
             relativePathAndName = relativePathAndName.substring(1);
         }
@@ -132,13 +132,30 @@ public class FSFileCollection implements FileCollection {
 	}
 
 	public void save(String fileName, byte[] fileContents) throws IOException {
-		FileSupport.createFile(baseDir + "/" + fileName);
+		File file = FileSupport.createFile(baseDir + "/" + fileName);
 		FileSupport.saveBinaryFile(fileContents, new File(baseDir + "/" + fileName));
+		filesByRelativePathAndName.put(FileSupport.convertToUnixStylePath(fileName), file);
+	}
+
+	public void saveWithDate(String fileName, File srcFile) throws IOException {
+		File file = FileSupport.createFile(baseDir + "/" + fileName);
+		FileSupport.copyFileKeepDate(srcFile, baseDir + "/" + fileName, true);
+		filesByRelativePathAndName.put(FileSupport.convertToUnixStylePath(fileName), file);
 	}
 
 	public void copyTo(String newBaseDir) throws IOException {
 		for(String fileName : getFileNames()) {
 			FileSupport.copyFile(baseDir + "/" + fileName, newBaseDir + "/" + fileName, true);
 		}
+	}
+
+	public void copyWithDateTo(String newBaseDir) throws IOException {
+		for(String fileName : getFileNames()) {
+			FileSupport.copyFileKeepDate(baseDir + "/" + fileName, newBaseDir + "/" + fileName);
+		}
+	}
+
+	public void copyWithDateTo(String fileName, FSFileCollection targetCollection) throws IOException {
+		targetCollection.saveWithDate(fileName, new File(baseDir + "/" + fileName));
 	}
 }

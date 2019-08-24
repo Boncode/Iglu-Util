@@ -32,7 +32,7 @@ public class FileFilterRuleSetTest extends DirStructureDependentTest {
 	@Test
 	public void testFileMatchesRulesForNameIncludes() throws Exception {
 		
-		File file = new File(dirStructRoot + "WWW/cornerstone/architecture.gif");
+		File file = new File(dirStructRoot + "root/WWW/cornerstone/architecture.gif");
 		
 		FileFilterRuleSet ruleSet = new FileFilterRuleSet().setIncludeFilesWithNameMask("*.gif");
 		assertTrue(ruleSet.fileMatchesRules(file));
@@ -47,7 +47,7 @@ public class FileFilterRuleSetTest extends DirStructureDependentTest {
 	@Test
 	public void testFileMatchesRulesForNameExcludes() throws Exception {
 		
-		File file = new File(dirStructRoot + "WWW/cornerstone/architecture.gif");
+		File file = new File(dirStructRoot + "root/WWW/cornerstone/architecture.gif");
 
 		assertTrue(file.exists());
 		
@@ -64,7 +64,7 @@ public class FileFilterRuleSetTest extends DirStructureDependentTest {
 	@Test
 	public void testFileMatchesRulesForContentsIncludes() throws Exception {
 		
-		File file = new File(dirStructRoot + "WWW/cornerstone/index.html");
+		File file = new File(dirStructRoot + "root/WWW/cornerstone/index.html");
 		assertTrue(file.exists());
 		
 		FileFilterRuleSet ruleSet = new FileFilterRuleSet().setIncludeFilesWithNameMask("*.html").setExcludeFilesWithNameMask("*/_d0/*");
@@ -86,9 +86,7 @@ public class FileFilterRuleSetTest extends DirStructureDependentTest {
 	@Test
 	public void testFileMatchesRulesForContentsExcludes() throws Exception {
 		
-		File file = new File(dirStructRoot + "WWW/c" +
-				"" +
-				"ornerstone/index.html");
+		File file = new File(dirStructRoot + "root/WWW/cornerstone/index.html");
 		assertTrue(file.exists());
 		
 		/*FileFilterRuleSet ruleSet = new FileFilterRuleSet("*.html", "* /_d0/*", "*", "");

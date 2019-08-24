@@ -69,8 +69,6 @@ public class ZippedFileCollection implements FileCollection {
 				this.relativeDir += "/";
 			}
 		}
-//		System.out.println("====================> " + relativeDir);
-		//fileFilterRuleSet.setBaseDir(this.relativeDir);
 		refreshFiles();
 	}
 
@@ -83,9 +81,8 @@ public class ZippedFileCollection implements FileCollection {
         return new ArrayList<String>(filesByRelativePathAndName.keySet());
     }
 
-//	@Override
 	public List<String> getFileNotDirectoryNames() {
-		return new ArrayList<String>(filesNoDirectoriesByRelativePathAndName.keySet());
+		return new ArrayList<>(filesNoDirectoriesByRelativePathAndName.keySet());
 	}
 
     @Override

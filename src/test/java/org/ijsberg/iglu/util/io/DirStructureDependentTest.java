@@ -55,7 +55,7 @@ public abstract class DirStructureDependentTest {
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		FileSupport.deleteFile(tmpDir);
 	}
 	

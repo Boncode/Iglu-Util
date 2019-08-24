@@ -20,12 +20,15 @@
 package org.ijsberg.iglu.util.io;
 
 
+import org.ijsberg.iglu.util.tool.SynchronizeDirectories;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
@@ -83,6 +86,9 @@ public class FileSupportTest extends DirStructureDependentTest {
 		foundFiles = FileSupport.getFilesInDirectoryTree(dirStructRoot);
 		assertEquals(171, foundFiles.size());
 
+		for(File foundFile : foundFiles) {
+			System.out.println(foundFile.getName() + " : " + SynchronizeDirectories.convertToReadableByteSize(foundFile.length()));
+		}
 	}
 
 	@Test
@@ -244,7 +250,7 @@ public class FileSupportTest extends DirStructureDependentTest {
 		try {
 			sourceFileCollection = new ZippedFileCollection(new File(tmpDir.getPath() + "/root/source.zip"));
 			targetFileCollection = new ZippedFileCollection(new File(tmpDir.getPath() + "/root/target.zip"));
-			assertEquals(5, targetFileCollection.size());
+			assertEquals(6, targetFileCollection.size());
 		} finally {
 			targetFileCollection.close();
 		}
@@ -257,4 +263,22 @@ public class FileSupportTest extends DirStructureDependentTest {
 			targetFileCollection.close();
 		}
 	}
+
+
+	@Test
+	public void testGetResourceFolderFilesRecursive() throws IOException, URISyntaxException {
+		List<String> fileNames = FileSupport.getResourceFolderFilesRecursive(this.getClass(), "");
+		//This changes every time test resources are added or removed
+		assertEquals(214, fileNames.size());
+		//System.out.println(fileNames);
+	}
+
+//	@Ignore
+	@Test
+	public void testUserInput()throws IOException {
+		char input = (char)System.in.read();
+		System.out.println("[" + input + "]");
+	}
+
+
 }
