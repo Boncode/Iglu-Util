@@ -273,12 +273,4 @@ public class FileSupportTest extends DirStructureDependentTest {
 		//System.out.println(fileNames);
 	}
 
-//	@Ignore
-	@Test
-	public void testUserInput()throws IOException {
-		char input = (char)System.in.read();
-		System.out.println("[" + input + "]");
-	}
-
-
 }
