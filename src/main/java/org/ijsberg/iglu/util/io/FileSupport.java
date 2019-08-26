@@ -838,9 +838,6 @@ public abstract class FileSupport {
 		File newFile = new File(newFileName);
 		if(newFile.isDirectory()) {
 			newFile = new File(newFileName + '/' + file.getName());
-			if(keepDate) {
-				newFile.setLastModified(file.lastModified());
-			}
 		}
 		if (!overwriteExisting && newFile.exists()) {
 			throw new IOException("file '" + newFile.getAbsolutePath() + "' already exists");
@@ -863,6 +860,10 @@ public abstract class FileSupport {
 		}
 		out.close();
 		in.close();
+
+		if(keepDate) {
+			newFile.setLastModified(file.lastModified());
+		}
 	}
 
 	public static void copyDirectory(String directoryName, String newDirectoryName, boolean overwriteExisting) throws IOException {
