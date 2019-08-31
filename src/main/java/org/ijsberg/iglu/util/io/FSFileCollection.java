@@ -44,7 +44,7 @@ public class FSFileCollection implements FileCollection {
     @Override
     public List<String> getFileNames() {
 //        refreshFiles();
-        return new ArrayList<String>(filesByRelativePathAndName.keySet());
+        return new ArrayList<>(filesByRelativePathAndName.keySet());
     }
 
     @Override

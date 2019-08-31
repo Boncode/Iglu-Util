@@ -207,7 +207,10 @@ public abstract class MimeTypeSupport {
 			mapping.put("wkz", "application/x-wingz");
 			mapping.put("iv", "graphics/x-inventor");
 			mapping.put("xml", "application/xml");
+
 			mapping.put("graphml", "application/graphml");
+
+			mapping.put("svg", "image/svg+xml");
 		}
 	}
 
