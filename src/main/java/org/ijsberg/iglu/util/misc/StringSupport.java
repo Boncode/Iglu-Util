@@ -444,27 +444,6 @@ public abstract class StringSupport {
 	 * @param input
 	 * @return a resulting String
 	 */
-	public static String readAvailableFromInputStream(InputStream input) throws IOException {
-		return readAvailableFromInputStream(input, Charset.defaultCharset().name());
-	}
-
-	/**
-	 * keep reading until the InputStream is exhausted (end of the stream)
-	 *
-	 * @param input
-	 * @return a resulting String
-	 */
-	public static String readAvailableFromInputStream(InputStream input, String encoding) throws IOException {
-		byte[] bytes = StreamSupport.readAvailableFromInputStream(input);
-		return new String(bytes, encoding);
-	}
-
-	/**
-	 * keep reading until the InputStream is exhausted (end of the stream)
-	 *
-	 * @param input
-	 * @return a resulting String
-	 */
 	public static String absorbInputStream(InputStream input) throws IOException {
 		return absorbInputStream(input, Charset.defaultCharset().name());
 	}

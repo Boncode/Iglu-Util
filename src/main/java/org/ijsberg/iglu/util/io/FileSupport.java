@@ -1295,10 +1295,18 @@ public abstract class FileSupport {
 	}
 
 	public static void saveFileCollectionToZip(FileCollection fileCollection, String zipFileName) throws IOException {
+		saveFileCollectionToZip(fileCollection, zipFileName, null, null);
+	}
+
+	public static void saveFileCollectionToZip(FileCollection fileCollection, String zipFileName, String srcFileNamePart, String targetFileNamePart) throws IOException {
 		FileStreamProvider output = new ZipFileStreamProvider(zipFileName);
 		for(String fileName : fileCollection.getFileNames()) {
+			String targetFileName = fileName;
+			if(srcFileNamePart != null) {
+				targetFileName = StringSupport.replaceAll(targetFileName, srcFileNamePart, targetFileNamePart);
+			}
 			byte[] fileContents = fileCollection.getFileContents(fileName);
-			OutputStream outputStream = output.createOutputStream(fileName);
+			OutputStream outputStream = output.createOutputStream(targetFileName);
 			copyFileResource(fileContents, outputStream);
 			output.closeCurrentStream();
 		}
