@@ -444,7 +444,9 @@ public abstract class FileSupport {
 	}
 
 	public static void mergeZipFiles(String zipFileName1, String zipFileName2, String targetZipFileName) throws IOException {
-		copyFile(zipFileName1, targetZipFileName, true);
+		if(!zipFileName1.equals(targetZipFileName)) {
+			copyFile(zipFileName1, targetZipFileName, true);
+		}
 		ZippedFileCollection fileCollection = new ZippedFileCollection(zipFileName2, new FileFilterRuleSet().setIncludeFilesWithNameMask("*"));
 		mergeInZipFile(targetZipFileName, fileCollection);
 	}

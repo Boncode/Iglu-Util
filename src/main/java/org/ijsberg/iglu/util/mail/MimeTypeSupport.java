@@ -211,6 +211,8 @@ public abstract class MimeTypeSupport {
 			mapping.put("graphml", "application/graphml");
 
 			mapping.put("svg", "image/svg+xml");
+
+			mapping.put("jsp", "text/html");
 		}
 	}
 
