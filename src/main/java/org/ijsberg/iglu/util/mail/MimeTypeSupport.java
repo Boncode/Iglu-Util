@@ -213,6 +213,7 @@ public abstract class MimeTypeSupport {
 			mapping.put("svg", "image/svg+xml");
 
 			mapping.put("jsp", "text/html");
+			mapping.put("jar", "application/java-archive");
 		}
 	}
 

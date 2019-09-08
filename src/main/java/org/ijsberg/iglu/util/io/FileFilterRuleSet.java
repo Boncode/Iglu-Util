@@ -189,10 +189,10 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 		return this;
 	}
 
-	public FileFilterRuleSet setIncludeFilesWithNameMaskCommaSeparated(String includeFilesWithNameMask) {
+	public FileFilterRuleSet setIncludeFilesWithNameMask(String[] includeFilesWithNameMask) {
 
 		return setIncludeFilesWithNameMask(
-				ArraySupport.format(StringSupport.split(includeFilesWithNameMask).toArray(), "|"));
+				ArraySupport.format(includeFilesWithNameMask, "|"));
 	}
 
 	public FileFilterRuleSet setExcludeFilesWithNameMask(String excludeFilesWithNameMask) {
