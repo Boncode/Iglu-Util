@@ -345,14 +345,24 @@ public abstract class StringSupport {
 	 * @param in String to evaluate
 	 */
 	public static boolean isNumeric(String in) {
+		if(in == null || "".equals(in)) {
+			return false;
+		}
 		char c = 0;
+		int nrOfDots = 0;
 		for (int i = in.length(); i > 0; i--) {
 			c = in.charAt(i - 1);
-			if (!Character.isDigit(c)) {
+			if(c == '.') {
+				nrOfDots++;
+			} else if (!(Character.isDigit(c))) {
 				return false;
 			}
 		}
-		return true;
+		return nrOfDots <= 1;
+	}
+
+	public static boolean isBoolean(String in) {
+		return "true".equals(in) || "false".equals(in);
 	}
 
 	/**

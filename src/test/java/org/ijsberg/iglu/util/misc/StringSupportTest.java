@@ -29,6 +29,7 @@ import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 
 public class StringSupportTest {
@@ -261,5 +262,14 @@ WORD:NAMESPACE_BEGIN VAL: namespace x {
 	public void testCondenseWhitespace() {
 		assertEquals("\tthis line contains too much whitespace ", StringSupport.condenseWhitespace("\t\tthis  line \t  contains too much  whitespace \t  "));
 	}
-	
+
+	@Test
+	public void testIsNumeric() {
+		assertTrue(StringSupport.isNumeric("123"));
+		assertTrue(StringSupport.isNumeric("123.123"));
+		assertFalse(StringSupport.isNumeric("abc"));
+		assertFalse(StringSupport.isNumeric("123,123"));
+		assertFalse(StringSupport.isNumeric("123abc"));
+		assertFalse(StringSupport.isNumeric("192.168.1.27"));
+	}
 }
