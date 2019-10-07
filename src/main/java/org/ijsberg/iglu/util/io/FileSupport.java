@@ -350,6 +350,13 @@ public abstract class FileSupport {
 		output.close();
 	}
 
+	public static void zip(File file) throws IOException {
+		String dirName = file.getParent();
+		FileData fileData = new FileData(file.getName());
+		FSFileCollection fileCollection = new FSFileCollection(dirName, new FileFilterRuleSet().setIncludeFilesWithNameMask("*/" + fileData.getFileName()));
+		FileSupport.zip(dirName + "/" + fileData.getFileName() + ".zip", fileCollection);
+	}
+
 	public static void zip(String zipFileName, FileCollection fileCollection) throws IOException {
 		FileStreamProvider output = new ZipFileStreamProvider(zipFileName);
 		for (String fileName : fileCollection.getFileNames()) {
@@ -736,7 +743,7 @@ public abstract class FileSupport {
 		}
 		return file;
 	}
-	
+
 	public static File createDirectory(String directoryname) throws IOException {
 		File file = new File(directoryname);
 		if (!file.exists()) {
@@ -746,9 +753,9 @@ public abstract class FileSupport {
 		}
 		return file;
 	}
-	
+
 	public static File writeTextFile(String filename, String text) throws IOException {
-		
+
 		File file = createFile(filename);
 		BufferedReader reader = new BufferedReader(new StringReader(text));
 		PrintStream out = new PrintStream(file);
@@ -960,7 +967,7 @@ public abstract class FileSupport {
 				retval.put(lineNo, nrofOccurrencesInLine);
 				System.out.println(">" + line + "<");
 			}
-			
+
 
 			lineCount++;
 			line = reader.readLine();
@@ -1157,6 +1164,17 @@ public abstract class FileSupport {
 		ArrayList<Line> lines = getLinesFromText(fileName, reader);
 		reader.close();
 		return lines;
+	}
+
+	public static String getFirstLineInText(File file) throws IOException {
+		FileInputStream inputStream = new FileInputStream(file);
+		InputStreamReader inputReader = new InputStreamReader(inputStream);
+		BufferedReader bufferedReader = new BufferedReader(inputReader);
+		String retval = bufferedReader.readLine();
+		bufferedReader.close();
+		inputReader.close();
+		inputStream.close();
+		return retval;
 	}
 
 	public static ArrayList<Line> getLinesFromText(String fileName, Reader inputReader) throws IOException {
