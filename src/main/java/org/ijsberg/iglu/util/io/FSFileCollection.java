@@ -41,6 +41,10 @@ public class FSFileCollection implements FileCollection {
         refreshFiles();
     }
 
+	public FSFileCollection(String baseDir) {
+    	this(baseDir, new FileFilterRuleSet().setIncludeFilesWithNameMask("*"));
+	}
+
     @Override
     public List<String> getFileNames() {
 //        refreshFiles();
