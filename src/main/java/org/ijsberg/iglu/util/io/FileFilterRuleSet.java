@@ -195,6 +195,10 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 				ArraySupport.format(includeFilesWithNameMask, "|"));
 	}
 
+	public FileFilterRuleSet excludeFilesWithNameMask(String ... excludeFilesWithNameMask) {
+		return setExcludeFilesWithNameMask(ArraySupport.format(excludeFilesWithNameMask, "|"));
+	}
+
 	public FileFilterRuleSet setExcludeFilesWithNameMask(String excludeFilesWithNameMask) {
 
 		if(excludeFilesWithNameMask != null && excludeFilesWithNameMask.startsWith("/")) {
