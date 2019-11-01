@@ -19,6 +19,7 @@
 
 package org.ijsberg.iglu.util.mail;
 
+import org.ijsberg.iglu.util.ResourceException;
 import org.ijsberg.iglu.util.io.FileData;
 import org.ijsberg.iglu.util.misc.KeyGenerator;
 
@@ -166,7 +167,7 @@ public class EMail// implements Executable
 		try {
 			mail.execute();
 		} catch (Throwable throwable) {
-			throwable.printStackTrace();
+			throw new ResourceException("unable to send mail", throwable);
 		}
 		/*
 		Executable exec = new Executable() {
