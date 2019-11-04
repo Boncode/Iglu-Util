@@ -19,6 +19,8 @@
 
 package org.ijsberg.iglu.util.io;
 
+import org.ijsberg.iglu.util.ResourceException;
+
 import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -40,7 +42,7 @@ public class ZipFileStreamProvider implements FileStreamProvider {
 			out = new ZipOutputStream(fileOut);
 			bufferedOut = new BufferedOutputStream(out);
 		} catch (IOException e) {
-			throw new RuntimeException("unable to save to " + fileName, e);
+			throw new ResourceException("unable to save to " + fileName, e);
 		}
 	}
 
@@ -58,7 +60,7 @@ public class ZipFileStreamProvider implements FileStreamProvider {
 			bufferedOut.flush();
 			out.closeEntry();
 		} catch (IOException e) {
-//			throw new RuntimeException("unable to close zipfile entry", e);
+			throw new ResourceException("unable to close zipfile entry", e);
 		}
 	}
 
@@ -70,7 +72,7 @@ public class ZipFileStreamProvider implements FileStreamProvider {
 			out.close();
 			fileOut.close();
 		} catch (IOException e) {
-			throw new RuntimeException("unable to close zipfile", e);
+			throw new ResourceException("unable to close zipfile", e);
 		}
 	}
 
@@ -81,7 +83,7 @@ public class ZipFileStreamProvider implements FileStreamProvider {
 			out.putNextEntry(e);
 			return bufferedOut;
 		} catch (IOException e) {
-			throw new RuntimeException("unable to save " + fileName + " to " + this.fileName, e);
+			throw new ResourceException("unable to save " + fileName + " to " + this.fileName, e);
 		}
 	}
 
