@@ -24,6 +24,7 @@ public class Line {
 	private String fileName;
 	private int number;
 	private String line;
+	private int hashCode;
 
 	public Line(String fileName, int number, String line) {
 		super();
@@ -55,7 +56,11 @@ public class Line {
 	}
 	
 	public int hashCode() {
-		return /*StringSupport.condenseWhitespace(line)*/line.trim().hashCode();
+		if(hashCode != 0) {
+			return hashCode;
+		}
+		this.hashCode = line.trim().hashCode();
+		return hashCode;
 	}
 
 }
