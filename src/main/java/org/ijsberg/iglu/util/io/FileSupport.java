@@ -446,7 +446,7 @@ public abstract class FileSupport {
 			if(fs != null && fs.isOpen()){
 				fs.close();
 			}
-			tmpFile.delete();
+			deleteFile(tmpFile);
 		}
 	}
 
@@ -456,6 +456,7 @@ public abstract class FileSupport {
 		}
 		ZippedFileCollection fileCollection = new ZippedFileCollection(zipFileName2, new FileFilterRuleSet().setIncludeFilesWithNameMask("*"));
 		mergeInZipFile(targetZipFileName, fileCollection);
+		fileCollection.close();
 	}
 
 	public static void mergeInZipFile(String zipFileName, FileCollection filesToMerge) throws IOException {
@@ -772,8 +773,8 @@ public abstract class FileSupport {
 	 *
 	 * @param path
 	 */
-	public static boolean emptyDirectory(String path) {
-		return deleteContentsInDirectoryTree(path, null);
+	public static void emptyDirectory(String path) {
+		deleteContentsInDirectoryTree(path, null);
 	}
 
 	/**
@@ -785,19 +786,28 @@ public abstract class FileSupport {
 		deleteContentsInDirectoryTree(file, null);
 	}
 
+
+	public static void deleteActualFile(String fileName) {
+		try {
+			Path path = Paths.get(fileName);
+			Files.delete(path);
+		} catch (IOException e) {
+			throw new ResourceException("unable to delete file " + fileName, e);
+		}
+	}
+
 	/**
 	 * Deletes a file or a directory including its contents;
 	 *
 	 * @param file
 	 */
-	public static boolean deleteFile(File file) {
+	public static void deleteFile(File file) {
 		deleteContentsInDirectoryTree(file, null);
-		boolean result = file.delete();
-		return result;
+		deleteActualFile(file.getPath());
 	}
 
-	public static boolean deleteFile(String fileName) {
-		return deleteFile(new File(fileName));
+	public static void deleteFile(String fileName) {
+		deleteFile(new File(fileName));
 	}
 
 	/**
@@ -824,7 +834,7 @@ public abstract class FileSupport {
 	public static void moveFile(String fileName, String newFileName, boolean overwriteExisting) throws IOException {
 		File sourceFile = new File(fileName);
 		copyFile(new File(fileName), newFileName, overwriteExisting);
-		sourceFile.delete();
+		deleteFile(sourceFile);
 	}
 
 	public static void copyFileKeepDate(File file, String newFileName, boolean overwriteExisting) throws IOException {
@@ -911,8 +921,8 @@ public abstract class FileSupport {
 	 * @param path
 	 * @param includeMask
 	 */
-	public static boolean deleteContentsInDirectoryTree(String path, String includeMask) {
-		return deleteContentsInDirectoryTree(new File(path), includeMask);
+	public static void deleteContentsInDirectoryTree(String path, String includeMask) {
+		deleteContentsInDirectoryTree(new File(path), includeMask);
 	}
 
 	/**
@@ -922,20 +932,20 @@ public abstract class FileSupport {
 	 * @param root
 	 * @param includeMask
 	 */
-	public static boolean deleteContentsInDirectoryTree(File root, String includeMask) {
-		boolean success = true;
+	public static void deleteContentsInDirectoryTree(File root, String includeMask) {
 		Collection<File> files = getContentsInDirectoryTree(root, includeMask, true, true);
 		for(File file : files) {
 			if (file.exists()) {//file may meanwhile have been deleted
 				if (file.isDirectory()) {
 					//empty directory
-					success = success && emptyDirectory(file.getAbsolutePath());
+					emptyDirectory(file.getAbsolutePath());
 				}
-				success = success && file.delete();
+				deleteFile(file);
 			}
 		}
-		return success;
 	}
+
+
 
 	/**
 	 * @param file

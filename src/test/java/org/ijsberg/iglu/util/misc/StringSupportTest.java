@@ -254,7 +254,7 @@ WORD:NAMESPACE_BEGIN VAL: namespace x {
 //		System.out.println(bytes[10] + ":" + bytes[11] + ":" + bytes[12] + ":" + bytes[13]);
 		//-17 -65
 
-		assertTrue(FileSupport.deleteFile(tmpDir));
+		FileSupport.deleteFile(tmpDir);
 	}
 
 
