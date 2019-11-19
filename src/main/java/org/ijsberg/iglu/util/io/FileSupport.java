@@ -19,7 +19,6 @@
 
 package org.ijsberg.iglu.util.io;
 
-import com.sun.org.apache.regexp.internal.RESyntaxException;
 import org.ijsberg.iglu.util.ResourceException;
 import org.ijsberg.iglu.util.collection.CollectionSupport;
 import org.ijsberg.iglu.util.collection.ListTreeMap;
@@ -367,13 +366,13 @@ public abstract class FileSupport {
 		output.close();
 	}
 
-	public static void unzip(String path, ZipFile zipFile, FileFilterRuleSet ruleSet) throws IOException{
+	public static void unzip(ZipFile zipFile, String targetPath, FileFilterRuleSet ruleSet) throws IOException{
 
 		ArrayList<ZipEntry> entries = getContentsFromZipFile(zipFile, ruleSet);
 		for(ZipEntry entry : entries) {
 			InputStream in = zipFile.getInputStream(entry);
 			if(!entry.isDirectory()) {
-				File file = new File(path + "/" + entry.getName());
+				File file = new File(targetPath + "/" + entry.getName());
 				if(file.getParent() != null) {
 					new File(file.getParent()).mkdirs();
 				}
@@ -388,27 +387,20 @@ public abstract class FileSupport {
 		}
 	}
 
-	public static void unzip(String path, ZipFile zipFile) throws IOException {
+	public static void unzip(ZipFile zipFile, String targetPath) throws IOException {
+		unzip(zipFile, targetPath, new FileFilterRuleSet().setIncludeFilesWithNameMask("*"));
+	}
 
-		ArrayList<ZipEntry> entries = getContentsFromZipFile(zipFile, new FileFilterRuleSet().setIncludeFilesWithNameMask("*"));
-		for(ZipEntry entry : entries) {
-			InputStream in = zipFile.getInputStream(entry);
-			if(!entry.isDirectory()) {
-				File file = new File(path + "/" + entry.getName());
-				if(file.getParent() != null) {
-					new File(file.getParent()).mkdirs();
-				}
-				OutputStream out = new FileOutputStream(file);
-				try {
-					StreamSupport.absorbInputStream(in, out);
-				}
-				finally {
-					in.close();
-				}
+	public static void unzip(String zipFilePath, String targetPath) throws IOException {
+		ZipFile zipFile = new ZipFile(zipFilePath);
+		try {
+			unzip(zipFile, targetPath, new FileFilterRuleSet().setIncludeFilesWithNameMask("*"));
+		} finally {
+			if(zipFile != null) {
+				zipFile.close();
 			}
 		}
 	}
-
 
 	public static byte[] getBinaryFromZip(String fileName, ZipFile zipFile) throws IOException {
 

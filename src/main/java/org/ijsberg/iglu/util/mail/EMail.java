@@ -30,7 +30,7 @@ import java.net.URLConnection;
 /**
  * Mails an SMTP message to recipients.
  */
-public class EMail// implements Executable
+public class EMail
 {
 	//specify mail.host using -D or special init-servlet
 	private String mailserver;
@@ -115,7 +115,6 @@ public class EMail// implements Executable
 					outMail.println("--" + boundary);
 					outMail.println("Content-Type: text/plain;");
 					outMail.println("	charset=\"UTF-8\"");
-	//				outMail.println("Content-Transfer-Encoding: quoted-printable");
 					outMail.println();
 					outMail.println(message);
 				}
@@ -169,13 +168,5 @@ public class EMail// implements Executable
 		} catch (Throwable throwable) {
 			throw new ResourceException("unable to send mail", throwable);
 		}
-		/*
-		Executable exec = new Executable() {
-			protected Object execute() throws Throwable {
-				return mail.execute();
-			}
-		};
-		exec.executeAsync();
-		*/
 	}
 }

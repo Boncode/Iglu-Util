@@ -23,6 +23,8 @@ import org.ijsberg.iglu.util.mail.MimeTypeSupport;
 import org.ijsberg.iglu.util.misc.EncodingSupport;
 import org.ijsberg.iglu.util.misc.StringSupport;
 
+import java.io.File;
+
 
 //TODO it is not obvious that raw data needs to be set
 
@@ -46,6 +48,9 @@ public class FileData {
 	public FileData() {
 	}
 
+	public FileData(File file) {
+		this(file.getName());
+	}
 	/**
 	 * @param fullFileName
 	 */
