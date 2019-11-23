@@ -66,6 +66,24 @@ public abstract class StringSupport {
 		}
 	}
 
+	public static String replaceEveryNth(String haystack, String needle, String newNeedle, int n) {
+		StringBuffer val = new StringBuffer(haystack);
+		replaceEveryNth(val, needle, newNeedle, n);
+		return val.toString();
+	}
+
+	public static void replaceEveryNth(StringBuffer haystack, String needle, String newNeedle, int n) {
+		int count = 1;
+		int idx = -1; ;
+		while ((idx = haystack.indexOf( needle, idx + 1)) != -1) {
+			if(count == n) {
+				haystack.replace(idx, idx + needle.length(), newNeedle);
+				count = 1;
+			} else {
+				count++;
+			}
+		}
+	}
 
 	public static String replaceLast(String haystack, String needle, String newNeedle) {
 		StringBuffer val = new StringBuffer(haystack);

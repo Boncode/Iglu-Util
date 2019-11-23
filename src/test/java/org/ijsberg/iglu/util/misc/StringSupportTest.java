@@ -146,7 +146,12 @@ public class StringSupportTest {
 		assertEquals("Harry dates Sally", StringSupport.replaceFirst("Harry met Sally", "met", "dates"));
 	}
 
-	
+	@Test
+	public void testReplaceNth() {
+		assertEquals("Harry met Sally, Harry met Dick, Harry met Sally, Harry met Dick, Harry met Sally", StringSupport.replaceEveryNth("Harry met Sally, Harry met Sally, Harry met Sally, Harry met Sally, Harry met Sally", "Sally", "Dick", 2));
+		assertEquals("Harry met Sally, Harry met Sally, Harry met Dick, Harry met Sally, Harry met Sally", StringSupport.replaceEveryNth("Harry met Sally, Harry met Sally, Harry met Sally, Harry met Sally, Harry met Sally", "Sally", "Dick", 3));
+	}
+
 	@Test
 	public void testReplaceAll() throws Exception {
 		assertEquals("Harry met Dick", StringSupport.replaceAll("Harry met Sally", "Sally", "Dick"));
