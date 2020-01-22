@@ -140,6 +140,17 @@ public class StringSupportTest {
 	}
 
 	@Test
+	public void extractStringsInBetweenQuotesFromText_ignore_escaped() throws Exception {
+
+		String text = "this is a text with a 'part \\'in\\' between' brackets";
+		Set result = StringSupport.extractStringsInbetweenTagsFromText(text, '\'', '\'', false);
+		assertEquals(1, result.size());
+		assertEquals("part 'in' between", result.toArray()[0]);
+
+	}
+
+
+	@Test
 	public void testReplaceFirst() throws Exception {
 		assertEquals("Harry met Dick", StringSupport.replaceFirst("Harry met Sally", "Sally", "Dick"));
 		assertEquals("Dick met Sally", StringSupport.replaceFirst("Harry met Sally", "Harry", "Dick"));

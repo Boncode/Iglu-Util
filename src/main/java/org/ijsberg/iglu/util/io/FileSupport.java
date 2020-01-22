@@ -1144,7 +1144,7 @@ public abstract class FileSupport {
 	}
 
 	public static ArrayList<Line> getLinesInTextFile(File file) throws IOException {
-		return getLinesInTextFile(file);
+		return getLinesInTextFile("UTF8", file);
 	}
 
  	public static ArrayList<Line> getLinesInTextFile(String encoding, File file) throws IOException {

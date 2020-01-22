@@ -890,7 +890,16 @@ public abstract class StringSupport {
 		LOOP:
 		for (int i = 0; i < input.length(); i++) {
 			if (readingWord) {
-				if (input.charAt(i) == endTag) {
+				char charAtI = input.charAt(i);
+				char x = '\\';
+				if(input.charAt(i) == '\\') {
+					if(input.length() > i + 1) {
+						if(input.charAt(i + 1) == endTag) {
+							word.append(endTag);
+							i++;
+						}
+					}
+				} else if (input.charAt(i) == endTag) {
 					//check forbidden word list first
 					//or maybe make arrangements in Index
 					//e.g.: disable Index with too many (%) references
