@@ -132,7 +132,6 @@ public class FSFileCollection implements FileCollection {
 		refreshFiles();
 		//filesByRelativePathAndName.remove(fileName);
 		//rootDir.addFile();
-		//System.out.println("deleting file: " + file.getAbsolutePath() + ": " + FileSupport.deleteFile(file));
 	}
 
 	public void save(String fileName, byte[] fileContents) throws IOException {
