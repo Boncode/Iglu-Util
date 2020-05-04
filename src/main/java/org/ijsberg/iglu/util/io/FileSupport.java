@@ -1334,4 +1334,14 @@ public abstract class FileSupport {
 		}
 		output.close();
 	}
+
+	public static boolean isValidZipFile(String fileName) {
+		try {
+			ZipFile zipFile = new ZipFile(fileName);
+			zipFile.close();
+		} catch (IOException e) {
+			return false;
+		}
+		return true;
+	}
 }
