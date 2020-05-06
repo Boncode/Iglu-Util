@@ -242,6 +242,7 @@ public class SchedulingSupportTest extends TimeSupportTest {
 		assertTrue(SchedulingSupport.isWithinMinuteOfIntervalStart(getTime(12, 48) + TimeSupport.SECOND_IN_MS, 12));
 		assertFalse(SchedulingSupport.isWithinMinuteOfIntervalStart(getTime(12, 47) + TimeSupport.SECOND_IN_MS, 12));
 
+		assertTrue(SchedulingSupport.isWithinMinuteOfIntervalStart(getTime(11, 26) + TimeSupport.SECOND_IN_MS, 2, 0));
 	}
 
 	@Test
