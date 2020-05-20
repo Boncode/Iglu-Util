@@ -370,17 +370,18 @@ public abstract class FileSupport {
 
 		ArrayList<ZipEntry> entries = getContentsFromZipFile(zipFile, ruleSet);
 		for(ZipEntry entry : entries) {
-			InputStream in = zipFile.getInputStream(entry);
 			if(!entry.isDirectory()) {
 				File file = new File(targetPath + "/" + entry.getName());
 				if(file.getParent() != null) {
 					new File(file.getParent()).mkdirs();
 				}
+				InputStream in = zipFile.getInputStream(entry);
 				OutputStream out = new FileOutputStream(file);
 				try {
 					StreamSupport.absorbInputStream(in, out);
 				}
 				finally {
+					out.close();
 					in.close();
 				}
 			}
@@ -698,7 +699,6 @@ public abstract class FileSupport {
 		return zipfile.getEntry(fileName);
 	}
 
-	//TODO zipfile not closed
     public static ArrayList<ZipEntry> getContentsFromZipFile(ZipFile zipFile, FileFilterRuleSet ruleSet) {
         ArrayList<ZipEntry> result = new ArrayList<ZipEntry>();
 
@@ -888,6 +888,7 @@ public abstract class FileSupport {
 		for(String fileName : fileCollection.getFileNames()) {
 			copyFile(directoryName + "/" + fileName, newDirectoryName + "/" + fileName, overwriteExisting);
 		}
+		fileCollection.close();
 	}
 
 	public static void copyDirectoryFromZipFile(String zipFileName, String sourceDirectoryName, String newDirectoryName, boolean overwriteExisting) throws IOException {
@@ -904,6 +905,7 @@ public abstract class FileSupport {
 			File newFile =  new File(newDirectoryName + "/" + fileData.getFileName());
 			saveBinaryFile(fileContents, newFile);
 		}
+		fileCollection.close();
 	}
 
 	/**
