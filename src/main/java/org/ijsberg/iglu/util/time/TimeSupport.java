@@ -157,5 +157,14 @@ public abstract class TimeSupport {
 		return SchedulingSupport.getIntervalsSinceMidnight(time, 1);
 	}
 
+	public static Date floorToMidnight(Date date) {
+
+		Calendar calInput = new GregorianCalendar();
+		calInput.setTime(date);
+
+		Calendar calOutput = new GregorianCalendar(calInput.get(Calendar.YEAR), calInput.get(Calendar.MONTH), calInput.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+
+		return calOutput.getTime();
+	}
 
 }
