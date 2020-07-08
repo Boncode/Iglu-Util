@@ -12,6 +12,7 @@ public class CompositeNode<T> {
     private T reflectedObject;
     private String name;
     private List<CompositeNode<T>> referencedNodes;
+    private CompositeNode<T> superNode;
 
 
     public CompositeNode(T reflectedObject, String name) {
@@ -24,6 +25,11 @@ public class CompositeNode<T> {
             referencedNodes = new ArrayList<>();
         }
         referencedNodes.add(referencedNode);
+        referencedNode.setSuperNode(this);
+    }
+
+    private void setSuperNode(CompositeNode<T> superNode) {
+        this.superNode = superNode;
     }
 
     public int size() {
@@ -38,11 +44,40 @@ public class CompositeNode<T> {
     protected void print(PrintStream out, int depth) {
         out.print(new String(StringSupport.createCharArray(depth, ' ')));
         //out.print(depth);
-        out.println((referencedNodes == null ? ". " : "- ") + name);
+        out.println((referencedNodes == null ? ". " : "- ") + name + ":" + reflectedObject.getClass().getSimpleName());
         if(referencedNodes != null) {
             for(CompositeNode compositeNode : referencedNodes) {
                 compositeNode.print(out, depth + 1);
             }
         }
+    }
+
+    public String toString() {
+        return name + ":" + reflectedObject.getClass().getSimpleName();
+    }
+
+    public List<CompositeNode<T>> getLeafs() {
+        List<CompositeNode<T>> retval = new ArrayList<>();
+        if(referencedNodes == null) {
+            retval.add(this);
+        } else {
+            for(CompositeNode<T> referencedNode : referencedNodes) {
+                retval.addAll(referencedNode.getLeafs());
+            }
+        }
+        return retval;
+    }
+
+    public List<CompositeNode<T>> getPath() {
+        List<CompositeNode<T>> retval = new ArrayList<>();
+        if(superNode != null) {
+            retval.addAll(superNode.getPath());
+        }
+        retval.add(this);
+        return retval;
+    }
+
+    public T getReflectedObject() {
+        return reflectedObject;
     }
 }
