@@ -45,4 +45,6 @@ public interface FileCollection {
 	void close() throws IOException;
 
 	String getName();
+
+	//List<String> getSubdirs(String upperdir);
 }
