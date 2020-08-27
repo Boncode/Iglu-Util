@@ -18,7 +18,7 @@ public class ListHashMap<K, V> implements Serializable, ListMap<K, V> {
         this.loadFactor = loadFactor;
     }
 
-    public ListHashMap(ListTreeMap<K, V> listMap) {
+    public ListHashMap(ListHashMap<K, V> listMap) {
         for(K key : listMap.internalMap.keySet()) {
             put(key, listMap.internalMap.get(key));
         }
@@ -172,4 +172,16 @@ public class ListHashMap<K, V> implements Serializable, ListMap<K, V> {
         internalMap.clear();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ListHashMap)) return false;
+        ListHashMap<?, ?> that = (ListHashMap<?, ?>) o;
+        return Objects.equals(internalMap, that.internalMap);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(internalMap);
+    }
 }
