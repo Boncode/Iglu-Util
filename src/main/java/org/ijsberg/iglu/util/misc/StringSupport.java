@@ -609,8 +609,20 @@ public abstract class StringSupport {
 		return new StringSplitter(input, punctuationChars, quoteSymbols, sort, convertToLowerCase, distinct, keepQuotes).split();
 	}
 
+	private static final int ZERO_WIDTH_NO_BREAK_SPACE = 65279;
+    public static String purgeIllegalCharacters(String line) {
+		StringBuffer result = new StringBuffer();
+		for(char c : line.toCharArray()) {
+			//System.out.println("-> " + (int)c + " : " + ILLEGAL_CHAR_THRESHOLD);
+			if(c != ZERO_WIDTH_NO_BREAK_SPACE) {
+				result.append(c);
+			}
+		}
+		return result.toString();
+    }
 
-	static class StringSplitter {
+
+    static class StringSplitter {
 
 		TreeMap<String, Object> storage = new TreeMap<String, Object>();
 		ArrayList<String> unsortedStorage = new ArrayList<String>();
