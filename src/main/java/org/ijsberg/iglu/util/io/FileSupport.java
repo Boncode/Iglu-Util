@@ -1076,12 +1076,12 @@ public abstract class FileSupport {
 		return convertToTextFile(input, false);
 	}
 
-	public static List<Line> convertToTextFile(String input, boolean skipEmpty) {
+	public static List<Line> convertToTextFile(String input, boolean skipEmptyLines) {
 
-		return convertToTextFile(null, input, skipEmpty);
+		return convertToTextFile(null, input, skipEmptyLines);
 	}
 
-	public static List<Line> convertToTextFile(String fileName, String input, boolean skipEmpty) {
+	public static List<Line> convertToTextFile(String fileName, String input, boolean skipEmptyLines) {
 
 		BufferedReader reader = new BufferedReader(new StringReader(input));
 		List<Line> lines = new ArrayList<Line>();
@@ -1089,7 +1089,7 @@ public abstract class FileSupport {
 		try {
 			while ((line = reader.readLine()) != null) {
 				count++;
-				if (!skipEmpty || !line.trim().isEmpty()) {
+				if (!skipEmptyLines || !line.trim().isEmpty()) {
 					lines.add(new Line(fileName, count, line));
 				}
 			}
