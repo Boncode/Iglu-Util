@@ -43,6 +43,18 @@ public class ListLinkedHashMap<K, V> implements Serializable, ListMap<K, V> {
         return list;
     }
 
+    public List<V> put(K key, int index, V value) {
+        if(!(key instanceof Comparable)) {
+            throw new ClassCastException("key of type " + key.getClass().getSimpleName() + " K must implement Comparable");
+        }
+        List<V> list = createOrRetrieveList(key);
+        while(list.size() < index) {
+            list.add(null);
+        }
+        list.add(index, value);
+        return list;
+    }
+
     @Override
     public List<V> putDistinct(K key, V value) {
         List<V> list = createOrRetrieveList(key);
