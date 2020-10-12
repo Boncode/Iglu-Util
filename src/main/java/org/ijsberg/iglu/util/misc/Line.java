@@ -26,6 +26,9 @@ public class Line {
 	private String line;
 	private int hashCode;
 
+	private boolean isHashLine = false;
+	private int[] lineHashes = new int[0];
+
 	public Line(String fileName, int number, String line) {
 		super();
 		this.fileName = fileName;
@@ -38,6 +41,27 @@ public class Line {
 		this.number = number;
 		this.line = line;
 	}
+
+	public Line(int number, String line, boolean isHashLine) {
+		super();
+		this.number = number;
+		this.line = line;
+		this.isHashLine = isHashLine;
+
+		if(isHashLine) {
+			String[] lineHashCodes = line.split("[,]");
+
+			int[] itemHashCodes = new int[lineHashCodes.length];
+			for (int i = 0; i < lineHashCodes.length; i++) {
+				try {
+					itemHashCodes[i] = Integer.parseInt(lineHashCodes[i].trim());
+				} catch (NumberFormatException nfe) {
+					System.out.println("Couldn't convert string " + lineHashCodes[i] + " into an Integer format.");
+				}
+			}
+			this.lineHashes = itemHashCodes;
+		}
+	}
 	
 	public int getNumber() {
 		return number;
@@ -45,6 +69,10 @@ public class Line {
 
 	public String getLine() {
 		return line;
+	}
+
+	public int[] getLineHashes() {
+		return lineHashes;
 	}
 
     public void setLine(String line) {
@@ -63,4 +91,18 @@ public class Line {
 		return hashCode;
 	}
 
+	public void setIsHashLine() {
+		String[] lineHashCodes = line.split("[,]");
+
+		int[] itemHashCodes = new int[lineHashCodes.length];
+		for (int i = 0; i < lineHashCodes.length; i++) {
+			try {
+				itemHashCodes[i] = Integer.parseInt(lineHashCodes[i].trim());
+			} catch (NumberFormatException nfe) {
+				System.out.println("Couldn't convert string " + lineHashCodes[i] + " into an Integer format.");
+			}
+		}
+		this.lineHashes = itemHashCodes;
+		this.isHashLine = true;
+	}
 }
