@@ -18,6 +18,12 @@ public class ListHashMap<K, V> implements Serializable, ListMap<K, V> {
         this.loadFactor = loadFactor;
     }
 
+    public ListHashMap(Map<K, V> map) {
+        for(K key : map.keySet()) {
+            put(key, map.get(key));
+        }
+    }
+
     public ListHashMap(ListHashMap<K, V> listMap) {
         for(K key : listMap.internalMap.keySet()) {
             put(key, listMap.internalMap.get(key));
@@ -170,6 +176,18 @@ public class ListHashMap<K, V> implements Serializable, ListMap<K, V> {
     @Override
     public void clear() {
         internalMap.clear();
+    }
+
+    @Override
+    public Map<K, V> toMap() {
+        HashMap<K, V> map = new HashMap<>();
+        for(K key : internalMap.keySet()) {
+            List<V> values = get(key);
+            if(!values.isEmpty()) {
+                map.put(key, values.get(0));
+            }
+        }
+        return map;
     }
 
     @Override

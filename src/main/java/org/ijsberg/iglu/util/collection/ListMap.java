@@ -65,4 +65,6 @@ public interface ListMap<K, V> extends Serializable {
     int indexOf(K key, V value);
 
     void clear();
+
+    Map toMap();
 }

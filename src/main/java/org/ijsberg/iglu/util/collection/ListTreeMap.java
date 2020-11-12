@@ -207,4 +207,9 @@ public class ListTreeMap<K, V> implements ListMap<K, V> {
 		internalMap.clear();
 	}
 
+    @Override
+    public Map toMap() {
+        return null;
+    }
+
 }
