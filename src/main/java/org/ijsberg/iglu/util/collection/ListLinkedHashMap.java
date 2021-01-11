@@ -196,6 +196,11 @@ public class ListLinkedHashMap<K, V> implements Serializable, ListMap<K, V> {
         return internalMap.remove(key);
     }
 
+    public void empty(K key) {
+        List<V> values = internalMap.get(key);
+        values.clear();
+    }
+
     @Override
     public boolean contains(K key, V value) {
         List<V> values;

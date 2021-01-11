@@ -19,9 +19,7 @@
 
 package org.ijsberg.iglu.util.time;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 /**
  * Contains convenience methods concerning time, date and scheduling.
@@ -166,5 +164,16 @@ public abstract class TimeSupport {
 
 		return calOutput.getTime();
 	}
+
+	public static List<Date> getDaysInBetween(Date periodStart, Date periodEnd) {
+		List<Date> datesInBetween = new ArrayList<>();
+		Date possibleDateInBetween = new Date(periodStart.getTime() + 24 * 60 * 60 * 1000);
+		while(possibleDateInBetween.before(periodEnd)) {
+			datesInBetween.add(possibleDateInBetween);
+			possibleDateInBetween = new Date(possibleDateInBetween.getTime() + 24 * 60 * 60 * 1000);
+		}
+		return datesInBetween;
+	}
+
 
 }
