@@ -765,7 +765,7 @@ public abstract class FileSupport {
 	 *
 	 * @param path
 	 */
-	public static void emptyDirectory(String path) {
+	public static void emptyDirectory(String path) throws IOException {
 		deleteContentsInDirectoryTree(path, null);
 	}
 
@@ -774,17 +774,17 @@ public abstract class FileSupport {
 	 *
 	 * @param file
 	 */
-	public static void emptyDirectory(File file) {
+	public static void emptyDirectory(File file) throws IOException {
 		deleteContentsInDirectoryTree(file, null);
 	}
 
 
-	public static void deleteActualFile(String fileName) {
+	public static void deleteActualFile(String fileName) throws IOException {
 		try {
 			Path path = Paths.get(fileName);
 			Files.delete(path);
 		} catch (IOException e) {
-			throw new ResourceException("unable to delete file " + fileName, e);
+			throw new IOException("unable to delete file " + fileName, e);
 		}
 	}
 
@@ -793,12 +793,12 @@ public abstract class FileSupport {
 	 *
 	 * @param file
 	 */
-	public static void deleteFile(File file) {
+	public static void deleteFile(File file) throws IOException {
 		deleteContentsInDirectoryTree(file, null);
 		deleteActualFile(file.getPath());
 	}
 
-	public static void deleteFile(String fileName) {
+	public static void deleteFile(String fileName) throws IOException {
 		deleteFile(new File(fileName));
 	}
 
@@ -915,7 +915,7 @@ public abstract class FileSupport {
 	 * @param path
 	 * @param includeMask
 	 */
-	public static void deleteContentsInDirectoryTree(String path, String includeMask) {
+	public static void deleteContentsInDirectoryTree(String path, String includeMask) throws IOException {
 		deleteContentsInDirectoryTree(new File(path), includeMask);
 	}
 
@@ -926,7 +926,7 @@ public abstract class FileSupport {
 	 * @param root
 	 * @param includeMask
 	 */
-	public static void deleteContentsInDirectoryTree(File root, String includeMask) {
+	public static void deleteContentsInDirectoryTree(File root, String includeMask) throws IOException {
 		Collection<File> files = getContentsInDirectoryTree(root, includeMask, true, true);
 		for(File file : files) {
 			if (file.exists()) {//file may meanwhile have been deleted
@@ -1311,7 +1311,7 @@ public abstract class FileSupport {
 		printUsage();
 	}
 
-	public static void deleteFilesFromDir(String path, String mask) {
+	public static void deleteFilesFromDir(String path, String mask) throws IOException {
 		List<File> files = getFilesInDirectoryTree(path, mask);
 		for(File file : files) {
 			deleteFile(file);

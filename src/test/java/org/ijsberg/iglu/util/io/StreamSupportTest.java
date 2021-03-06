@@ -21,10 +21,7 @@ package org.ijsberg.iglu.util.io;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -47,7 +44,7 @@ public class StreamSupportTest {
 	}
 
 	@After
-	public void tearDown () {
+	public void tearDown() throws IOException {
 		FileSupport.deleteFile(tempDir);
 	}
 

@@ -50,7 +50,11 @@ public abstract class DirStructUsingIntegrationTestHelper {
     }
 
     public static void deleteTmpDirectory(File tmpDir) {
-        FileSupport.deleteFile(tmpDir);
+        try {
+            FileSupport.deleteFile(tmpDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static File getFile(String name) {
