@@ -73,6 +73,22 @@ public abstract class FileSupport {
 		}
 	}
 
+	public static void assertDirExistsFallbackCreate(File dir) {
+		try {
+			assertDirExists(dir);
+		} catch (ResourceException e) {
+			if (!dir.exists()) {
+				try {
+					createDirectory(dir.getPath());
+				} catch (IOException ignore) {
+					throw e;
+				}
+			} else {
+				throw e;
+			}
+		}
+	}
+
 	/**
 	 * Retrieves all files from a directory and its subdirectories.
 	 *
