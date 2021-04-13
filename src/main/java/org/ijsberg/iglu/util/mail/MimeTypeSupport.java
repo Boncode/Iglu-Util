@@ -19,13 +19,11 @@
 
 package org.ijsberg.iglu.util.mail;
 
-import java.util.HashMap;
-
 /**
  * Helper class containing current mime types.
  */
 public abstract class MimeTypeSupport {
-	public static HashMap<String, String> mapping = new HashMap<String, String>(10);
+/*	public static HashMap<String, String> mapping = new HashMap<String, String>(10);
 	//static initialization
 	public static FileExtensionToTypeMapping fe2tmapping = new FileExtensionToTypeMapping();
 
@@ -216,16 +214,18 @@ public abstract class MimeTypeSupport {
 			mapping.put("jar", "application/java-archive");
 		}
 	}
-
+*/
 	/**
 	 * @param extension
 	 * @return
 	 */
 	public static String getMimeTypeForFileExtension(String extension) {
-		String retval = mapping.get(extension);
-        if (retval == null) {
-            retval = "text/plain";
+		WebContentType contentType = WebContentType.extensionToContentType.get(extension);
+		if(contentType == null) {
+            return WebContentType.TXT.contentType;
         }
-        return retval;
+        return contentType.contentType;
 	}
+
+
 }
