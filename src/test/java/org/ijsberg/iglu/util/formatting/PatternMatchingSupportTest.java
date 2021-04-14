@@ -80,5 +80,19 @@ public class PatternMatchingSupportTest {
 		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("/bla/javascript.js", "(.*\\.html|.*\\.js)"));
 	}
 
+	@Test
+	public void testValueMatchesUrl() {
+		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("http://ijsberg.nl", "https?://..*"));
+	}
+
+	@Test
+	public void testValueMatchesUrl_2() {
+		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("https://ijsberg.nl", "https?://..*"));
+	}
+
+	@Test
+	public void testValueMatchesUrl_3() {
+		assertFalse(PatternMatchingSupport.valueMatchesRegularExpression("https://", "https?://..*"));
+	}
 }
 
