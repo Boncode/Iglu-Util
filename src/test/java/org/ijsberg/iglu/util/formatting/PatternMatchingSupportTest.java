@@ -94,5 +94,19 @@ public class PatternMatchingSupportTest {
 	public void testValueMatchesUrl_3() {
 		assertFalse(PatternMatchingSupport.valueMatchesRegularExpression("https://", "https?://..*"));
 	}
+
+	@Test
+	public void testValueMatchesUrl_4() {
+		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("copyright", ".*((C|c)opyright|COPYRIGHT).*"));
+	}
+
+	@Test
+	public void testValueMatchesUrl_5() {
+		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("Copyright", ".*((C|c)opyright|COPYRIGHT).*"));
+	}
+	@Test
+	public void testValueMatchesUrl_6() {
+		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("COPYRIGHT", ".*((C|c)opyright|COPYRIGHT).*"));
+	}
 }
 
