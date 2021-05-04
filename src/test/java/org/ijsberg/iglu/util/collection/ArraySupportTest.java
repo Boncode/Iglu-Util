@@ -62,4 +62,17 @@ public class ArraySupportTest {
 		String result = ArraySupport.format("[", "]", array, ", ");
 		assertEquals("[one], [two], [three]", result);
 	}
+
+	@Test
+	public void testJoin() throws Exception {
+		String[] array1 = new String[]{"one","two","three"};
+		String[] array2 = new String[]{"four","five","six"};
+		Object[] result = ArraySupport.join(array1, array2);
+		assertEquals(6, result.length);
+
+		ByteArrayOutputStream buf = new ByteArrayOutputStream();
+		PrintStream out = new PrintStream(buf);
+		ArraySupport.print(result, out, "->");
+		assertEquals("one->two->three->four->five->six", buf.toString());
+	}
 }

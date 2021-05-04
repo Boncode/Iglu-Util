@@ -425,7 +425,7 @@ public abstract class FileSupport {
         if (entry == null) {
 			entry = zipFile.getEntry("/" + FileSupport.convertToUnixStylePath(fileName));
 			if (entry == null) {
-	            throw new IOException("entry " + fileName + " not found in jar " + zipFile.getName());
+	            throw new IOException("entry " + FileSupport.convertToUnixStylePath(fileName) + " not found in jar " + zipFile.getName());
 			}
         }
        InputStream in = zipFile.getInputStream(entry);
