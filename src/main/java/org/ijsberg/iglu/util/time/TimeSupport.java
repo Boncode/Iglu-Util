@@ -175,5 +175,8 @@ public abstract class TimeSupport {
 		return datesInBetween;
 	}
 
+	public static Date nowMinus(long differenceInMillis) {
+		return new Date(System.currentTimeMillis() - differenceInMillis);
+	}
 
 }
