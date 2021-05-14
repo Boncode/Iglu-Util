@@ -53,6 +53,18 @@ public class SynchronizeDirectories {
         }
     }
 
+    public void synchronize() throws IOException {
+
+        System.out.println("" + comparison.getFilesMissing().size() + " file(s) missing");
+        for (String fileName : comparison.getFilesMissing().keySet()) {
+            copyFile(fileName);
+        }
+        System.out.println("" + comparison.getFilesOutdated().size() + " file(s) outdated");
+        for (String fileName : comparison.getFilesOutdated().keySet()) {
+            copyFile(fileName);
+        }
+    }
+
     public boolean processCopyQuestion(boolean doAll, String fileName, String copyQuestion) throws IOException {
         if (!doAll) {
             System.out.print(copyQuestion);
