@@ -59,7 +59,7 @@ public class CompositeNode<T> {
 
     public List<CompositeNode<T>> getLeafs() {
         List<CompositeNode<T>> retval = new ArrayList<>();
-        if(referencedNodes == null) {
+        if(referencedNodes == null || referencedNodes.isEmpty()) {
             retval.add(this);
         } else {
             for(CompositeNode<T> referencedNode : referencedNodes) {

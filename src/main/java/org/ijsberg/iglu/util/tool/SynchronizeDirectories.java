@@ -18,6 +18,8 @@ public class SynchronizeDirectories {
     private FSFileCollection sourceCollection;
     private FSFileCollection targetCollection;
 
+    private FileFilterRuleSet filter;
+
     private FileCollectionComparison comparison;
 
     public SynchronizeDirectories(String sourceDir, String targetDir) {
@@ -27,6 +29,7 @@ public class SynchronizeDirectories {
     public SynchronizeDirectories(String sourceDir, String targetDir, FileFilterRuleSet filter) {
         this.sourceDir = sourceDir;
         this.targetDir = targetDir;
+        this.filter = filter;
 
         sourceCollection = new FSFileCollection(sourceDir, filter);
         targetCollection = new FSFileCollection(targetDir, filter);
@@ -34,6 +37,10 @@ public class SynchronizeDirectories {
 
     public void evaluate() throws IOException {
         comparison = FileCollectionComparison.compare(sourceCollection, targetCollection);
+    }
+
+    public String getDescription() {
+        return "directory synchronizer from " + sourceDir + " to " + targetDir + " using filter " + filter;
     }
 
 
