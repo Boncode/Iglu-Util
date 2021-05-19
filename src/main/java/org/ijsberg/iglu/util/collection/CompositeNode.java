@@ -14,7 +14,7 @@ public class CompositeNode<T> {
     private String name;
     private List<CompositeNode<T>> referencedNodes;
     private CompositeNode<T> superNode;
-
+    private T loopEntry;
 
     public CompositeNode(T reflectedObject, String name) {
         this.reflectedObject = reflectedObject;
@@ -95,6 +95,14 @@ public class CompositeNode<T> {
 
     public T getReflectedObject() {
         return reflectedObject;
+    }
+
+    public void setLoopEntry(T loopEntry) {
+        this.loopEntry = loopEntry;
+    }
+
+    public T getLoopEntry() {
+        return this.loopEntry;
     }
 
     @Override
