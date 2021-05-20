@@ -36,7 +36,7 @@ package org.ijsberg.iglu.util.execution;
 public abstract class Executable implements Runnable {
 
 	private boolean finished;
-	private boolean aborted;
+	protected boolean aborted = false;
 	private Throwable execException;
 	private Thread executeThread;
 	private Object retval;
