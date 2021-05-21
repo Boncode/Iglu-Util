@@ -810,8 +810,10 @@ public abstract class FileSupport {
 	 * @param file
 	 */
 	public static void deleteFile(File file) throws IOException {
-		deleteContentsInDirectoryTree(file, null);
-		deleteActualFile(file.getPath());
+		if(file.exists()) {
+			deleteContentsInDirectoryTree(file, null);
+			deleteActualFile(file.getPath());
+		}
 	}
 
 	public static void deleteFile(String fileName) throws IOException {
