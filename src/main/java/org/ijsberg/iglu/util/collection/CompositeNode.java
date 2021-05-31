@@ -93,6 +93,29 @@ public class CompositeNode<T> {
         return retval;
     }
 
+    public boolean isInPath(T someNode) {
+        if(reflectedObject.equals(someNode)) {
+            return true;
+        } else {
+            if(superNode != null) {
+                return superNode.isInPath(someNode);
+            }
+        }
+        return false;
+    }
+
+    public List<CompositeNode<T>> getPathUntilEntryNode(T entryNode) {
+        List<CompositeNode<T>> retval = new ArrayList<>();
+        if(superNode != null) {
+            if(superNode.getReflectedObject().equals(entryNode)) {
+                retval.add(superNode);
+            } else {
+                retval.addAll(superNode.getPath());
+            }
+        }
+        retval.add(this);
+        return retval;
+    }
     public T getReflectedObject() {
         return reflectedObject;
     }
