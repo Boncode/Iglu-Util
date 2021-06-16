@@ -110,7 +110,7 @@ public class CompositeNode<T> {
             if(superNode.getReflectedObject().equals(entryNode)) {
                 retval.add(superNode);
             } else {
-                retval.addAll(superNode.getPath());
+                retval.addAll(superNode.getPathUntilEntryNode(entryNode));
             }
         }
         retval.add(this);
