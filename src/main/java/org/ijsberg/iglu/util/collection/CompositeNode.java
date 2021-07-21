@@ -57,6 +57,10 @@ public class CompositeNode<T> {
         return name + ":" + reflectedObject.getClass().getSimpleName();
     }
 
+    public String getName() {
+        return name;
+    }
+
     public List<CompositeNode<T>> getLeafs() {
         List<CompositeNode<T>> retval = new ArrayList<>();
         if(referencedNodes == null || referencedNodes.isEmpty()) {
