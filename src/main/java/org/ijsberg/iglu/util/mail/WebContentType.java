@@ -70,6 +70,7 @@ public enum WebContentType {
     JPEG("jpeg", "image/jpeg"),
     JPG("jpg", "image/jpeg"),
     JS("js", "text/javascript"),
+    TS("ts", "text/javascript"),
     JSP("jsp", "text/html"),
     LATEX("latex", "application/x-latex"),
     LCC("lcc", "application/fastman"),
