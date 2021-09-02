@@ -1,9 +1,11 @@
 package org.ijsberg.iglu.util.tool;
 
+import org.ijsberg.iglu.util.ResourceException;
 import org.ijsberg.iglu.util.formatting.NumberFormatter;
 import org.ijsberg.iglu.util.io.FSFileCollection;
 import org.ijsberg.iglu.util.io.FileCollectionComparison;
 import org.ijsberg.iglu.util.io.FileFilterRuleSet;
+import org.ijsberg.iglu.util.io.FileSupport;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +28,11 @@ public class SynchronizeDirectories {
         this(sourceDir, targetDir, new FileFilterRuleSet());
     }
 
-    public SynchronizeDirectories(String sourceDir, String targetDir, FileFilterRuleSet filter) {
+    public SynchronizeDirectories(String sourceDir, String targetDir, FileFilterRuleSet filter) throws ResourceException {
+
+        FileSupport.assertDirExists(new File(sourceDir));
+        FileSupport.assertDirExists(new File(targetDir));
+
         this.sourceDir = sourceDir;
         this.targetDir = targetDir;
         this.filter = filter;
