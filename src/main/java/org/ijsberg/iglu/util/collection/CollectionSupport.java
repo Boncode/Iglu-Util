@@ -19,10 +19,10 @@
 
 package org.ijsberg.iglu.util.collection;
 
+import org.ijsberg.iglu.util.formatting.PatternMatchingSupport;
+
 import java.io.PrintStream;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Contains static methods for formatting of collections, as well as arrays and maps.
@@ -158,5 +158,13 @@ public abstract class CollectionSupport {
 	}
 
 
-
+	public static List<String> filter(List<String> strings, String wildcardExpression) {
+		List<String> result = new ArrayList<>();
+		for(String s : strings) {
+			if(PatternMatchingSupport.valueMatchesWildcardExpression(s, wildcardExpression)) {
+				result.add(s);
+			}
+		}
+		return result;
+	}
 }
