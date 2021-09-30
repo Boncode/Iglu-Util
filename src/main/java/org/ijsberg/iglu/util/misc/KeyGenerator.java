@@ -54,6 +54,9 @@ public abstract class KeyGenerator {
 		for (int i = 0; i < s.length(); i++) {
 			code += codeArray[randomizer.nextInt(6)][s.charAt(i) - 48];
 		}
+		for (int i = 0; i < 50; i++) {
+			code += codeArray[randomizer.nextInt(6)][randomizer.nextInt(10)];
+		}
 		return code;
 	}
 }
