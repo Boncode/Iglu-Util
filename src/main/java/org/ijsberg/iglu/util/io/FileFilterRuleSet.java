@@ -38,7 +38,7 @@ import java.util.zip.ZipFile;
  */
 public class FileFilterRuleSet implements Cloneable, Serializable {
 
-    protected String includeFilesWithNameMask;
+    protected String includeFilesWithNameMask = "";
 	protected String excludeFilesWithNameMask = "";
 	protected String[] includeFilesContainingText = new String[0];
 	protected String[] excludeFilesContainingText = new String[0];
@@ -142,7 +142,9 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 
 	private boolean includeBecauseOfName(String fileName) {
 
-		boolean retval = includeFilesWithNameMask == null || "*".equals(includeFilesWithNameMask) ||
+		boolean retval = includeFilesWithNameMask == null
+				|| "".equals(includeFilesWithNameMask)
+				|| "*".equals(includeFilesWithNameMask) ||
 				PatternMatchingSupport.valueMatchesWildcardExpression(fileName, includeFilesWithNameMask);
 		return retval;
 	}
@@ -190,8 +192,12 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 	}
 
 	public FileFilterRuleSet includeFilesWithNameMask(String ... includeFilesWithNameMask) {
-
-		return setIncludeFilesWithNameMask(includeFilesWithNameMask);
+		String additionalExcludedFiles = (ArraySupport.format(includeFilesWithNameMask, "|"));
+		if(!"".equals(this.includeFilesWithNameMask)) {
+			additionalExcludedFiles = "|" + additionalExcludedFiles;
+		}
+		this.includeFilesWithNameMask += additionalExcludedFiles;
+		return this;
 	}
 
 	public FileFilterRuleSet setIncludeFilesWithNameMask(String[] includeFilesWithNameMask) {
@@ -201,7 +207,12 @@ public class FileFilterRuleSet implements Cloneable, Serializable {
 	}
 
 	public FileFilterRuleSet excludeFilesWithNameMask(String ... excludeFilesWithNameMask) {
-		return setExcludeFilesWithNameMask(ArraySupport.format(excludeFilesWithNameMask, "|"));
+		String additionalExcludedFiles = (ArraySupport.format(excludeFilesWithNameMask, "|"));
+		if(!"".equals(this.excludeFilesWithNameMask)) {
+			additionalExcludedFiles = "|" + additionalExcludedFiles;
+		}
+		this.excludeFilesWithNameMask += additionalExcludedFiles;
+		return this;
 	}
 
 	public FileFilterRuleSet setExcludeFilesWithNameMask(String excludeFilesWithNameMask) {
