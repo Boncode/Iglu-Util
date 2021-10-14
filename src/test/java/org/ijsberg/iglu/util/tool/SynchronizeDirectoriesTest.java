@@ -42,7 +42,7 @@ public class SynchronizeDirectoriesTest {
     @Test
     public void testCopyResources() throws IOException, InterruptedException {
         FSFileCollection fileCollectionA = new FSFileCollection(tmpDir.getPath() + "/" + RELATIVE_TARGET_DIR_A, new FileFilterRuleSet());
-        assertEquals(172, fileCollectionA.size());
+        assertEquals(174, fileCollectionA.size());
         fileCollectionA.copyWithDateTo(tmpDir.getPath() + "/" + RELATIVE_TARGET_DIR_B);
 
         Thread.sleep(10);

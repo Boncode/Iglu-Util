@@ -771,14 +771,15 @@ public abstract class FileSupport {
 	public static File writeTextFile(String filename, String text) throws IOException {
 
 		File file = createFile(filename);
-		BufferedReader reader = new BufferedReader(new StringReader(text));
+		saveTextFile(text, file);
+/*		BufferedReader reader = new BufferedReader(new StringReader(text));
 		PrintStream out = new PrintStream(file);
 		String line = null;
 		while((line = reader.readLine()) != null) {
 			out.println(line);
 		}
 		out.close();
-		return file;
+*/		return file;
 	}
 
 	/**
@@ -1155,7 +1156,7 @@ public abstract class FileSupport {
 	public static void saveTextFile(String text, File file) throws IOException {
 		FileOutputStream outputStream = new FileOutputStream(file);
 		PrintStream printStream = new PrintStream(outputStream);
-		printStream.println(text);
+		printStream.print(text);
 		outputStream.close();
 	}
 

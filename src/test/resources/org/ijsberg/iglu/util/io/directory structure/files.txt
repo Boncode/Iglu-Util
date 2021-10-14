@@ -169,3 +169,5 @@ root/WWW/test.txt
 root/WWW/visie.html
 root/source.zip
 root/target.zip
+root/source_with_dupl_files.zip
+root/target_with_dupl_files.zip

@@ -79,12 +79,12 @@ public class FileSupportTest extends DirStructureDependentTest {
 		assertTrue(file.exists());
 		List<File> foundFiles = FileSupport.getFilesInDirectoryTree(dirStructRoot);
 		
-		assertEquals(171, foundFiles.size());
+		assertEquals(173, foundFiles.size());
 
 		String testDirPath = dirStructRoot + '/';
 
 		foundFiles = FileSupport.getFilesInDirectoryTree(dirStructRoot);
-		assertEquals(171, foundFiles.size());
+		assertEquals(173, foundFiles.size());
 
 		for(File foundFile : foundFiles) {
 			System.out.println(foundFile.getName() + " : " + SynchronizeDirectories.convertToReadableByteSize(foundFile.length()));
@@ -264,12 +264,55 @@ public class FileSupportTest extends DirStructureDependentTest {
 		}
 	}
 
+	@Test
+	public void testMergeZipFiles_with_duplicated_files() throws IOException {
+		FileCollection sourceFileCollection = null;
+		FileCollection targetFileCollection = null;
+		try {
+			sourceFileCollection = new ZippedFileCollection(new File(tmpDir.getPath() + "/root/source_with_dupl_files.zip"));
+			targetFileCollection = new ZippedFileCollection(new File(tmpDir.getPath() + "/root/target_with_dupl_files.zip"));
+			assertEquals(15, targetFileCollection.size());
+			assertEquals(24121, targetFileCollection.getFileContents("kantoor/route.gif").length);
+			System.out.println(targetFileCollection.getFileNames());
+		} finally {
+			targetFileCollection.close();
+		}
+		try {
+			FileSupport.mergeInZipFile(tmpDir.getPath() + "/root/target_with_dupl_files.zip", sourceFileCollection);
+			targetFileCollection = new ZippedFileCollection(new File(tmpDir.getPath() + "/root/target_with_dupl_files.zip"));
+			System.out.println(targetFileCollection.getFileNames());
+			assertEquals(19, targetFileCollection.size());
+			assertEquals(952, targetFileCollection.getFileContents("kantoor/route.gif").length);
+		} finally {
+			sourceFileCollection.close();
+			targetFileCollection.close();
+		}
+	}
+
+	@Test
+	public void testReplaceTxtInZip() throws IOException {
+		FileCollection targetFileCollection = null;
+		try {
+			targetFileCollection = new ZippedFileCollection(new File(tmpDir.getPath() + "/root/target_with_dupl_files.zip"));
+			assertEquals(7847, targetFileCollection.getFileContents("links.html").length);
+		} finally {
+			targetFileCollection.close();
+		}
+		try {
+			FileSupport.putTextFileInZip(tmpDir.getPath() + "/root/target_with_dupl_files.zip", "links.html", "Hello World!");
+			targetFileCollection = new ZippedFileCollection(new File(tmpDir.getPath() + "/root/target_with_dupl_files.zip"));
+			assertEquals(12, targetFileCollection.getFileContents("links.html").length);
+			assertEquals("Hello World!", new String(targetFileCollection.getFileContents("links.html")));
+		} finally {
+			targetFileCollection.close();
+		}
+	}
 
 	@Test
 	public void testGetResourceFolderFilesRecursive() throws IOException, URISyntaxException {
 		List<String> fileNames = FileSupport.getResourceFolderFilesRecursive(this.getClass(), "");
 		//This changes every time test resources are added or removed
-		assertEquals(215, fileNames.size());
+		assertEquals(217, fileNames.size());
 		//System.out.println(fileNames);
 	}
 
