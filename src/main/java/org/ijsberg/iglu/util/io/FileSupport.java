@@ -847,6 +847,19 @@ public abstract class FileSupport {
 		file.setLastModified(System.currentTimeMillis());
 	}
 
+	public static void renameFile(String fileName, String newFileName, boolean overwriteExisting) throws IOException {
+		File destFile = new File(newFileName);
+		if(destFile.exists()) {
+			if(overwriteExisting) {
+				destFile.delete();
+			} else {
+				throw new IOException("file '" + destFile.getAbsolutePath() + "' already exists");
+			}
+		}
+		File sourceFile = new File(fileName);
+		sourceFile.renameTo(destFile);
+	}
+
 	public static void moveFile(String fileName, String newFileName, boolean overwriteExisting) throws IOException {
 		File sourceFile = new File(fileName);
 		copyFile(new File(fileName), newFileName, overwriteExisting);
@@ -880,7 +893,9 @@ public abstract class FileSupport {
 			if(file.getParent() != null) {
 				newFile.getParentFile().mkdirs();
 			}
-			newFile.createNewFile();
+			if(!newFile.exists()) {
+				newFile.createNewFile();
+			}
 		}
 		byte[] buffer = new byte[COPY_BUFFER];
 
