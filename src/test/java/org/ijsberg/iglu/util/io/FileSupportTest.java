@@ -295,6 +295,7 @@ public class FileSupportTest extends DirStructureDependentTest {
 		try {
 			targetFileCollection = new ZippedFileCollection(new File(tmpDir.getPath() + "/root/target_with_dupl_files.zip"));
 			assertEquals(7847, targetFileCollection.getFileContents("links.html").length);
+			assertEquals(15, targetFileCollection.size());
 		} finally {
 			targetFileCollection.close();
 		}
@@ -303,6 +304,14 @@ public class FileSupportTest extends DirStructureDependentTest {
 			targetFileCollection = new ZippedFileCollection(new File(tmpDir.getPath() + "/root/target_with_dupl_files.zip"));
 			assertEquals(12, targetFileCollection.getFileContents("links.html").length);
 			assertEquals("Hello World!", new String(targetFileCollection.getFileContents("links.html")));
+		} finally {
+			targetFileCollection.close();
+		}
+		try {
+			FileSupport.putTextFileInZip(tmpDir.getPath() + "/root/target_with_dupl_files.zip", "bogus.html", "Hello World!");
+			targetFileCollection = new ZippedFileCollection(new File(tmpDir.getPath() + "/root/target_with_dupl_files.zip"));
+			assertEquals(12, targetFileCollection.getFileContents("bogus.html").length);
+			assertEquals(16, targetFileCollection.size());
 		} finally {
 			targetFileCollection.close();
 		}
