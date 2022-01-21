@@ -108,6 +108,17 @@ public class CompositeNode<T> {
         return false;
     }
 
+    public List<CompositeNode<T>> getAllFromTree() {
+        List<CompositeNode<T>> retval = new ArrayList<>();
+        if(referencedNodes != null) {
+            retval.addAll(referencedNodes);
+            for (CompositeNode<T> referencedNode : referencedNodes) {
+                retval.addAll(referencedNode.getAllFromTree());
+            }
+        }
+        return retval;
+    }
+
     public List<CompositeNode<T>> getPathUntilEntryNode(T entryNode) {
         List<CompositeNode<T>> retval = new ArrayList<>();
         if(superNode != null) {
