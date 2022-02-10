@@ -8,6 +8,8 @@ import java.util.Map;
 
 public class ShannonEntropy {
 
+    private static String SOME_PASSWORD = "sfdgklj&32Z9*sH";//"ü";
+
     private static String SAMPLE = "1010010101010111010101001010101";//"ü";
     private static final String JWT =
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
@@ -29,8 +31,17 @@ public class ShannonEntropy {
         }
 */
         //System.out.println("1. " + calculate(256, array));
-        System.out.println("1. " + calculateShannonEntropy(JWT.toCharArray()));
-        System.out.println("2. " + calculateShannonEntropy(JWT.toCharArray()) / JWT.length());
+        System.out.println("1. " + calculateShannonEntropy(SAMPLE.toCharArray()));
+        System.out.println("2. " + calculateShannonEntropy(SAMPLE.toCharArray()) / SAMPLE.length());
+
+        System.out.println("3. " + calculateShannonEntropy(JWT.toCharArray()));
+        System.out.println("4. " + calculateShannonEntropy(JWT.toCharArray()) / JWT.length());
+
+        System.out.println("5. " + calculateShannonEntropy(TEXT.toCharArray()));
+        System.out.println("6. " + calculateShannonEntropy(TEXT.toCharArray()) / TEXT.length());
+
+        System.out.println("7. " + calculateShannonEntropy(SOME_PASSWORD.toCharArray()));
+        System.out.println("8. " + calculateShannonEntropy(SOME_PASSWORD.toCharArray()) / SOME_PASSWORD.length());
     }
 
 
