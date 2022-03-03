@@ -31,7 +31,8 @@ public class Directory {
 
 	private String fullDirectoryName = "";
 	private String directoryName;
-	private List<String> fileNames = new ArrayList<String>();
+	private List<String> fullFileNames = new ArrayList<>();
+	private List<String> fileNames = new ArrayList<>();
 	private TreeMap<String, Directory> subdirectories = new TreeMap<String, Directory>();
 
 	public Directory(String directoryName) {
@@ -64,7 +65,8 @@ public class Directory {
 			}
 			subdir.addFile(fileName, fullPathAndName);
 		} else {
-			fileNames.add(fullPathAndName);
+			fullFileNames.add(fullPathAndName);
+			fileNames.add(relativePathAndName);
 		}
 	}
 
@@ -86,6 +88,10 @@ public class Directory {
 
 	public String getFullName() {
 		return fullDirectoryName;
+	}
+
+	public List<String> getFullFileNames() {
+		return fullFileNames;
 	}
 
 	public List<String> getFileNames() {
