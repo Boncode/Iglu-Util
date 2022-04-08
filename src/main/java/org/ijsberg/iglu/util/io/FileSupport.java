@@ -78,6 +78,11 @@ public abstract class FileSupport {
 		return dir.exists() && dir.isDirectory();
 	}
 
+	public static boolean fileExists(String fileLoc) {
+		File file = new File(fileLoc);
+		return file.exists();
+	}
+
 	public static void assertDirExistsFallbackCreate(File dir) {
 		try {
 			assertDirExists(dir);
