@@ -105,7 +105,7 @@ public class EMail
 				}
 			}
 			else {
-				String boundary = "----=" + KeyGenerator.generateKey();
+				String boundary = "----=" + KeyGenerator.generateKey(60);
 				outMail.println("MIME-Version: 1.0\n" +
 						"Content-Type: multipart/mixed; " +
 						"boundary=\"" + boundary + '\"');

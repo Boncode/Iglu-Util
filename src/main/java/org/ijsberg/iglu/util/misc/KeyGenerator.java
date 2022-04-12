@@ -41,12 +41,13 @@ public abstract class KeyGenerator {
 	 * Generates a random key which is guaranteed to be unique within the application.
 	 *
 	 * @return
+	 * @param fillOutLength
 	 */
-	public static synchronized String generateKey() {
+	public static synchronized String generateKey(int fillOutLength) {
 		String code = "";
 
 		long nr = System.currentTimeMillis();
-		if (nr <= lastnr) {
+		if (nr == lastnr) {
 			nr = lastnr + 1;
 		}
 		lastnr = nr;
@@ -54,7 +55,7 @@ public abstract class KeyGenerator {
 		for (int i = 0; i < s.length(); i++) {
 			code += codeArray[randomizer.nextInt(6)][s.charAt(i) - 48];
 		}
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; (i < fillOutLength - s.length()); i++) {
 			code += codeArray[randomizer.nextInt(6)][randomizer.nextInt(10)];
 		}
 		return code;
