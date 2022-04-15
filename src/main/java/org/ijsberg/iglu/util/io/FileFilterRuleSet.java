@@ -21,7 +21,6 @@ package org.ijsberg.iglu.util.io;
 
 import org.ijsberg.iglu.util.collection.ArraySupport;
 import org.ijsberg.iglu.util.formatting.PatternMatchingSupport;
-import org.ijsberg.iglu.util.misc.StringSupport;
 
 import java.io.File;
 import java.io.IOException;

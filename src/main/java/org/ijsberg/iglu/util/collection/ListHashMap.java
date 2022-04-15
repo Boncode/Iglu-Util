@@ -1,7 +1,7 @@
 package org.ijsberg.iglu.util.collection;
 
-import java.io.Serializable;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by jeroe on 23/08/2018.

@@ -19,13 +19,13 @@
 
 package org.ijsberg.iglu.util.io;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.*;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.*;
+
+import static org.junit.Assert.assertEquals;
 
 
 /**

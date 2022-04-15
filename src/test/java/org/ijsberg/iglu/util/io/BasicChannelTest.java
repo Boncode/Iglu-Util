@@ -20,6 +20,7 @@
 package org.ijsberg.iglu.util.io;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 
 public class BasicChannelTest {

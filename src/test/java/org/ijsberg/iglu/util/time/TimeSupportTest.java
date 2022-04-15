@@ -19,16 +19,14 @@
 
 package org.ijsberg.iglu.util.time;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 
 public class TimeSupportTest {

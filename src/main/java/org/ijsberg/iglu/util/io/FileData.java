@@ -21,7 +21,6 @@ package org.ijsberg.iglu.util.io;
 
 import org.ijsberg.iglu.util.mail.MimeTypeSupport;
 import org.ijsberg.iglu.util.misc.EncodingSupport;
-import org.ijsberg.iglu.util.misc.StringSupport;
 
 import java.io.File;
 

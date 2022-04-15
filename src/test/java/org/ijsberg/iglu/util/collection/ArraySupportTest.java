@@ -20,12 +20,12 @@
 package org.ijsberg.iglu.util.collection;
 
 
-import static junit.framework.Assert.assertEquals;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import org.junit.Test;
+import static junit.framework.Assert.assertEquals;
 
 /**
  */

@@ -1,12 +1,8 @@
 package org.ijsberg.iglu.util.io;
 
-import org.ijsberg.iglu.util.tool.SynchronizeDirectories;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FileCollectionComparison {

@@ -2,10 +2,12 @@ package org.ijsberg.iglu.util.io;
 
 import org.ijsberg.iglu.util.ResourceException;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ResourceFileCollection implements FileCollection {
 

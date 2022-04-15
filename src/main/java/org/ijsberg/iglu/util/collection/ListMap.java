@@ -1,7 +1,10 @@
 package org.ijsberg.iglu.util.collection;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by jeroe on 23/08/2018.

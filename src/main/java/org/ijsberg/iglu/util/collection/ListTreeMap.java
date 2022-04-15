@@ -19,8 +19,10 @@
 
 package org.ijsberg.iglu.util.collection;
 
-import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NavigableSet;
+import java.util.TreeMap;
 
 public class ListTreeMap<K, V> extends AbstractListMap<K, V> {
 

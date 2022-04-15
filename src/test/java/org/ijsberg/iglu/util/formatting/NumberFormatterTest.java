@@ -19,9 +19,9 @@
 
 package org.ijsberg.iglu.util.formatting;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class NumberFormatterTest {
 

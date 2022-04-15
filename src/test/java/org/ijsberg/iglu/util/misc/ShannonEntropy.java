@@ -3,7 +3,6 @@ package org.ijsberg.iglu.util.misc;
 import org.junit.Test;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ShannonEntropy {

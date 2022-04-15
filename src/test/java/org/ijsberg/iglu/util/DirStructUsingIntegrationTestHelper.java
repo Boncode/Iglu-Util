@@ -8,11 +8,8 @@ import org.ijsberg.iglu.util.io.FileFilterRuleSet;
 import org.ijsberg.iglu.util.io.FileSupport;
 import org.ijsberg.iglu.util.io.ResourceFileCollection;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

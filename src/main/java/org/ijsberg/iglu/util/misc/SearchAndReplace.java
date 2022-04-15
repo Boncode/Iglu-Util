@@ -1,6 +1,5 @@
 package org.ijsberg.iglu.util.misc;
 
-import org.ijsberg.iglu.util.collection.ArraySupport;
 import org.ijsberg.iglu.util.io.FSFileCollection;
 import org.ijsberg.iglu.util.io.FileCollection;
 import org.ijsberg.iglu.util.io.FileFilterRuleSet;
@@ -8,7 +7,8 @@ import org.ijsberg.iglu.util.io.FileSupport;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Properties;
 
 /**
  * Created by J Meetsma on 4-12-2015.

@@ -22,8 +22,6 @@ package org.ijsberg.iglu.util.misc;
 
 import org.junit.Test;
 
-import java.awt.*;
-
 public class KeyGeneratorTest {
 
     @Test

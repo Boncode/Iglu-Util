@@ -19,12 +19,9 @@
 
 package org.ijsberg.iglu.util.execution;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
-
 import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  */

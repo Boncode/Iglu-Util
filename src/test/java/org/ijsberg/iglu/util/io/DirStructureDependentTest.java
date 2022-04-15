@@ -19,12 +19,12 @@
 
 package org.ijsberg.iglu.util.io;
 
+import org.junit.After;
+import org.junit.Before;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.StringReader;
-
-import org.junit.After;
-import org.junit.Before;
 
 /**
  * Copies a directory structure from test resources to temporary directory tmpDir.

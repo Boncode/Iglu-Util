@@ -19,16 +19,11 @@
 
 package org.ijsberg.iglu.util.time;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
-
-import org.ijsberg.iglu.util.execution.Executable;
-import org.ijsberg.iglu.util.execution.TimeOutException;
 import org.junit.Test;
+
+import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class SafeDateFormatTest {

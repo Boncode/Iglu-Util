@@ -21,7 +21,6 @@ package org.ijsberg.iglu.util.io;
 
 
 import org.ijsberg.iglu.util.tool.SynchronizeDirectories;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
