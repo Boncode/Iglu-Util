@@ -44,9 +44,12 @@ public abstract class KeyGenerator {
 	 * @param fillOutLength
 	 */
 	public static synchronized String generateKey(int fillOutLength) {
+		return generateKeyFromLong(System.currentTimeMillis(), fillOutLength);
+	}
+
+	public static synchronized String generateKeyFromLong(long nr, int fillOutLength) {
 		String code = "";
 
-		long nr = System.currentTimeMillis();
 		if (nr == lastnr) {
 			nr = lastnr + 1;
 		}
@@ -59,6 +62,24 @@ public abstract class KeyGenerator {
 			code += codeArray[randomizer.nextInt(6)][randomizer.nextInt(10)];
 		}
 		return code;
+	}
+
+	public static long getLongFromKey(String key) {
+
+		StringBuffer nr = new StringBuffer();
+		for (int i = 0; i < key.length(); i++) {
+			char c = key.charAt(i);
+			LOOP:
+			for(int j = 0; j < 6; j++) {
+				for(int k = 0; k < 10; k++){
+					if(codeArray[j][k] == c) {
+						nr.append(k);
+						break LOOP;
+					}
+				}
+			}
+		}
+		return Long.parseLong(nr.toString());
 	}
 }
 

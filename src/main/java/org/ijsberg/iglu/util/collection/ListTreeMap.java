@@ -22,128 +22,53 @@ package org.ijsberg.iglu.util.collection;
 import java.io.Serializable;
 import java.util.*;
 
-public class ListTreeMap<K, V> implements ListMap<K, V> {
-	
-	protected TreeMap<K, List<V>> internalMap = new TreeMap<K, List<V>>();
-	private int loadFactor = 10;
+public class ListTreeMap<K, V> extends AbstractListMap<K, V> {
+
+	static final long serialVersionUID = 27L;
 
 	public ListTreeMap() {
+		internalMap = new TreeMap<>();
 	}
 	
 	public ListTreeMap(int loadFactor) {
+		this();
 		this.loadFactor = loadFactor;
 	}
 
 	public ListTreeMap(ListTreeMap<K, V> listMap) {
+		this();
 		for(K key : listMap.internalMap.keySet()) {
 			put(key, listMap.internalMap.get(key));
 		}
 	}
 
-	public void createEntry(K key) {
-		createOrRetrieveList(key);
-	}
-
-	protected List<V> createOrRetrieveList(K key) {
-		List<V> list = internalMap.get(key);
-		if(list == null) {
-			list = new ArrayList<V>(loadFactor);
-			internalMap.put(key, list);
+	public ListTreeMap(TreeMap<K, List<V>> listMap) {
+		this();
+		for(K key : listMap.keySet()) {
+			put(key, listMap.get(key));
 		}
-		return list;
-	}
-	
-	public List<V> put(K key, V value) {
-        if(!(key instanceof Comparable)) {
-            throw new ClassCastException("key of type " + key.getClass().getSimpleName() + " K must implement Comparable");
-        }
-		List<V> list = createOrRetrieveList(key);
-		list.add(value);
-		return list;
 	}
 
-	public List<V> putDistinct(K key, V value) {
-		List<V> list = createOrRetrieveList(key);
-		if(!list.contains(value)) {
-			put(key, value);
-		}
-		return list;
-	}
-
-	public List<V> put(K key, V ... values) {
-		return put(key, Arrays.asList(values));
-	}
-
-	public List<V> put(K key, List<V> values) {
+	private void checkKeyIsComparable(K key) {
 		if(!(key instanceof Comparable)) {
-			throw new ClassCastException("key " + key.getClass().getSimpleName() + " must implement Comparable");
-		}
-		List<V> list = createOrRetrieveList(key);
-		list.addAll(values);
-		return list;
-	}
-
-	public void putAll(Map<K, V> values) {
-		for(K key : values.keySet()) {
-			put(key, values.get(key));
+			throw new ClassCastException("key of type " + key.getClass().getSimpleName() + " K must implement Comparable");
 		}
 	}
 
-	public void putAll(ListTreeMap<K, V> values) {
-		for(K key : values.keySet()) {
-			put(key, values.get(key));
-		}
-	}
-
-	public TreeMap<K, List<V>> getMap() {
-		return internalMap;
-	}
-	
-	public List<V> get(K key) {
-		return internalMap.get(key);
-	}
-	
-	public List<V> getByIndex(int index) {
-		return internalMap.get(new ArrayList<K>(internalMap.keySet()).get(index));
-	}
-
-	public String toString() {
-		return internalMap.toString();
-	}
-
-	public Set<K> keySet() {
-		return internalMap.keySet();
-	}
-	
-	public Set<K> descendingKeySet() {
-		return internalMap.descendingKeySet();
-	}
-
-	public int size() {
-		//nr of items
-		int retval = 0;
-		for(List<V> list : internalMap.values()) {
-			retval += list.size();
-		}
-		return retval;
+	@Override
+	protected List<V> createOrRetrieveList(K key) {
+		checkKeyIsComparable(key);
+		return super.createOrRetrieveList(key);
 	}
 
 
-	public Collection<List<V>> lists() {
-		return internalMap.values();
-	}
-
-	public List<V> values() {
-		List<V> retval = new ArrayList<V>();
-		for(List<V> list : internalMap.values()) {
-			retval.addAll(list);
-		}
-		return retval;
+	public NavigableSet<K> descendingKeySet() {
+		return ((TreeMap<K,List<V>>)internalMap).descendingKeySet();
 	}
 
 	public List<V> valuesDescending() {
 		List<V> retval = new ArrayList<V>();
-		for(K key : internalMap.descendingKeySet()) {
+		for(K key : descendingKeySet()) {
 			retval.addAll(internalMap.get(key));
 		}
 		return retval;
@@ -152,7 +77,7 @@ public class ListTreeMap<K, V> implements ListMap<K, V> {
 	public List<V> getTop(int x) {
 		
 		List<V> retval = new ArrayList<V>();
-		for(List<V> values : internalMap.descendingMap().values()) {
+		for(List<V> values : ((TreeMap<K, List<V>>)internalMap).descendingMap().values()) {
 			if(retval.size() == x) {
 				return retval;
 			} else if (values.size() < x - retval.size()) {
@@ -163,53 +88,4 @@ public class ListTreeMap<K, V> implements ListMap<K, V> {
 		}
 		return retval;
 	}
-
-	public V removeFirst(K key) {
-		
-		List<V> list = internalMap.get(key);
-		if(!list.isEmpty()) {
-			return list.remove(0);
-		}
-		return null;
-		
-	}
-
-    public boolean remove(K key, V value) {
-
-        List<V> list = internalMap.get(key);
-        if(!list.isEmpty()) {
-            return list.remove(value);
-        }
-        return false;
-
-    }
-
-	public List<V> removeAll(K key) {
-		return internalMap.remove(key);
-	}
-
-	public boolean contains(K key, V value) {
-		List<V> values;
-		return ((values = get(key)) != null && values.contains(value));
-	}
-
-	public boolean containsKey(K key) {
-		return internalMap.containsKey(key);
-	}
-
-	public int indexOf(K key, V value) {
-		List<V> values;
-		return (values = get(key)) == null ? -1 : values.indexOf(value);
-	}
-
-	@Override
-	public void clear() {
-		internalMap.clear();
-	}
-
-    @Override
-    public Map toMap() {
-        return null;
-    }
-
 }

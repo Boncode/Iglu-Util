@@ -13,6 +13,8 @@ public interface ListMap<K, V> extends Serializable {
 
     List<V> put(K key, V... values);
 
+    List<V> put(K key, int index, V value);
+
     List<V> put(K key, List<V> values);
 
     void putAll(Map<K, V> values);
@@ -58,6 +60,8 @@ public interface ListMap<K, V> extends Serializable {
 
     List<V> removeAll(K key);
 
+    void empty(K key);
+
     boolean contains(K key, V value);
 
     boolean containsKey(K key);
@@ -66,5 +70,9 @@ public interface ListMap<K, V> extends Serializable {
 
     void clear();
 
+    /**
+     *
+     * @return a map with the first value of each list
+     */
     Map toMap();
 }

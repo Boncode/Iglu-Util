@@ -20,6 +20,20 @@
 package org.ijsberg.iglu.util.misc;
 
 
+import org.junit.Test;
+
+import java.awt.*;
+
 public class KeyGeneratorTest {
+
+    @Test
+    public void test() {
+        long currentTimeInMillis = 1649850554992l;//System.currentTimeMillis();
+        System.out.println("input:" + currentTimeInMillis);
+        String key = KeyGenerator.generateKeyFromLong(currentTimeInMillis, 0);
+        System.out.println("key:" + key);
+        System.out.println("restoredKey:" + KeyGenerator.getLongFromKey(key));
+    }
+
 }
 

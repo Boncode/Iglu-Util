@@ -1277,7 +1277,7 @@ public abstract class FileSupport {
 
 
 	public static void saveSerializable(Serializable serializable, String fileName) throws IOException {
-		
+
 		FileOutputStream fStream = new FileOutputStream(fileName);
 		ObjectOutputStream oOutput = new ObjectOutputStream(fStream);
 
