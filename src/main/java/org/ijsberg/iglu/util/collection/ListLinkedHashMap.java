@@ -1,7 +1,6 @@
 package org.ijsberg.iglu.util.collection;
 
-import java.util.LinkedHashMap;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by jeroe on 23/08/2018.
@@ -19,12 +18,19 @@ public class ListLinkedHashMap<K, V> extends ListHashMap<K, V> {
         this.loadFactor = loadFactor;
     }
 
-    public ListLinkedHashMap(ListTreeMap<K, V> listMap) {
+    public ListLinkedHashMap(AbstractListMap<K, V> listMap) {
         this();
         for(K key : listMap.internalMap.keySet()) {
             put(key, listMap.internalMap.get(key));
         }
     }
+
+    public Set<K> reverseKeySet() {
+        List<K> list = new ArrayList<>(internalMap.keySet());
+        Collections.reverse(list);
+        return new HashSet<>(list);
+    }
+
 
     public ListLinkedHashMap<K, V> append(K key, V ... values) {
         put(key, values);

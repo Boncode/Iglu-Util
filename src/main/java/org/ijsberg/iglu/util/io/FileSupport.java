@@ -68,6 +68,19 @@ public abstract class FileSupport {
 		return result.toArray(new String[0]);
 	}
 
+	public static String[] listFilesInDirectory(String path, FileFilterRuleSet ruleSet) {
+		ArrayList<String> result = new ArrayList();
+		File directory = new File(path);
+		if(directory.list() != null) {
+			for (String fileName : directory.list()) {
+				if (ruleSet.fileMatchesRules(new File(path + "/" + fileName))) {
+					result.add(fileName);
+				}
+			}
+		}
+		return result.toArray(new String[0]);
+	}
+
 	public static void assertDirExists(File dir) {
 		if(!dir.exists() || !dir.isDirectory()) {
 			throw new ResourceException(dir.getAbsolutePath() + " is not a valid directory");
