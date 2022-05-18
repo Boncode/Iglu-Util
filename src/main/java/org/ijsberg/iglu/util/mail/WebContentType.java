@@ -179,7 +179,8 @@ public enum WebContentType {
     XWD("xwd", "image/x-xwindowdump"),
     ZIP("zip", "application/zip"),
     ZTARDIST("ztardist", "application/x-ztardist"),
-    EVENT_STREAM("", "text/event-stream");
+    EVENT_STREAM("", "text/event-stream"),
+    VOID("", "");
 
     String extension;
     String contentType;
