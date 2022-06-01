@@ -167,16 +167,23 @@ public abstract class TimeSupport {
 
 	public static List<Date> getDaysInBetween(Date periodStart, Date periodEnd) {
 		List<Date> datesInBetween = new ArrayList<>();
-		Date possibleDateInBetween = new Date(periodStart.getTime() + 24 * 60 * 60 * 1000);
+		Date possibleDateInBetween = getNextDay(periodStart);
 		while(possibleDateInBetween.before(periodEnd)) {
 			datesInBetween.add(possibleDateInBetween);
-			possibleDateInBetween = new Date(possibleDateInBetween.getTime() + 24 * 60 * 60 * 1000);
+			possibleDateInBetween = getNextDay(possibleDateInBetween);
 		}
 		return datesInBetween;
 	}
 
 	public static Date nowMinus(long differenceInMillis) {
 		return new Date(System.currentTimeMillis() - differenceInMillis);
+	}
+
+	public static Date getNextDay(Date date) {
+		Calendar calInput = new GregorianCalendar();
+		calInput.setTime(date);
+		calInput.add(Calendar.DATE, 1);
+		return calInput.getTime();
 	}
 
 }

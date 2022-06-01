@@ -21,6 +21,7 @@ package org.ijsberg.iglu.util.time;
 
 import org.junit.Test;
 
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -178,7 +179,26 @@ public class TimeSupportTest {
 		return new GregorianCalendar(1970, 0, 27, hours, minutes).getTimeInMillis();
 	}
 	
-	
+	@Test
+	public void testGetDaysInBetween() throws Exception {
+		int nrOfDays = 10;
+		long startMillis = 12821893922L;
+		Date firstDate = new Date(startMillis);
+		Date secondDate = new Date(startMillis + (1000 * 60 * 60 * 24) * nrOfDays);
+		assertEquals(nrOfDays-1, TimeSupport.getDaysInBetween(firstDate, secondDate).size());
+	}
+
+	@Test
+	public void testGetNextDay() throws Exception {
+		long startMillis = 12821893922L;
+		Date currentDate = new Date(startMillis);
+
+		for(int i = 1; i <= 365; i++) { // test a full year after
+			Date nextDate = TimeSupport.getNextDay(currentDate);
+			assertEquals(TimeSupport.DAY_IN_MS, nextDate.getTime() - currentDate.getTime());
+			currentDate = nextDate;
+		}
+	}
 
 }
 
