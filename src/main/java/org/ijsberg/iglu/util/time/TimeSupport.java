@@ -19,6 +19,9 @@
 
 package org.ijsberg.iglu.util.time;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.*;
 
 /**
@@ -184,6 +187,13 @@ public abstract class TimeSupport {
 		calInput.setTime(date);
 		calInput.add(Calendar.DATE, 1);
 		return calInput.getTime();
+	}
+
+	public static Date convertFromISO_8601(String timestamp) {
+		TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(timestamp);
+		Instant i = Instant.from(ta);
+		Date d = Date.from(i);
+		return d;
 	}
 
 }
