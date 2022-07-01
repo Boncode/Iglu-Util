@@ -3,9 +3,11 @@ package org.ijsberg.iglu.util.io.model;
 public class FileDto {
 
     private String fileName;
+    private String dirName;
 
-    public FileDto(String fileName) {
+    public FileDto(String fileName, String dirName) {
         this.fileName = fileName;
+        this.dirName = dirName;
     }
 
     public String getFileName() {
@@ -16,4 +18,11 @@ public class FileDto {
         this.fileName = fileName;
     }
 
+    public String getDirName() {
+        return dirName;
+    }
+
+    public void setDirName(String dirName) {
+        this.dirName = dirName;
+    }
 }
