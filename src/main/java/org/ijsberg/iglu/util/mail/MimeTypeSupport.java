@@ -36,5 +36,8 @@ public abstract class MimeTypeSupport {
         return contentType.contentType;
 	}
 
+	public static String getMimeTypeForFileName(String fileName) {
+		return getMimeTypeForFileExtension(fileName.substring(fileName.lastIndexOf('.') + 1));
+	}
 
 }
