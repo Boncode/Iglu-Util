@@ -148,7 +148,7 @@ public class FileData {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 		if (fileName.lastIndexOf('.') != -1) {
-			extension = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length());
+			extension = fileName.substring(fileName.lastIndexOf('.') + 1);
 			fileNameNoExt = fileName.substring(0, fileName.lastIndexOf('.'));
 		}
 		else {
