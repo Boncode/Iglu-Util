@@ -61,7 +61,7 @@ public abstract class AbstractListMap<K, V> implements Serializable, ListMap<K, 
         return list;
     }
 
-    public List<V> replaceValues(K key, List<V> values) {
+    public List<V> addOrReplaceValues(K key, List<V> values) {
         List<V> list = createOrRetrieveList(key);
         list.clear();
         list.addAll(values);

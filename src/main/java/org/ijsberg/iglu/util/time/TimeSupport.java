@@ -136,11 +136,19 @@ public abstract class TimeSupport {
 	}
 	
 	/**
-	 * @param time time in millis
-	 * @return time in milles rounded to the minute
+	 * @param time time in date format
+	 * @return time rounded to the minute
 	 */
 	public static long roundToMinute(long time) {
 		return MINUTE_IN_MS * ((time + HALF_MINUTE_IN_MS) / MINUTE_IN_MS);
+	}
+
+	/**
+	 * @param time time in millis
+	 * @return time in milles rounded to the minute
+	 */
+	public static Date roundToMinute(Date time) {
+		return new Date(MINUTE_IN_MS * ((time.getTime() + HALF_MINUTE_IN_MS) / MINUTE_IN_MS));
 	}
 
 	/**
