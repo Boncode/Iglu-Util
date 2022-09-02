@@ -108,5 +108,15 @@ public class PatternMatchingSupportTest {
 	public void testValueMatchesUrl_6() {
 		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("COPYRIGHT", ".*((C|c)opyright|COPYRIGHT).*"));
 	}
+
+	@Test
+	public void testFilterPublicContent() {
+		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("dashboard.com/index.html", "(.*\\.html|.*\\.ico|.*\\.js|.*\\.css|/monitor/login)"));
+	}
+
+	@Test
+	public void testPasswordRegex() {
+		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("koenTest1", "^(?!.*:).*(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,64}$"));
+	}
 }
 
