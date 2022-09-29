@@ -167,4 +167,15 @@ public abstract class CollectionSupport {
 		}
 		return result;
 	}
+
+	public static <K,V> Map<K,V> sortByValue(Map<K,V> map, Comparator<Map.Entry<K,V>> comparator) {
+		LinkedList<Map.Entry<K,V>> entryList = new LinkedList<>(map.entrySet());
+		Collections.sort(entryList, comparator);
+
+		LinkedHashMap<K,V> sortedMap = new LinkedHashMap<>();
+		for(Map.Entry<K,V> entry : entryList){
+			sortedMap.put(entry.getKey(), entry.getValue());
+		}
+		return sortedMap;
+	}
 }
