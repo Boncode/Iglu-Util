@@ -197,6 +197,14 @@ public abstract class TimeSupport {
 		return calInput.getTime();
 	}
 
+	public static Date getDateAfterNrOfDays(Date date, int nrOfDays) {
+		Date nextDate = date;
+		for(int i = 0; i < nrOfDays; i++) {
+			nextDate = getNextDay(nextDate);
+		}
+		return nextDate;
+	}
+
 	public static Date convertFromISO_8601(String timestamp) {
 		TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(timestamp);
 		Instant i = Instant.from(ta);

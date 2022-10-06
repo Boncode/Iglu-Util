@@ -200,5 +200,15 @@ public class TimeSupportTest {
 		}
 	}
 
+	@Test
+	public void testGetNrOfDaysLater() throws Exception {
+		int nrOfDaysLater = 5;
+		Date currentDate = new Date(System.currentTimeMillis());
+		Date floored = TimeSupport.floorToMidnight(currentDate);
+
+		Date fiveDaysLater = TimeSupport.getDateAfterNrOfDays(floored, nrOfDaysLater);
+		assertEquals(TimeSupport.DAY_IN_MS*nrOfDaysLater, fiveDaysLater.getTime() - floored.getTime());
+	}
+
 }
 
