@@ -112,10 +112,19 @@ public abstract class TimeSupport {
 	 * @return true if the two specified times are part of the same day
 	 */
 	public static boolean isSameDay(long time1, long time2) {
+		return isSameDay(new Date(time1), new Date(time2));
+	}
+
+	/**
+	 * @param date1
+	 * @param date2
+	 * @return true if the two specified dates are part of the same day
+	 */
+	public static boolean isSameDay(Date date1, Date date2) {
 		GregorianCalendar cal1 = new GregorianCalendar();
-		cal1.setTime(new Date(time1));
+		cal1.setTime(date1);
 		GregorianCalendar cal2 = new GregorianCalendar();
-		cal2.setTime(new Date(time2));
+		cal2.setTime(date2);
 
 		return (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
 				cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
@@ -191,9 +200,13 @@ public abstract class TimeSupport {
 	}
 
 	public static Date getNextDay(Date date) {
+		return getDifferentDay(date, 1);
+	}
+
+	public static Date getDifferentDay(Date date, int nrOfDaysOffSet) {
 		Calendar calInput = new GregorianCalendar();
 		calInput.setTime(date);
-		calInput.add(Calendar.DATE, 1);
+		calInput.add(Calendar.DATE, nrOfDaysOffSet);
 		return calInput.getTime();
 	}
 
@@ -204,6 +217,7 @@ public abstract class TimeSupport {
 		}
 		return nextDate;
 	}
+
 
 	public static Date convertFromISO_8601(String timestamp) {
 		TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(timestamp);

@@ -106,12 +106,12 @@ public abstract class CollectionSupport {
 
 	/**
 	 * @param itemPrefix
-	 * @param itemPostfix
 	 * @param coll
-	 * @param separator item separator
+	 * @param itemPostfix
+	 * @param separator   item separator
 	 * @return formatted collection
 	 */
-	public static String format(String itemPrefix, String itemPostfix, Collection coll, String separator) {
+	public static String format(String itemPrefix, Collection coll, String itemPostfix, String separator) {
 		if (coll == null) return "";
 		return ArraySupport.format(itemPrefix, itemPostfix, coll.toArray(), separator);
 	}

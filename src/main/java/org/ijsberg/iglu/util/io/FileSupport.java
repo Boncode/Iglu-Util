@@ -1130,6 +1130,14 @@ public abstract class FileSupport {
 		return file;
 	}
 
+	public static List<String> convertToStringList(List<Line> lines) {
+		List<String> stringList = new ArrayList<>();
+		for(Line line : lines) {
+			stringList.add(line.getLine());
+		}
+		return stringList;
+	}
+
 	public static List<Line> convertToTextFile(String input) {
 		return convertToTextFile(input, false);
 	}

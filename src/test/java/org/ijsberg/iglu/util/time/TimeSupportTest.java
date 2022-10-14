@@ -21,7 +21,6 @@ package org.ijsberg.iglu.util.time;
 
 import org.junit.Test;
 
-import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -34,21 +33,27 @@ public class TimeSupportTest {
 
 	@Test
 	public void testTimeInMillisIsTimeZoneDependent() throws Exception {
-		
+
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-		cal.set(1970, 1, 27, 15, 6, 0);
+		cal.set(1970, 0, 27, 15, 6, 0);
 
 		long timeUtcInMillis = cal.getTimeInMillis();
 		
 		cal.setTimeZone(TimeZone.getTimeZone("CET"));
-		cal.set(1970, 1, 27, 15, 6, 0);
+		cal.set(1970, 0, 27, 15, 6, 0);
 
 		//Calendar subtracts an hour from UTC time
 		//  because the local time CET is an hour ahead
 		long timeCetInMillis = cal.getTimeInMillis();
 		
 		assertEquals(timeCetInMillis, timeUtcInMillis - TimeSupport.HOUR_IN_MS);
+	}
+
+	private static Calendar getBirthTime() {
+		Calendar cal = new GregorianCalendar();
+		cal.set(1970, 0, 27, 15, 6, 0);
+		return cal;
 	}
 
 	@Test
@@ -208,6 +213,16 @@ public class TimeSupportTest {
 
 		Date fiveDaysLater = TimeSupport.getDateAfterNrOfDays(floored, nrOfDaysLater);
 		assertEquals(TimeSupport.DAY_IN_MS*nrOfDaysLater, fiveDaysLater.getTime() - floored.getTime());
+	}
+
+	@Test
+	public void testGetDifferentDay() {
+		Calendar cal = getBirthTime();
+		Date date = cal.getTime();
+		Date differentDate = TimeSupport.getDifferentDay(date, -28);
+		cal.setTime(differentDate);
+		assertEquals(30, cal.get(Calendar.DAY_OF_MONTH));
+		assertEquals(11, cal.get(Calendar.MONTH));
 	}
 
 }
