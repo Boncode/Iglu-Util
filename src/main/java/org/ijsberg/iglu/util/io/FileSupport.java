@@ -1195,6 +1195,18 @@ public abstract class FileSupport {
 		saveTextFile(text, createFile(fileName));
 	}
 
+	public static void appendToTextFile(String text, String fileName) {
+		FileOutputStream outputStream = null;
+		try {
+			outputStream = new FileOutputStream(fileName, true);
+			PrintStream printStream = new PrintStream(outputStream);
+			printStream.println(text);
+			outputStream.close();
+		} catch (IOException e) {
+			throw new ResourceException(e);
+		}
+	}
+
 	public static void saveTextFile(String text, File file) throws IOException {
 		FileOutputStream outputStream = new FileOutputStream(file);
 		PrintStream printStream = new PrintStream(outputStream);
