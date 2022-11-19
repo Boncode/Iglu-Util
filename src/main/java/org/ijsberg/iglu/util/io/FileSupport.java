@@ -791,14 +791,7 @@ public abstract class FileSupport {
 
 		File file = createFile(filename);
 		saveTextFile(text, file);
-/*		BufferedReader reader = new BufferedReader(new StringReader(text));
-		PrintStream out = new PrintStream(file);
-		String line = null;
-		while((line = reader.readLine()) != null) {
-			out.println(line);
-		}
-		out.close();
-*/		return file;
+		return file;
 	}
 
 	/**
