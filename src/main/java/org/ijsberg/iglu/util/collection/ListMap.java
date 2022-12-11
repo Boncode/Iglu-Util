@@ -14,7 +14,7 @@ public interface ListMap<K, V> extends Serializable {
 
     List<V> putDistinct(K key, V value);
 
-    List<V> put(K key, V... values);
+    List<V> put(K key, V ... values);
 
     List<V> put(K key, int index, V value);
 
