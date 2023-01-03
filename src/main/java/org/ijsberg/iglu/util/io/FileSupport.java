@@ -777,6 +777,14 @@ public abstract class FileSupport {
 		return file;
 	}
 
+	public static File assertDirectoryExists(String directoryName) {
+		try {
+			return createDirectory(directoryName);
+		} catch (IOException e) {
+			throw new ResourceException("directory '" + directoryName + "' does not exist", e);
+		}
+	}
+
 	public static File createDirectory(String directoryname) throws IOException {
 		File file = new File(directoryname);
 		if (!file.exists()) {
