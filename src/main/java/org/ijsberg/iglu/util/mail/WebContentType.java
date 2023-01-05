@@ -1,5 +1,8 @@
 package org.ijsberg.iglu.util.mail;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.TreeMap;
 
 public enum WebContentType {
@@ -202,4 +205,13 @@ public enum WebContentType {
         }
     }
 
+    public static Set<String> filterImageExtensions() {
+        HashSet<String> imageExtensions = new HashSet<>();
+        for(WebContentType webContentType : WebContentType.values()) {
+            if(webContentType.getContentType().startsWith("image/")) {
+                imageExtensions.add(webContentType.extension);
+            }
+        }
+        return imageExtensions;
+    }
 }
