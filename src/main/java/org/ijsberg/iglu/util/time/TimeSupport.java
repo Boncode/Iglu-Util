@@ -20,14 +20,35 @@
 package org.ijsberg.iglu.util.time;
 
 import java.time.Instant;
+
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+
 import java.util.*;
+
+import static java.util.Calendar.DATE;
+import static java.util.Calendar.WEEK_OF_YEAR;
 
 /**
  * Contains convenience methods concerning time, date and scheduling.
  */
 public abstract class TimeSupport {
+
+	enum TimeUnit {
+		DAY(DATE),
+		WEEK(WEEK_OF_YEAR),
+		MONTH(Calendar.MONTH),
+		YEAR(Calendar.YEAR);
+
+		private int calendarConstant;
+		TimeUnit(int calendarConstant) {
+			this.calendarConstant = calendarConstant;
+		}
+
+		int getCalendarConstant() {
+			return calendarConstant;
+		}
+	}
 	
 	public static final int SECOND_IN_MS = 1000;
 	public static final int MINUTE_IN_MS = 60 * SECOND_IN_MS;
@@ -206,7 +227,7 @@ public abstract class TimeSupport {
 	public static Date getDifferentDay(Date date, int nrOfDaysOffSet) {
 		Calendar calInput = new GregorianCalendar();
 		calInput.setTime(date);
-		calInput.add(Calendar.DATE, nrOfDaysOffSet);
+		calInput.add(DATE, nrOfDaysOffSet);
 		return calInput.getTime();
 	}
 
@@ -224,6 +245,21 @@ public abstract class TimeSupport {
 		Instant i = Instant.from(ta);
 		Date d = Date.from(i);
 		return d;
+	}
+
+	public static Date getUpcomingDate(Date initialDate, int nrTimeUnits, TimeUnit timeUnit) {
+		return getUpcomingDate(new Date(), initialDate, nrTimeUnits, timeUnit);
+	}
+	public static Date getUpcomingDate(Date referenceDate, Date initialDate, int nrTimeUnits, TimeUnit timeUnit) {
+
+		Date nextDate = initialDate;
+		Calendar calendar = new GregorianCalendar();
+		while(nextDate.before(referenceDate)) {
+			calendar.setTime(nextDate);
+			calendar.add(timeUnit.calendarConstant, nrTimeUnits);
+			nextDate = calendar.getTime();
+		}
+		return nextDate;
 	}
 
 }

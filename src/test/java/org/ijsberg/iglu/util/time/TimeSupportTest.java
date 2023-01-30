@@ -27,6 +27,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import static java.util.Calendar.*;
+import static org.ijsberg.iglu.util.time.TimeSupport.TimeUnit.DAY;
+import static org.ijsberg.iglu.util.time.TimeSupport.TimeUnit.WEEK;
 import static org.junit.Assert.*;
 
 
@@ -62,7 +65,7 @@ public class TimeSupportTest {
 		
 		Calendar cal = new GregorianCalendar();
 		cal.set(Calendar.DAY_OF_YEAR, 1);
-		cal.set(Calendar.YEAR, 2012);
+		cal.set(YEAR, 2012);
 		cal.setTimeZone(TimeZone.getTimeZone("CET"));
 		
 		assertEquals(TimeSupport.HOUR_IN_MS, TimeSupport.getUtcOffset(cal));
@@ -224,7 +227,58 @@ public class TimeSupportTest {
 		Date differentDate = TimeSupport.getDifferentDay(date, -28);
 		cal.setTime(differentDate);
 		assertEquals(30, cal.get(Calendar.DAY_OF_MONTH));
-		assertEquals(11, cal.get(Calendar.MONTH));
+		assertEquals(11, cal.get(MONTH));
+	}
+
+	@Test
+	public void testCalculateNextDate() {
+		//NOTE calendar month starts with 0 (january)
+		Date date = new Date();
+		Calendar refDate = new GregorianCalendar();
+		refDate.set(2022,12 - 1,25);
+
+		Calendar initialDate = new GregorianCalendar();
+		initialDate.set(2022, 6 - 1, 15);
+
+		Date upcomingDate = TimeSupport.getUpcomingDate(refDate.getTime(), initialDate.getTime(), 7, DAY);
+		Calendar upcomingDateCal = new GregorianCalendar();
+		upcomingDateCal.setTime(upcomingDate);
+
+		assertEquals(2022, upcomingDateCal.get(YEAR));
+		assertEquals(11, upcomingDateCal.get(MONTH));
+		assertEquals(28, upcomingDateCal.get(DATE));
+
+		refDate.set(2022,12 - 1,29);
+		initialDate.set(2022, 12 - 1, 30);
+
+		//should be initial date
+		upcomingDate = TimeSupport.getUpcomingDate(refDate.getTime(), initialDate.getTime(), 1, WEEK);
+		upcomingDateCal.setTime(upcomingDate);
+
+		assertEquals(2022, upcomingDateCal.get(YEAR));
+		assertEquals(11, upcomingDateCal.get(MONTH));
+		assertEquals(30, upcomingDateCal.get(DATE));
+
+
+		refDate.set(2022,12 - 1,29);
+		initialDate.set(2022, 12 - 1, 28);
+
+		//should be JAN 2023
+		upcomingDate = TimeSupport.getUpcomingDate(refDate.getTime(), initialDate.getTime(), 1, WEEK);
+		upcomingDateCal.setTime(upcomingDate);
+
+		assertEquals(2023, upcomingDateCal.get(YEAR));
+		assertEquals(0, upcomingDateCal.get(MONTH));
+		assertEquals(4, upcomingDateCal.get(DATE));
+
+		//should be FEB 2023
+		upcomingDate = TimeSupport.getUpcomingDate(refDate.getTime(), initialDate.getTime(), 2, TimeSupport.TimeUnit.MONTH);
+		upcomingDateCal.setTime(upcomingDate);
+
+		assertEquals(2023, upcomingDateCal.get(YEAR));
+		assertEquals(1, upcomingDateCal.get(MONTH));
+		assertEquals(28, upcomingDateCal.get(DATE));
+
 	}
 
 }
