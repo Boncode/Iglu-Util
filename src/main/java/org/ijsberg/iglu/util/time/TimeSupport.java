@@ -26,19 +26,21 @@ import java.time.temporal.TemporalAccessor;
 
 import java.util.*;
 
-import static java.util.Calendar.DATE;
-import static java.util.Calendar.WEEK_OF_YEAR;
+import static java.util.Calendar.*;
 
 /**
  * Contains convenience methods concerning time, date and scheduling.
  */
 public abstract class TimeSupport {
 
-	enum TimeUnit {
+	public enum TimeUnit {
+		NONE(0),
+		MINUTE(Calendar.MINUTE),
+		HOUR(HOUR_OF_DAY),
 		DAY(DATE),
-		WEEK(WEEK_OF_YEAR),
 		MONTH(Calendar.MONTH),
-		YEAR(Calendar.YEAR);
+		YEAR(Calendar.YEAR),
+		WEEK(WEEK_OF_YEAR);
 
 		private int calendarConstant;
 		TimeUnit(int calendarConstant) {
