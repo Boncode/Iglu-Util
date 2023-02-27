@@ -118,5 +118,24 @@ public class PatternMatchingSupportTest {
 	public void testPasswordRegex() {
 		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("koenTest1", "^(?!.*:).*(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,64}$"));
 	}
+
+	@Test
+	public void testOSPFileNameRegex() {
+		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression( "Customer.Project.osp", "[^.]*\\.[^.]*\\.osp"));
+		assertFalse(PatternMatchingSupport.valueMatchesRegularExpression( "Customer.Project.oap", "[^.]*\\.[^.]*\\.osp"));
+		assertFalse(PatternMatchingSupport.valueMatchesRegularExpression( "Customer.Project-osp", "[^.]*\\.[^.]*\\.osp"));
+		assertFalse(PatternMatchingSupport.valueMatchesRegularExpression( "Customer-Project.osp", "[^.]*\\.[^.]*\\.osp"));
+		assertFalse(PatternMatchingSupport.valueMatchesRegularExpression( "Customer.ExtraInfo.Project.osp", "[^.]*\\.[^.]*\\.osp"));
+	}
+
+	@Test
+	public void testUploadedSnapshotRegex() {
+		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("Customer.Project.snapshot.zip","[^.]*\\.[^.]*\\.snapshot.zip"));
+		assertFalse(PatternMatchingSupport.valueMatchesRegularExpression("Customer-Project.snapshot.zip","[^.]*\\.[^.]*\\.snapshot.zip"));
+		assertFalse(PatternMatchingSupport.valueMatchesRegularExpression("Customer.Project-snapshot.zip","[^.]*\\.[^.]*\\.snapshot.zip"));
+		assertFalse(PatternMatchingSupport.valueMatchesRegularExpression("Customer.Project.zip","[^.]*\\.[^.]*\\.snapshot.zip"));
+		assertFalse(PatternMatchingSupport.valueMatchesRegularExpression("Customer.Extra.Project.snapshot.zip","[^.]*\\.[^.]*\\.snapshot.zip"));
+		assertFalse(PatternMatchingSupport.valueMatchesRegularExpression("Customer..Project.snapshot.zip","[^.]*\\.[^.]*\\.snapshot.zip"));
+	}
 }
 
