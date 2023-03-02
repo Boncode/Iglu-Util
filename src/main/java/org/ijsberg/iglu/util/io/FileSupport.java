@@ -624,7 +624,8 @@ public abstract class FileSupport {
 	}
 
 	public static List<String> getResourceFolderFiles(Class clazz, String path) throws URISyntaxException, IOException {
-		URL dirURL = Thread.currentThread().getContextClassLoader().getResource(path);
+		String unixStylePath = convertToUnixStylePath(path);
+		URL dirURL = Thread.currentThread().getContextClassLoader().getResource(unixStylePath);
 		if (dirURL != null && dirURL.getProtocol().equals("file")) {
 			return Arrays.asList(new File(dirURL.toURI()).list());
 		} else {
@@ -647,8 +648,8 @@ public abstract class FileSupport {
 				while (entries.hasMoreElements()) {
 					JarEntry jarEntry = entries.nextElement();
 					String name = jarEntry.getName();
-					if (name.startsWith(path)) { //filter according to the path
-						String entry = name.substring(path.length());
+					if (name.startsWith(unixStylePath)) { //filter according to the path
+						String entry = name.substring(unixStylePath.length());
 						int checkSubdir = entry.indexOf("/");
 						if (checkSubdir >= 0) {
 							// if it is a subdirectory, we just return the directory name
@@ -659,7 +660,7 @@ public abstract class FileSupport {
 				}
 				return new ArrayList<>(result);
 			} else {
-				String pathToFile = dirURL.getPath().substring(0, dirURL.getPath().length() - me.length()) + path;
+				String pathToFile = dirURL.getPath().substring(0, dirURL.getPath().length() - me.length()) + unixStylePath;
 				return Arrays.asList(new File(pathToFile).list());
 			}
 		}
