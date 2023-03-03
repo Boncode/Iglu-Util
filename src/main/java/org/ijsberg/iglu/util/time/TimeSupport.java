@@ -241,7 +241,6 @@ public abstract class TimeSupport {
 		return nextDate;
 	}
 
-
 	public static Date convertFromISO_8601(String timestamp) {
 		TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(timestamp);
 		Instant i = Instant.from(ta);
@@ -256,7 +255,7 @@ public abstract class TimeSupport {
 
 		Date nextDate = initialDate;
 		Calendar calendar = new GregorianCalendar();
-		while(nextDate.before(referenceDate)) {
+		while(referenceDate.after(nextDate)) {
 			calendar.setTime(nextDate);
 			calendar.add(timeUnit.calendarConstant, nrTimeUnits);
 			nextDate = calendar.getTime();

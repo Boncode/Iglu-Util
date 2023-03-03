@@ -279,6 +279,16 @@ public class TimeSupportTest {
 		assertEquals(1, upcomingDateCal.get(MONTH));
 		assertEquals(28, upcomingDateCal.get(DATE));
 
+
+		refDate.set(2022, 6 - 1, 15, 13, 3, 20);
+		initialDate.set(2022, 6 - 1, 15, 13, 1, 0);
+
+		upcomingDate = TimeSupport.getUpcomingDate(refDate.getTime(), initialDate.getTime(), 1, TimeSupport.TimeUnit.MINUTE);
+		upcomingDateCal = new GregorianCalendar();
+		upcomingDateCal.setTime(upcomingDate);
+
+		assertEquals(4, upcomingDateCal.get(MINUTE));
+
 	}
 
 }
