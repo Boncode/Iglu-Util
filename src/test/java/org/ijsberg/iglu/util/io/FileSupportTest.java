@@ -21,6 +21,7 @@ package org.ijsberg.iglu.util.io;
 
 
 import org.ijsberg.iglu.util.tool.SynchronizeDirectories;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -286,6 +287,17 @@ public class FileSupportTest extends DirStructureDependentTest {
 			sourceFileCollection.close();
 			targetFileCollection.close();
 		}
+	}
+
+	@Test
+	@Ignore
+	public void testMergeInZipFile() throws IOException {
+		FileSupport.mergeInZipFile(
+				"C:\\tmp\\Boncode\\mergeTst\\analysis-server.4.3.115.patch",
+				"configurations/analysis-server/analyzer/conf/AnalysisServer.properties",
+				FileSupport.getBinaryFromFS("C:\\tmp\\Boncode\\mergeTst\\AnalysisService.properties"
+//				FileSupport.getBinaryFromFS("C:\\tmp\\Boncode\\mergeTst\\AnalysisService_delegation_example.properties"
+			));
 	}
 
 	@Test
