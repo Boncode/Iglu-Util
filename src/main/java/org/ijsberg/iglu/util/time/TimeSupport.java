@@ -253,6 +253,9 @@ public abstract class TimeSupport {
 	}
 	public static Date getUpcomingDate(Date referenceDate, Date initialDate, int nrTimeUnits, TimeUnit timeUnit) {
 
+		if(nrTimeUnits <= 0) {
+			throw new IllegalArgumentException("nr of timeunits (" + nrTimeUnits + ") should be larger than 0");
+		}
 		Date nextDate = initialDate;
 		Calendar calendar = new GregorianCalendar();
 		while(referenceDate.after(nextDate)) {
