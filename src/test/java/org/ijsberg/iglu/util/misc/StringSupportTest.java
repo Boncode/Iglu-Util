@@ -92,6 +92,13 @@ public class StringSupportTest {
 		assertEquals("(in Apeldoorn)", result.get(5));
 		assertEquals("and", result.get(6));
 
+
+		line = "Harry, went to the \"market square\", and bought some fish";
+		result = StringSupport.split(line, "", "\"", false, false, false, true);
+		assertEquals("Harry, went to the ", result.get(0));
+		assertEquals("\"market square\"", result.get(1));
+		assertEquals(", and bought some fish", result.get(2));
+
 	}
 
 	@Test

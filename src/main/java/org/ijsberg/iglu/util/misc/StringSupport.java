@@ -148,6 +148,16 @@ public abstract class StringSupport {
 		return buf.toString();
 	}
 
+	public static void replaceAll(StringBuffer haystack, String[] needle, String newNeedle[]) {
+		if (needle.length != newNeedle.length) {
+			throw new IllegalArgumentException("length of original and replace values do not match (" + needle.length + " != " + newNeedle.length + " )");
+		}
+		for (int i = 0; i < needle.length; i++) {
+			//TODO not very elegant
+			replaceAll(haystack, needle[i], newNeedle[i]);
+		}
+	}
+
 	/**
 	 * replaces all occurrences of needle in haystack with newNeedle
 	 * the input itself is not modified
