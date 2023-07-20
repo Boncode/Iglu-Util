@@ -88,12 +88,25 @@ public class ListTreeMap<K, V> extends AbstractListMap<K, V> {
 		return retval;
 	}
 
-	public Set<V> getValuesSubset(String key) {
+	/*
+	public Set<K> getMatchingKeys(String key) {
+		Map<K, List<V>> submap = ((TreeMap)internalMap).subMap(key, key + '\255');
+		return submap.keySet();
+	}
+*/
+	public ListTreeMap<K, V> subMap(String key) {
+		Map<K, List<V>> submap = ((TreeMap)internalMap).subMap(key, key + '\255');
+		ListTreeMap submapResponse = new ListTreeMap();
+		submapResponse.internalMap = submap;
+		return submapResponse;
+	}
+
+/*	public Set<V> getValuesSubset(String key) {
 		Set<V> subset = new HashSet<>();
 		Map<K, List<V>> submap = ((TreeMap)internalMap).subMap(key, key + '\255');
 		for(List<V> values : submap.values()) {
 			subset.addAll(values);
 		}
 		return subset;
-	}
+	}*/
 }
