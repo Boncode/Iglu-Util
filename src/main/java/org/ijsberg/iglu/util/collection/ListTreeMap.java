@@ -19,10 +19,7 @@
 
 package org.ijsberg.iglu.util.collection;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NavigableSet;
-import java.util.TreeMap;
+import java.util.*;
 
 public class ListTreeMap<K, V> extends AbstractListMap<K, V> {
 
@@ -89,5 +86,14 @@ public class ListTreeMap<K, V> extends AbstractListMap<K, V> {
 			}
 		}
 		return retval;
+	}
+
+	public Set<V> getValuesSubset(String key) {
+		Set<V> subset = new HashSet<>();
+		Map<K, List<V>> submap = ((TreeMap)internalMap).subMap(key, key + '\255');
+		for(List<V> values : submap.values()) {
+			subset.addAll(values);
+		}
+		return subset;
 	}
 }
