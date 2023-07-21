@@ -125,6 +125,14 @@ public abstract class AbstractListMap<K, V> implements Serializable, ListMap<K, 
         }
         return retval;
     }
+    @Override
+    public Set<V> valueSet() {
+        Set<V> retval = new HashSet<>();
+        for(List<V> list : internalMap.values()) {
+            retval.addAll(list);
+        }
+        return retval;
+    }
 
     @Override
     public V removeFirst(K key) {

@@ -42,21 +42,23 @@ public interface ListMap<K, V> extends Serializable {
 
     List<V> values();
 
+    Set<V> valueSet();
+
     /*    public List<V> getTop(int x) {
 
-                List<V> retval = new ArrayList<V>();
-                for(List<V> values : internalMap.descendingMap().values()) {
-                    if(retval.size() == x) {
-                        return retval;
-                    } else if (values.size() < x - retval.size()) {
-                        retval.addAll(values);
-                    } else {
-                        retval.addAll(values.subList(0, x - retval.size()));
+                    List<V> retval = new ArrayList<V>();
+                    for(List<V> values : internalMap.descendingMap().values()) {
+                        if(retval.size() == x) {
+                            return retval;
+                        } else if (values.size() < x - retval.size()) {
+                            retval.addAll(values);
+                        } else {
+                            retval.addAll(values.subList(0, x - retval.size()));
+                        }
                     }
+                    return retval;
                 }
-                return retval;
-            }
-        */
+            */
     V removeFirst(K key);
 
     boolean remove(K key, V value);
