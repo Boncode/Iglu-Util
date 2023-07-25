@@ -33,6 +33,16 @@ import static java.util.Calendar.*;
  */
 public abstract class TimeSupport {
 
+	public static Date makeDate(int year, int month, int day) {
+		return makeDate(year, month, day, 0, 0);
+	}
+
+	public static Date makeDate(int year, int month, int day, int hour, int minute) {
+		Calendar cal = new GregorianCalendar();
+		cal.set(year, month - 1, day, hour, minute);
+		return cal.getTime();
+	}
+
 	public enum TimeUnit {
 		NONE(0),
 		MINUTE(Calendar.MINUTE),

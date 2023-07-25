@@ -118,13 +118,13 @@ public class CompositeNode<T> {
         return retval;
     }
 
-    public List<CompositeNode<T>> getPathUntilEntryNode(T entryNode) {
+    public List<CompositeNode<T>> getPathUntilExaminedNode(T entryNode) {
         List<CompositeNode<T>> retval = new ArrayList<>();
         if(superNode != null) {
             if(superNode.getReflectedObject().equals(entryNode)) {
                 retval.add(superNode);
             } else {
-                retval.addAll(superNode.getPathUntilEntryNode(entryNode));
+                retval.addAll(superNode.getPathUntilExaminedNode(entryNode));
             }
         }
         retval.add(this);
