@@ -41,11 +41,6 @@ public class ResourceFileCollection implements FileCollection {
     }
 
     @Override
-    public FileFilterRuleSet getFileFilter() {
-        return includedFilesRuleSet;
-    }
-
-    @Override
     public boolean containsFile(String fileName) {
         return filePathAndNames.contains(FileSupport.convertToUnixStylePath(fileName));
     }

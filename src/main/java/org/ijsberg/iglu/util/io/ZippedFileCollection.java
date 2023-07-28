@@ -103,11 +103,6 @@ public class ZippedFileCollection implements FileCollection {
     }
 
 	@Override
-	public FileFilterRuleSet getFileFilter() {
-		return includedFilesRuleSet;
-	}
-
-	@Override
 	public boolean containsFile(String fileName) {
 		boolean retval = filesByRelativePathAndName.containsKey(FileSupport.convertToUnixStylePath(fileName));
 		return retval;

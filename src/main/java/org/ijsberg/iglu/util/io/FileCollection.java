@@ -32,8 +32,6 @@ public interface FileCollection {
 
     String getFileContentsAsString(String fileName) throws IOException;
 
-	FileFilterRuleSet getFileFilter();
-
 	boolean containsFile(String fileName);
 
 	Directory getRootDirectory();
@@ -45,6 +43,4 @@ public interface FileCollection {
 	void close() throws IOException;
 
 	String getName();
-
-	//List<String> getSubdirs(String upperdir);
 }

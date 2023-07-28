@@ -47,7 +47,6 @@ public class FSFileCollection implements FileCollection {
 
     @Override
     public List<String> getFileNames() {
-//        refreshFiles();
         return new ArrayList<>(filesByRelativePathAndName.keySet());
     }
 
@@ -64,11 +63,6 @@ public class FSFileCollection implements FileCollection {
     public String getFileContentsAsString(String fileName) throws IOException {
         return new String(getFileContents(fileName));
     }
-
-	@Override
-	public FileFilterRuleSet getFileFilter() {
-		return includedFilesRuleSet;
-	}
 
 	@Override
 	public boolean containsFile(String fileName) {
@@ -105,7 +99,7 @@ public class FSFileCollection implements FileCollection {
 
 	@Override
 	public String getDescription() {
-		return "directory: '" + baseDir + "'";
+		return "directory: '" + baseDir + "' filtered for:" + includedFilesRuleSet.toString();
 	}
 
 	@Override
