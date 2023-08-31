@@ -903,7 +903,10 @@ public abstract class FileSupport {
 		File destFile = new File(newFileName);
 		if(destFile.exists()) {
 			if(overwriteExisting) {
-				destFile.delete();
+				boolean deleteSucceeded = destFile.delete();
+				if(!deleteSucceeded) {
+					throw new IOException("file '" + destFile.getAbsolutePath() + "' cannot be renamed; possibly it's in use by another process");
+				}
 			} else {
 				throw new IOException("file '" + destFile.getAbsolutePath() + "' already exists");
 			}
