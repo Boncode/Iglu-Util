@@ -38,6 +38,14 @@ public abstract class AbstractListMap<K, V> implements Serializable, ListMap<K, 
         return list;
     }
 
+    public List<V> putDistinct(K key, List<V> values) {
+        List<V> list = createOrRetrieveList(key);
+        for(V value : values) {
+            putDistinct(key, value);
+        }
+        return list;
+    }
+
     @Override
     public List<V> put(K key, int index, V value) {
         List<V> list = createOrRetrieveList(key);
@@ -77,9 +85,16 @@ public abstract class AbstractListMap<K, V> implements Serializable, ListMap<K, 
     }
 
     @Override
-    public void putAll(ListTreeMap<K, V> values) {
+    public void putAll(ListMap<K, V> values) {
         for(K key : values.keySet()) {
             put(key, values.get(key));
+        }
+    }
+
+    @Override
+    public void putAllDistinct(ListMap<K, V> values) {
+        for(K key : values.keySet()) {
+            putDistinct(key, values.get(key));
         }
     }
 

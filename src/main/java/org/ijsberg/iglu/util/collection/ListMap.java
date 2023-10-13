@@ -22,7 +22,9 @@ public interface ListMap<K, V> extends Serializable {
 
     void putAll(Map<K, V> values);
 
-    void putAll(ListTreeMap<K, V> values);
+    void putAll(ListMap<K, V> values);
+
+    void putAllDistinct(ListMap<K, V> values);
 
     Map<K, List<V>> getMap();
 
