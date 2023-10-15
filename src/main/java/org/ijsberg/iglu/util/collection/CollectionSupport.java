@@ -178,4 +178,14 @@ public abstract class CollectionSupport {
 		}
 		return sortedMap;
 	}
+
+	public static <T> ArrayList<T> instantiateArrayList(T ... contents) {
+		ArrayList<T> list = new ArrayList<>(Arrays.asList(contents));
+		return list;
+ 	}
+
+	public static <T> HashSet<T> instantiateHashSet(T ... contents) {
+		HashSet<T> set = new HashSet<>(Arrays.asList(contents));
+		return set;
+	}
 }
