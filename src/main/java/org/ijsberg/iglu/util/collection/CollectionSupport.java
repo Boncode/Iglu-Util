@@ -188,4 +188,30 @@ public abstract class CollectionSupport {
 		HashSet<T> set = new HashSet<>(Arrays.asList(contents));
 		return set;
 	}
+
+	public static <K, V extends Integer> void incrementIntegerByKey(Map<K, Integer> map, K key, V increment) {
+		Integer value = map.get(key);
+		if(value == null) {
+			value = 0;
+
+		}
+		map.put(key, Integer.valueOf(value.intValue() + increment.intValue()));
+	}
+
+	public static <K, V extends Number> void incrementNumberByKey(Map<K, V> map, K key, V increment) {
+		Number value = map.get(key);
+		if(value == null) {
+			value = 0;
+
+		}
+		if(value instanceof Integer) {
+			map.put(key, (V) Integer.valueOf((value).intValue() + increment.intValue()));
+			return;
+		}
+		if(value instanceof Float) {
+			map.put(key, (V)Float.valueOf(value.floatValue() + increment.floatValue()));
+			return;
+		}
+		throw new IllegalArgumentException("type " + value.getClass().getSimpleName() + " not supported");
+	}
 }
