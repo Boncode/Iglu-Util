@@ -229,6 +229,8 @@ public class SchedulingSupportTest extends TimeSupportTest {
 		assertTrue(SchedulingSupport.isWithinSameInterval(getTime(9, 30), getTime(9, 30), 1, 0));
 		assertTrue(SchedulingSupport.isWithinSameInterval(getTime(9, 31), getTime(9, 33), 5, 1));
 		assertFalse(SchedulingSupport.isWithinSameInterval(getTime(9, 31), getTime(9, 33), 5, 2));
+
+		System.out.println();
 	}
 		
 	@Test
@@ -261,9 +263,12 @@ public class SchedulingSupportTest extends TimeSupportTest {
 			assertEquals(3 * TimeSupport.MINUTE_IN_MS, SchedulingSupport.getTimeTillIntervalStart(getTime(9, 33), 12));
 			
 			assertEquals(27 * TimeSupport.MINUTE_IN_MS - TimeSupport.SECOND_IN_MS, SchedulingSupport.getTimeTillIntervalStart(getTime(9, 33) + TimeSupport.SECOND_IN_MS, 30));
-	
-			//TODO other than happy path tests
-			
+
+			assertEquals(5.25, (SchedulingSupport.getTimeTillIntervalStart(getTime(1, 00) + TimeSupport.SECOND_IN_MS, 60 * 24, (6 * 60) + 15)) / (1000 * 60.0 * 60.0), .01);
+
+
+		//TODO other than happy path tests
+
 		}
 
 	@Test
