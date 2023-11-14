@@ -198,10 +198,36 @@ public abstract class CollectionSupport {
 		map.put(key, Integer.valueOf(value.intValue() + increment.intValue()));
 	}
 
+	public static <K, V extends Long> void incrementLongByKey(Map<K, Long> map, K key, V increment) {
+		Long value = map.get(key);
+		if(value == null) {
+			value = 0l;
+
+		}
+		map.put(key, Long.valueOf(value.longValue() + increment.longValue()));
+	}
+
+	public static <K, V extends Float> void incrementFloatByKey(Map<K, Float> map, K key, V increment) {
+		Float value = map.get(key);
+		if(value == null) {
+			value = 0.0f;
+
+		}
+		map.put(key, Float.valueOf(value.floatValue() + increment.floatValue()));
+	}
+
 	public static <K, V extends Number> void incrementNumberByKey(Map<K, V> map, K key, V increment) {
 		Number value = map.get(key);
 		if(value == null) {
-			value = 0;
+			if(increment instanceof Integer) {
+				value = 0;
+			}
+			if(increment instanceof Float) {
+				value = 0.0f;
+			}
+			if(increment instanceof Long) {
+				value = 0l;
+			}
 
 		}
 		if(value instanceof Integer) {
@@ -209,9 +235,14 @@ public abstract class CollectionSupport {
 			return;
 		}
 		if(value instanceof Float) {
-			map.put(key, (V)Float.valueOf(value.floatValue() + increment.floatValue()));
+			map.put(key, (V) Float.valueOf(value.floatValue() + increment.floatValue()));
+			return;
+		}
+		if(value instanceof Long) {
+			map.put(key, (V) Long.valueOf((value).longValue() + increment.longValue()));
 			return;
 		}
 		throw new IllegalArgumentException("type " + value.getClass().getSimpleName() + " not supported");
 	}
+
 }
