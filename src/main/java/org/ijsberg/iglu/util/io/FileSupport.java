@@ -443,6 +443,16 @@ public abstract class FileSupport {
 		}
 	}
 
+
+	public static byte[] getBinaryFromZip(String fileName, String zipFileName) throws IOException {
+		ZipFile zipFile = new ZipFile(zipFileName);
+		try {
+			return getBinaryFromZip(fileName, zipFile);
+		} finally {
+			zipFile.close();
+		}
+	}
+
 	public static byte[] getBinaryFromZip(String fileName, ZipFile zipFile) throws IOException {
 
         ZipEntry entry = zipFile.getEntry(FileSupport.convertToUnixStylePath(fileName));
