@@ -19,10 +19,11 @@
 
 package org.ijsberg.iglu.util.misc;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 /**
  * Helper class for encoding and decoding byte arrays.
@@ -179,4 +180,42 @@ public abstract class EncodingSupport {
 		return result;
 	}
 
+	/***
+	 * Deflate text data using the "deflate" algorithm
+	 * @param data data to be compressed
+	 * @return the compressed data as a byte array
+	 * @throws IOException
+	 */
+	public static byte[] deflate(byte[] data) throws IOException {
+		Deflater deflater = new Deflater(Deflater.DEFAULT_COMPRESSION, true);
+		ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+		DeflaterOutputStream outputStream = new DeflaterOutputStream(arrayOutputStream, deflater);
+		outputStream.write(data);
+		outputStream.close();
+		return arrayOutputStream.toByteArray();
+	}
+
+	/***
+	 * Inflate text data that has been compressed using the deflate method
+	 * @param data input data to be decompressed
+	 * @return the decompressed data as a byte array
+	 * @throws IOException
+	 */
+	public static byte[] inflate(byte[] data) throws IOException {
+		byte[] readBuffer = new byte[5000];
+		Inflater inflater = new Inflater(true);
+		ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(data);
+		InflaterInputStream inputStream = new InflaterInputStream(arrayInputStream, inflater);
+
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+		int len;
+		while((len = inputStream.read(readBuffer)) != -1){
+			outputStream.write(readBuffer, 0, len);
+		}
+		inputStream.close();
+		outputStream.close();
+
+		return outputStream.toByteArray();
+	}
 }
