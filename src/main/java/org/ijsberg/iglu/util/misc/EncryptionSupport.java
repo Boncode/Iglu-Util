@@ -23,4 +23,27 @@ public class EncryptionSupport {
             throw new SecurityException("unable to encrypt string", e);
         }
     }
+
+    /**
+     * XOR algorithm encryption / decryption
+     *
+     * @param data Data (ciphertext / clear text)
+     * @param key secret key
+     * @return Return decrypted / encrypted data
+     */
+    public static byte[] encrypt(byte[] data, byte[] key) {
+        if (data == null || data.length == 0 || key == null || key.length == 0) {
+            return data;
+        }
+
+        byte[] result = new byte[data.length];
+
+        // Use key byte array to cycle encryption or decryption
+        for (int i = 0; i < data.length; i++) {
+            // Data is XOR with key, and then XOR with low 8 bits of cyclic variable (increasing complexity)
+            result[i] = (byte) (data[i] ^ key[i % key.length] ^ (i & 0xFF));
+        }
+
+        return result;
+    }
 }
