@@ -63,7 +63,7 @@ public abstract class AbstractListMap<K, V> implements Serializable, ListMap<K, 
 
 
     @Override
-    public List<V> put(K key, List<V> values) {
+    public List<V> put(K key, Collection<V> values) {
         List<V> list = createOrRetrieveList(key);
         list.addAll(values);
         return list;
