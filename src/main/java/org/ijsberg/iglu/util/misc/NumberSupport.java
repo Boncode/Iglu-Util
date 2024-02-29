@@ -60,4 +60,32 @@ public class NumberSupport {
         throw new IllegalArgumentException("type " + value.getClass().getSimpleName() + " not supported");
     }
 
+    public static <V extends Number> V sum(V ... n) {
+        if(n.length > 0) {
+            if(n[0] instanceof Integer) {
+                Integer total = 0;
+                for(Number a : n) {
+                    total += a.intValue();
+                }
+                return (V)total;
+            }
+            if(n[0] instanceof Float) {
+                Float total = 0.0f;
+                for(Number a : n) {
+                    total += a.floatValue();
+                }
+                return (V)total;
+            }
+            if(n[0] instanceof Long) {
+                Long total = 0l;
+                for(Number a : n) {
+                    total += a.longValue();
+                }
+                return (V)total;
+            }
+            throw new IllegalArgumentException("type " + n[0].getClass().getSimpleName() + " not supported");
+        }
+        throw new IllegalArgumentException("array may not be empty");
+    }
+
 }
