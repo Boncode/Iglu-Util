@@ -88,4 +88,29 @@ public class NumberSupport {
         throw new IllegalArgumentException("array may not be empty");
     }
 
+    public static boolean isMinVal(Number n) {
+        if(n instanceof Integer) {
+            return n.intValue() == Integer.MIN_VALUE;
+        }
+        if(n instanceof Float) {
+            return n.floatValue() == Float.MIN_VALUE;
+        }
+        if(n instanceof Long) {
+            return n.longValue() == Long.MIN_VALUE;
+        }
+        throw new IllegalArgumentException("type " + n.getClass().getSimpleName() + " not supported");
+    }
+
+    public static boolean isMaxVal(Number n) {
+        if(n instanceof Integer) {
+            return n.intValue() == Integer.MAX_VALUE;
+        }
+        if(n instanceof Float) {
+            return n.floatValue() == Float.MAX_VALUE;
+        }
+        if(n instanceof Long) {
+            return n.longValue() == Long.MAX_VALUE;
+        }
+        throw new IllegalArgumentException("type " + n.getClass().getSimpleName() + " not supported");
+    }
 }
