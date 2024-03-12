@@ -101,6 +101,19 @@ public class NumberSupport {
         throw new IllegalArgumentException("type " + n.getClass().getSimpleName() + " not supported");
     }
 
+    public static BigDecimal convert(Number n) {
+        if(n instanceof Integer) {
+            return new BigDecimal(n.intValue());
+        }
+        if(n instanceof Float) {
+            return new BigDecimal(n.floatValue());
+        }
+        if(n instanceof Long) {
+            return new BigDecimal(n.longValue());
+        }
+        throw new IllegalArgumentException("type " + n.getClass().getSimpleName() + " not supported");
+    }
+
     public static boolean isMaxVal(Number n) {
         if(n instanceof Integer) {
             return n.intValue() == Integer.MAX_VALUE;

@@ -19,6 +19,7 @@
 
 package org.ijsberg.iglu.util.formatting;
 
+import org.ijsberg.iglu.util.misc.NumberSupport;
 import org.ijsberg.iglu.util.misc.StringSupport;
 
 import java.math.BigDecimal;
@@ -45,6 +46,15 @@ public class NumberFormatter {
 		this.digitGroupingSymbol = digitGroupingSymbol;
 	}
 
+
+	/**
+	 * @param number	   number to format
+	 * @param nrofDecimals desired number of decimals
+	 * @return the formatted number
+	 */
+	public String format(Number number, int nrofDecimals) {
+		return format(NumberSupport.convert(number), nrofDecimals);
+	}
 
 	/**
 	 * @param number	   number to format
