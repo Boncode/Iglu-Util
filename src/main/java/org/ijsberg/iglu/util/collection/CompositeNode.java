@@ -12,7 +12,7 @@ public class CompositeNode<T> {
     private T reflectedObject;
     private String name;
     private List<CompositeNode<T>> referencedNodes;
-    private CompositeNode<T> superNode;
+    private CompositeNode<T> referringNode;
     private T loopEntry;
 
     public CompositeNode(T reflectedObject, String name) {
@@ -25,11 +25,11 @@ public class CompositeNode<T> {
             referencedNodes = new ArrayList<>();
         }
         referencedNodes.add(referencedNode);
-        referencedNode.setSuperNode(this);
+        referencedNode.setReferringNode(this);
     }
 
-    private void setSuperNode(CompositeNode<T> superNode) {
-        this.superNode = superNode;
+    private void setReferringNode(CompositeNode<T> referringNode) {
+        this.referringNode = referringNode;
     }
 
     public int size() {
@@ -89,8 +89,8 @@ public class CompositeNode<T> {
 
     public List<CompositeNode<T>> getPath() {
         List<CompositeNode<T>> retval = new ArrayList<>();
-        if(superNode != null) {
-            retval.addAll(superNode.getPath());
+        if(referringNode != null) {
+            retval.addAll(referringNode.getPath());
         }
         retval.add(this);
         return retval;
@@ -100,8 +100,8 @@ public class CompositeNode<T> {
         if(reflectedObject.equals(someNode)) {
             return true;
         } else {
-            if(superNode != null) {
-                return superNode.isInPath(someNode);
+            if(referringNode != null) {
+                return referringNode.isInPath(someNode);
             }
         }
         return false;
@@ -120,11 +120,11 @@ public class CompositeNode<T> {
 
     public List<CompositeNode<T>> getPathUntilExaminedNode(T entryNode) {
         List<CompositeNode<T>> retval = new ArrayList<>();
-        if(superNode != null) {
-            if(superNode.getReflectedObject().equals(entryNode)) {
-                retval.add(superNode);
+        if(referringNode != null) {
+            if(referringNode.getReflectedObject().equals(entryNode)) {
+                retval.add(referringNode);
             } else {
-                retval.addAll(superNode.getPathUntilExaminedNode(entryNode));
+                retval.addAll(referringNode.getPathUntilExaminedNode(entryNode));
             }
         }
         retval.add(this);
