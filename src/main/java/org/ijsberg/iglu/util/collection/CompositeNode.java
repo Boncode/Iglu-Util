@@ -4,6 +4,7 @@ import org.ijsberg.iglu.util.misc.StringSupport;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -113,6 +114,22 @@ public class CompositeNode<T> {
             retval.addAll(referencedNodes);
             for (CompositeNode<T> referencedNode : referencedNodes) {
                 retval.addAll(referencedNode.getAllFromTree());
+            }
+        }
+        return retval;
+    }
+
+    public List<CompositeNode<T>> getReferencedNodes() {
+        return referencedNodes != null ? referencedNodes : Collections.EMPTY_LIST;
+    }
+
+    public List<T> getAllNodesInHierarchy() {
+        List<T> retval = new ArrayList<>();
+        retval.add(this.reflectedObject);
+        if(referencedNodes != null) {
+            for (CompositeNode<T> referencedNode : referencedNodes) {
+                retval.add(referencedNode.reflectedObject);
+                retval.addAll(referencedNode.getAllNodesInHierarchy());
             }
         }
         return retval;
