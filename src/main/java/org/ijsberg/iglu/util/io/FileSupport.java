@@ -30,12 +30,14 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.*;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 /**
@@ -1471,5 +1473,30 @@ public abstract class FileSupport {
 		return true;
 	}
 
+	/**
+	 * Try to load zipFile using StandardCharsets.UTF_8 encoding. If that fails, try the Latin-1 encoding.
+	 * Sadly Java ZipFile doesn't separate encoding and reading contents, so we have to try UTF_8 and if that fails
+	 * we can try Latin-1.
+	 * @param file
+	 * @return
+	 */
+	public static ZipFile loadZipFile(File file) throws IOException {
+		ZipFile zipFile;
+		try {
+			zipFile = new ZipFile(file, StandardCharsets.UTF_8);
+		} catch (ZipException e) {
+			try {
+				zipFile = new ZipFile(file, StandardCharsets.ISO_8859_1);
+			} catch (IOException ex) {
+				throw new IOException("Error while trying to read zipfile (iso-8859-1 encoding): " + file.getName(), ex);
+			}
+		} catch (IOException otherIoExceptions) {
+			throw new IOException("Error while trying to read zipfile (utf-8 encoding): " + file.getName(), otherIoExceptions);
+		}
+		return zipFile;
+	}
 
+	public static ZipFile loadZipFile(String fileName) throws IOException {
+		return loadZipFile(new File(fileName));
+	}
 }

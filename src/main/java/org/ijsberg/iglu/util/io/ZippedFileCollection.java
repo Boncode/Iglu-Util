@@ -40,15 +40,15 @@ public class ZippedFileCollection implements FileCollection {
 	private String relativeDir = "";
 
     public ZippedFileCollection(String zipFileName, FileFilterRuleSet fileFilterRuleSet) throws IOException {
-        this(new ZipFile(zipFileName), fileFilterRuleSet);
+        this(FileSupport.loadZipFile(zipFileName), fileFilterRuleSet);
     }
 
 	public ZippedFileCollection(String zipFileName, String relativeDir, FileFilterRuleSet fileFilterRuleSet) throws IOException {
-		this(new ZipFile(zipFileName), relativeDir, fileFilterRuleSet);
+		this(FileSupport.loadZipFile(zipFileName), relativeDir, fileFilterRuleSet);
 	}
 
 	public ZippedFileCollection(File file) throws IOException {
-		this(new ZipFile(file), new FileFilterRuleSet().setIncludeFilesWithNameMask("*.*"));
+		this(FileSupport.loadZipFile(file), new FileFilterRuleSet().setIncludeFilesWithNameMask("*.*"));
 	}
 
 	public ZippedFileCollection(ZipFile zipFile, FileFilterRuleSet fileFilterRuleSet) {
@@ -73,7 +73,7 @@ public class ZippedFileCollection implements FileCollection {
 	}
 
 	public ZippedFileCollection(File file, FileFilterRuleSet fileFilter) throws IOException {
-		this(new ZipFile(file), fileFilter);
+		this(FileSupport.loadZipFile(file), fileFilter);
 	}
 
 	@Override
