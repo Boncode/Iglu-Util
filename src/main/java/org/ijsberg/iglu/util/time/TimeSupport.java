@@ -19,6 +19,8 @@
 
 package org.ijsberg.iglu.util.time;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 
 import java.time.format.DateTimeFormatter;
@@ -33,7 +35,9 @@ import static java.util.Calendar.*;
  */
 public abstract class TimeSupport {
 
-	public static Date makeDate(int year, int month, int day) {
+    public static final String TIMESTAMP_FORMAT_EXCEL = "yyyy-MM-dd HH:mm";
+
+    public static Date makeDate(int year, int month, int day) {
 		return makeDate(year, month, day, 0, 0);
 	}
 
@@ -41,6 +45,15 @@ public abstract class TimeSupport {
 		Calendar cal = new GregorianCalendar();
 		cal.set(year, month - 1, day, hour, minute);
 		return cal.getTime();
+	}
+
+	public static Date getTimeStampExcel(String timestampStr) throws ParseException {
+		timestampStr = timestampStr.replaceAll("T"," ");
+		return new SimpleDateFormat(TIMESTAMP_FORMAT_EXCEL).parse(timestampStr);
+	}
+
+	public static String getTimeStampExcel(Date timestamp) {
+		return new SimpleDateFormat(TIMESTAMP_FORMAT_EXCEL).format(timestamp);
 	}
 
 	public enum TimeUnit {
