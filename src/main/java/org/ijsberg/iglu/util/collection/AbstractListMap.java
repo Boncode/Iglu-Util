@@ -30,12 +30,13 @@ public abstract class AbstractListMap<K, V> implements Serializable, ListMap<K, 
     }
 
     @Override
-    public List<V> putDistinct(K key, V value) {
+    public boolean putDistinct(K key, V value) {
         List<V> list = createOrRetrieveList(key);
         if(!list.contains(value)) {
             put(key, value);
+            return true;
         }
-        return list;
+        return false;
     }
 
     public List<V> putDistinct(K key, List<V> values) {

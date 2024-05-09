@@ -22,13 +22,11 @@ package org.ijsberg.iglu.util.time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
-
 import java.util.*;
 
-import static java.util.Calendar.*;
+import static java.util.Calendar.DATE;
 
 /**
  * Contains convenience methods concerning time, date and scheduling.
@@ -56,25 +54,6 @@ public abstract class TimeSupport {
 		return new SimpleDateFormat(TIMESTAMP_FORMAT_EXCEL).format(timestamp);
 	}
 
-	public enum TimeUnit {
-		NONE(0),
-		MINUTE(Calendar.MINUTE),
-		HOUR(HOUR_OF_DAY),
-		DAY(DATE),
-		MONTH(Calendar.MONTH),
-		YEAR(Calendar.YEAR),
-		WEEK(WEEK_OF_YEAR);
-
-		private int calendarConstant;
-		TimeUnit(int calendarConstant) {
-			this.calendarConstant = calendarConstant;
-		}
-
-		int getCalendarConstant() {
-			return calendarConstant;
-		}
-	}
-	
 	public static final int SECOND_IN_MS = 1000;
 	public static final int MINUTE_IN_MS = 60 * SECOND_IN_MS;
 	public static final int HALF_MINUTE_IN_MS = 30 * SECOND_IN_MS;
@@ -264,11 +243,15 @@ public abstract class TimeSupport {
 		return nextDate;
 	}
 
-	public static Date convertFromISO_8601(String timestamp) {
+	public static Date convertToDateFromISO_8601(String timestamp) {
+		Date d = Date.from(convertFromISO_8601(timestamp));
+		return d;
+	}
+
+	public static Instant convertFromISO_8601(String timestamp) {
 		TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(timestamp);
 		Instant i = Instant.from(ta);
-		Date d = Date.from(i);
-		return d;
+		return i;
 	}
 
 	public static Date getUpcomingDate(Date initialDate, int nrTimeUnits, TimeUnit timeUnit) {
@@ -283,7 +266,7 @@ public abstract class TimeSupport {
 		Calendar calendar = new GregorianCalendar();
 		while(referenceDate.after(nextDate)) {
 			calendar.setTime(nextDate);
-			calendar.add(timeUnit.calendarConstant, nrTimeUnits);
+			calendar.add(timeUnit.getCalendarConstant(), nrTimeUnits);
 			nextDate = calendar.getTime();
 		}
 		return nextDate;

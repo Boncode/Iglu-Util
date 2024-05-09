@@ -12,7 +12,7 @@ import java.util.Set;
 public interface ListMap<K, V> extends Serializable {
     List<V> put(K key, V value);
 
-    List<V> putDistinct(K key, V value);
+    boolean putDistinct(K key, V value);
 
     List<V> put(K key, V ... values);
 

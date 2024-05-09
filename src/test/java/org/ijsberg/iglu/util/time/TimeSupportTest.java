@@ -28,8 +28,8 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 import static java.util.Calendar.*;
-import static org.ijsberg.iglu.util.time.TimeSupport.TimeUnit.DAY;
-import static org.ijsberg.iglu.util.time.TimeSupport.TimeUnit.WEEK;
+import static org.ijsberg.iglu.util.time.TimeUnit.DAY;
+import static org.ijsberg.iglu.util.time.TimeUnit.WEEK;
 import static org.junit.Assert.*;
 
 
@@ -272,7 +272,7 @@ public class TimeSupportTest {
 		assertEquals(4, upcomingDateCal.get(DATE));
 
 		//should be FEB 2023
-		upcomingDate = TimeSupport.getUpcomingDate(refDate.getTime(), initialDate.getTime(), 2, TimeSupport.TimeUnit.MONTH);
+		upcomingDate = TimeSupport.getUpcomingDate(refDate.getTime(), initialDate.getTime(), 2, TimeUnit.MONTH);
 		upcomingDateCal.setTime(upcomingDate);
 
 		assertEquals(2023, upcomingDateCal.get(YEAR));
@@ -283,7 +283,7 @@ public class TimeSupportTest {
 		refDate.set(2022, 6 - 1, 15, 13, 3, 20);
 		initialDate.set(2022, 6 - 1, 15, 13, 1, 0);
 
-		upcomingDate = TimeSupport.getUpcomingDate(refDate.getTime(), initialDate.getTime(), 1, TimeSupport.TimeUnit.MINUTE);
+		upcomingDate = TimeSupport.getUpcomingDate(refDate.getTime(), initialDate.getTime(), 1, TimeUnit.MINUTE);
 		upcomingDateCal = new GregorianCalendar();
 		upcomingDateCal.setTime(upcomingDate);
 
