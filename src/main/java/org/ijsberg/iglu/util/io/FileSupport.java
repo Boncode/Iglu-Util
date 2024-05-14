@@ -410,8 +410,8 @@ public abstract class FileSupport {
 
 	public static void unzip(ZipFile zipFile, String targetPath, FileFilterRuleSet ruleSet) throws IOException{
 
-		ArrayList<ZipEntry> entries = getContentsFromZipFile(zipFile, ruleSet);
-		for(ZipEntry entry : entries) {
+		ZipFileContentsResult entries = getContentsFromZipFile(zipFile, ruleSet);
+		for(ZipEntry entry : entries.getZipEntries()) {
 			if(!entry.isDirectory()) {
 				File file = new File(targetPath + "/" + entry.getName());
 				if(file.getParent() != null) {
@@ -783,16 +783,19 @@ public abstract class FileSupport {
 		return zipfile.getEntry(fileName);
 	}
 
-    public static ArrayList<ZipEntry> getContentsFromZipFile(ZipFile zipFile, FileFilterRuleSet ruleSet) {
-        ArrayList<ZipEntry> result = new ArrayList<ZipEntry>();
-
+    public static ZipFileContentsResult getContentsFromZipFile(ZipFile zipFile, FileFilterRuleSet ruleSet) {
+        ZipFileContentsResult result = new ZipFileContentsResult();
         Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
         while(zipEntries.hasMoreElements()) {
-            ZipEntry zipEntry = zipEntries.nextElement();
-
+			ZipEntry zipEntry = null;
+			try {
+				zipEntry = zipEntries.nextElement();
+			} catch (Exception e) {
+				result.addException(e);
+			}
 			if(ruleSet.fileMatchesRules(zipEntry, zipFile)) {
-                result.add(zipEntry);
-            }
+				result.addZipEntry(zipEntry);
+			}
         }
         return result;
     }

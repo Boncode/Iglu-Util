@@ -37,6 +37,8 @@ public class ZippedFileCollection implements FileCollection {
     private FileFilterRuleSet includedFilesRuleSet;
     private ZipFile zipFile;
 
+	private List<Exception> exceptionsDuringReading = new ArrayList<>();
+
 	private String relativeDir = "";
 
     public ZippedFileCollection(String zipFileName, FileFilterRuleSet fileFilterRuleSet) throws IOException {
@@ -112,9 +114,11 @@ public class ZippedFileCollection implements FileCollection {
         filesByRelativePathAndName.clear();
 		rootDir = new Directory("ROOT");
 
-        List<ZipEntry> zipEntries = FileSupport.getContentsFromZipFile(zipFile, includedFilesRuleSet);
+		//TODO cat exceptions that might be thrown to LogEntries. This requires LogEntry to be moved to Iglu-Util
+		ZipFileContentsResult zipEntriesResult = FileSupport.getContentsFromZipFile(zipFile, includedFilesRuleSet);
+		exceptionsDuringReading = zipEntriesResult.getExceptions();
 
-        for (ZipEntry zipEntry : zipEntries) {
+        for (ZipEntry zipEntry : zipEntriesResult.getZipEntries()) {
             String relativePathAndName = FileSupport.convertToUnixStylePath(zipEntry.getName());
 			if(!zipEntry.isDirectory() && (relativePathAndName.startsWith(relativeDir) || relativePathAndName.startsWith("/" + relativeDir))) {
 				relativePathAndName = relativePathAndName.substring(relativeDir.length());
@@ -165,5 +169,9 @@ public class ZippedFileCollection implements FileCollection {
 
 	public String getZipFileName() {
 		return zipFile.getName();
+	}
+
+	public List<Exception> getExceptionsDuringReading() {
+		return exceptionsDuringReading;
 	}
 }
