@@ -793,8 +793,10 @@ public abstract class FileSupport {
 			} catch (Exception e) {
 				result.addException(e);
 			}
-			if(ruleSet.fileMatchesRules(zipEntry, zipFile)) {
-				result.addZipEntry(zipEntry);
+			if(zipEntry != null) {
+				if(ruleSet.fileMatchesRules(zipEntry, zipFile)) {
+					result.addZipEntry(zipEntry);
+				}
 			}
         }
         return result;
