@@ -33,6 +33,7 @@ public enum WebContentType {
     CPP("cpp", "text/plain"),
     CSH("csh", "application/x-csh"),
     CSS("css", "text/css"),
+    CSV("csv", "text/csv"),
     DIR("dir", "application/x-dirview"),
     DOC("doc", "application/vnd.framemaker"),
     DSF("dsf", "image/x-mgx-dsf"),
