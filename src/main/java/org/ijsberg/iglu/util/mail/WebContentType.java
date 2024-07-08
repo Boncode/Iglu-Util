@@ -180,6 +180,7 @@ public enum WebContentType {
     XML("xml", "application/xml"),
     XPM("xpm", "image/x-xpixmap"),
     XWD("xwd", "image/x-xwindowdump"),
+    XLSX("xlsx","application/vnd.ms-excel"),
     ZIP("zip", "application/zip"),
     ZTARDIST("ztardist", "application/x-ztardist"),
     EVENT_STREAM("", "text/event-stream"),

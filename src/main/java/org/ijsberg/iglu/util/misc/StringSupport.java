@@ -623,7 +623,6 @@ public abstract class StringSupport {
     public static String purgeIllegalCharacters(String line) {
 		StringBuffer result = new StringBuffer();
 		for(char c : line.toCharArray()) {
-			//System.out.println("-> " + (int)c + " : " + ILLEGAL_CHAR_THRESHOLD);
 			if(c != ZERO_WIDTH_NO_BREAK_SPACE) {
 				result.append(c);
 			}
@@ -634,8 +633,8 @@ public abstract class StringSupport {
 
     static class StringSplitter {
 
-		TreeMap<String, Object> storage = new TreeMap<String, Object>();
-		ArrayList<String> unsortedStorage = new ArrayList<String>();
+		TreeMap<String, Object> storage = new TreeMap<>();
+		ArrayList<String> unsortedStorage = new ArrayList<>();
 
 		StringBuffer word = new StringBuffer();
 		boolean readingWord = false;
@@ -678,7 +677,7 @@ public abstract class StringSupport {
 		 */
 		public List<String> split() {
 			if (input == null) {
-				return new ArrayList<String>(0);
+				return new ArrayList<>(0);
 			}
 			for (int i = 0; i < input.length(); i++) {
 				if (readingWord) {
@@ -742,7 +741,7 @@ public abstract class StringSupport {
 		}
 
 		private void storeCurrentWordAndStartNew() {
-			String foundWord = word.toString()/*.trim()*/;
+			String foundWord = word.toString();
 			if (convertToLowerCase) {
 				foundWord = foundWord.toLowerCase();
 			}
@@ -813,31 +812,22 @@ public abstract class StringSupport {
 						//e.g.: disable Index with too many (%) references
 
 						storeCurrentWordAndStartNew();
-
 						result.append(input.charAt(i));
-
 						readingWord = false;
 					}
 					else {
 						if (quoteSymbols != null && quoteSymbols.indexOf(input.charAt(i)) != -1) {
-
 							if(!insideQuotes) {
 								storeCurrentWordAndStartNew();
 							}
-
 							insideQuote = input.charAt(i);
 							insideQuotes = !insideQuotes;
-							//						if(keepQuotes) {
-							//							word.append(input.charAt(i));
-							//						} else
-
 							if(!insideQuotes) {
 								storeCurrentWordAndStartNew();
 								result.append(input.charAt(i));
 								readingWord = false;
 							}  else {
 								result.append(input.charAt(i));
-
 							}
 						}
 						else {
@@ -851,15 +841,7 @@ public abstract class StringSupport {
 						if (quoteSymbols != null && quoteSymbols.indexOf(input.charAt(i)) != -1) {
 							insideQuote = input.charAt(i);
 							insideQuotes = !insideQuotes;
-
-
-	//						if(keepQuotes) {
-	//							word.append(input.charAt(i));
-	//						} else
 							result.append(input.charAt(i));
-
-
-
 						}
 						else {
 							word.append(input.charAt(i));
@@ -933,8 +915,6 @@ public abstract class StringSupport {
 							unsortedStorage.add(foundWord);
 						}
 					}
-
-
 					storage.put(foundWord, new Object());
 					readingWord = false;
 					continue LOOP;
