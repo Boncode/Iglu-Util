@@ -119,5 +119,11 @@ public class PatternMatchingSupportTest {
 		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("koenTest1", "^(?!.*:).*(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,64}$"));
 	}
 
+	@Test
+	public void testPomPropertyPattern() {
+		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("${some.pattern}", "\\$\\{.+\\}"));
+		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("${some-other.pattern}", "\\$\\{.+\\}"));
+	}
+
 }
 
