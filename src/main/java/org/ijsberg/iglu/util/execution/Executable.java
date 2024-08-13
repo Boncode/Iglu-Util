@@ -19,6 +19,8 @@
 
 package org.ijsberg.iglu.util.execution;
 
+import java.util.Date;
+
 /**
  * Subclasses implement a piece of code that should be executed in a special way, such as:
  * <ul>
@@ -66,6 +68,7 @@ public abstract class Executable implements Runnable {
 			execException = t;
 			finished = true;
 		}
+		executeThread = null;
 	}
 
 	/**
@@ -98,6 +101,27 @@ public abstract class Executable implements Runnable {
 		};
 		helperExecutable.executeAsync();
 	}
+
+	/**
+	 * Executes repeatedly after <emph>interval</emph> ms.
+	 *
+	 * @param interval
+	 */
+	public void executeAsyncPeriodically(final long interval) {
+		new Executable() {
+			@Override
+			protected Object execute() throws Throwable {
+				System.out.println("ABORTED:" + aborted);
+				while (!aborted) {
+					System.out.println(new Date() + "_executeDelayed");
+					executeDelayed(interval);
+					System.out.println("DONE " + new Date() + "_executeDelayed");
+				}
+				return null;
+			}
+		}.executeAsync();
+	}
+
 
 
 	/**
@@ -152,10 +176,9 @@ public abstract class Executable implements Runnable {
 		try {
 			Thread.sleep(delay);
 		} catch (InterruptedException e) {
-//			System.out.println("interrupted");
 			throw e;
 		}
-		return executeTimed(0);
+		return execute();
 	}
 
 	/**
