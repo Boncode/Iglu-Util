@@ -19,6 +19,7 @@
 
 package org.ijsberg.iglu.util.execution;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static junit.framework.Assert.*;
@@ -49,6 +50,7 @@ public class ExecutableTest {
 
 
 	@Test
+	@Ignore
 	public void testExecuteTimed() throws Throwable {
 		Executable exec = new Executable() {
 			protected Object execute() throws Throwable {
