@@ -296,7 +296,6 @@ public class FileSupportTest extends DirStructureDependentTest {
 				"C:\\tmp\\Boncode\\mergeTst\\analysis-server.4.3.115.patch",
 				"configurations/analysis-server/analyzer/conf/AnalysisServer.properties",
 				FileSupport.getBinaryFromFS("C:\\tmp\\Boncode\\mergeTst\\AnalysisService.properties"
-//				FileSupport.getBinaryFromFS("C:\\tmp\\Boncode\\mergeTst\\AnalysisService_delegation_example.properties"
 			));
 	}
 
