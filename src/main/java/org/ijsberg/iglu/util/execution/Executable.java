@@ -104,6 +104,7 @@ public abstract class Executable implements Runnable {
 
 	/**
 	 * Executes repeatedly after <emph>interval</emph> ms.
+	 * Make sure to interrupt the Executable when shutting down an application.
 	 *
 	 * @param interval
 	 */
