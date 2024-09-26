@@ -20,6 +20,7 @@
 package org.ijsberg.iglu.util.misc;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Inflater;
@@ -92,13 +93,17 @@ public abstract class EncodingSupport {
 		return retval.toString();
 	}
 
+	public static byte[] decodeBase64(String encodedData) {
+		return decodeBase64(encodedData, Charset.defaultCharset());
+	}
+
 	/**
 	 * Decodes base 64 encoded string.
 	 *
 	 * @param encodedData
 	 * @return
 	 */
-	public static byte[] decodeBase64(String encodedData) {
+	public static byte[] decodeBase64(String encodedData, Charset charSet) {
 		BufferedReader reader = new BufferedReader(new StringReader(encodedData));
 		int length = encodedData.length();
 		byte[] retval = new byte[length];
@@ -106,8 +111,8 @@ public abstract class EncodingSupport {
 
 		String line;
 		try {
-			while ((line = reader.readLine()) != null) {
-				byte[] rawData = line.getBytes();
+			while ((line = reader.readLine()) != null) { //fixme use a buffer
+				byte[] rawData = line.getBytes(charSet);
 				int n = 0;
 				for (int i = 0; i < rawData.length; i += 4) {
 					if(i + 3 >= rawData.length) {
