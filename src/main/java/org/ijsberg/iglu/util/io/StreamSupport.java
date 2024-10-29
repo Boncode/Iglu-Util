@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.zip.CRC32;
 
 /**
  * Helper class for stream related functions.
@@ -75,5 +76,18 @@ public abstract class StreamSupport {
 
 	public static void writeToOutputStream(byte[] contents, OutputStream output) throws IOException {
 		output.write(contents, 0, contents.length);
+	}
+
+	public static long calculateCrc(InputStream input) throws IOException {
+		CRC32 crc = new CRC32();
+		int currentBytesRead = 0;
+		while (currentBytesRead != -1) {
+			byte[] buf = new byte[BUF_SIZE];
+			currentBytesRead = input.read(buf);
+			if(currentBytesRead > 0) {
+				crc.update(buf);
+			}
+		}
+		return crc.getValue();
 	}
 }

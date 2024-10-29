@@ -768,6 +768,15 @@ public abstract class FileSupport {
 		}
 	}
 
+	public static long calculateCRC(String pathToResource) throws IOException{
+		InputStream input = new FileInputStream(pathToResource);
+		try {
+			return StreamSupport.calculateCrc(input);
+		} finally {
+			input.close();
+		}
+	}
+
 	public static void copyFileResource(byte[] fileContents, OutputStream output) throws IOException{
 		StreamSupport.writeToOutputStream(fileContents, output);
 	}
