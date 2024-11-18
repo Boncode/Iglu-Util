@@ -135,6 +135,19 @@ public class CompositeNode<T> {
         return retval;
     }
 
+    public int getDepth() {
+        int largestDepthFound = 0;
+        if(referencedNodes != null) {
+            for (CompositeNode<T> referencedNode : referencedNodes) {
+                int referencedNodeDepth = referencedNode.getDepth();
+                if(referencedNodeDepth > largestDepthFound) {
+                    largestDepthFound = referencedNodeDepth;
+                }
+            }
+        }
+        return largestDepthFound + 1;
+    }
+
     public List<CompositeNode<T>> getPathUntilExaminedNode(T entryNode) {
         List<CompositeNode<T>> retval = new ArrayList<>();
         if(referringNode != null) {
