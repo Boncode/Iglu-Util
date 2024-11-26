@@ -64,8 +64,6 @@ public class EMail
 	 */
 	public EMail(String mailFrom, String mailto, String subject, String message) {
 		this.mailserver = (String) System.getProperties().get("mail.host");
-		//TODO get rid of this one
-		//String user = (String) System.getProperties().get("user.name");
 
 		if (mailserver == null/* || user == null*/) {
 			throw new RuntimeException("'mail.host' not set in system properties");
