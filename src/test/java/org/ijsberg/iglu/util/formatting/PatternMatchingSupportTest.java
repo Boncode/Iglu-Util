@@ -21,6 +21,8 @@ package org.ijsberg.iglu.util.formatting;
 
 import org.junit.Test;
 
+import java.util.List;
+
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -110,6 +112,11 @@ public class PatternMatchingSupportTest {
 	}
 
 	@Test
+	public void testSegmentOfValueMatchesURL() {
+		assertTrue(PatternMatchingSupport.valueSegmentMatchesRegularExpression("<use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"#icon--file\"></use>", "https?://w+\\S*"));
+	}
+
+	@Test
 	public void testFilterPublicContent() {
 		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("dashboard.com/index.html", "(.*\\.html|.*\\.ico|.*\\.js|.*\\.css|/monitor/login)"));
 	}
@@ -125,5 +132,11 @@ public class PatternMatchingSupportTest {
 		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("${some-other.pattern}", "\\$\\{.+\\}"));
 	}
 
+	@Test
+	public void testRegularExpressionRangeMatchesSegment() {
+		String value = "testing_string22";
+		int[] segment = PatternMatchingSupport.getRangesMatchingRegularExpression(value, "string").get(0);
+		assertEquals("string", value.substring(segment[0],segment[1]));
+	}
 }
 

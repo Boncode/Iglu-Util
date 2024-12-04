@@ -54,7 +54,7 @@ public abstract class PatternMatchingSupport {
 
 	/**
 	 * Returns true only if the value matches the regular expression
-	 * at least once.
+	 * at least once and exactly.
 	 *
 	 * @param val	string value that may match the expression
 	 * @param regexp regular expression
@@ -65,6 +65,41 @@ public abstract class PatternMatchingSupport {
 
 		try {
 			return m.matches();
+		} catch (StackOverflowError e) {
+			throw new IllegalArgumentException("regular expression '" + regexp + "' cannot be evaluated for value '" + val + "'", e);
+		}
+	}
+
+	/**
+	 * Returns true if a segment of the value matches the regular expression
+	 * only once.
+	 *
+	 * @param val	string value that may match the expression
+	 * @param regexp regular expression
+	 * @return true if val matches regular expression regexp
+	 */
+	public static boolean valueSegmentMatchesRegularExpression(String val, String regexp) {
+		Pattern p = cache.get(regexp);
+		if(p == null) {
+			p = Pattern.compile(regexp);
+			cache.put(regexp, p);
+		}
+		return valueSegmentMatchesRegularExpression(val, p);
+	}
+
+	/**
+	 * Returns true if a segment of the value matches the regular expression
+	 * at least once.
+	 *
+	 * @param val	string value that may match the expression
+	 * @param regexp regular expression
+	 * @return true if val matches regular expression regexp
+	 */
+	public static boolean valueSegmentMatchesRegularExpression(String val, Pattern regexp) {
+		Matcher m = regexp.matcher(val);
+
+		try {
+			return m.find();
 		} catch (StackOverflowError e) {
 			throw new IllegalArgumentException("regular expression '" + regexp + "' cannot be evaluated for value '" + val + "'", e);
 		}
