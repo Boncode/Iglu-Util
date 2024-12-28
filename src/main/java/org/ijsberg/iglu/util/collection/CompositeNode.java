@@ -184,4 +184,8 @@ public class CompositeNode<T> {
     public int hashCode() {
         return Objects.hash(reflectedObject);
     }
+
+    public void addReferencedNodes(List<CompositeNode<T>> referencedNodes) {
+        referencedNodes.addAll(referencedNodes);
+    }
 }
