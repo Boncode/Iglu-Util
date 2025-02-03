@@ -69,12 +69,15 @@ public class PatternMatchingSupportTest {
 		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("hopla.mask", ".*mask"));
 		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("hopla.mask.mask", ".*mask"));
 
+
 		//assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("assertEquals", "assert*"));
 	}
 
 	@Test
 	public void testIndexOf() {
 		assertEquals(24, PatternMatchingSupport.indexOf("analysis-infrastructure-0.9.0-SNAPSHOT-distribution.zip", "[0-9]*\\.[0-9]*\\.[0-9]*"));
+		assertEquals(10, PatternMatchingSupport.indexOf("asjkdaskd 'c' skdjs", "'.'" ));
+
 	}
 
 	@Test
