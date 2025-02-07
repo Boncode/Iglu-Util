@@ -512,12 +512,13 @@ public abstract class FileSupport {
 		FileSystem fs = null;
 		try {
 			fs = FileSystems.newFileSystem(zipFilePath, null);
+			long start = System.currentTimeMillis();
 			for(String fileToCopyName : filesToMerge.getFileNames()) {
 				String fileToCopyPath = tmpDir.getPath() + "/" + fileToCopyName;
 				saveBinaryFile(filesToMerge.getFileContents(fileToCopyName), FileSupport.createFile(fileToCopyPath));
 				Path tmpFilePath = Paths.get(fileToCopyPath);
 				Path fileInsideZipPath = fs.getPath(fileToCopyName);
-				//System.out.println(fileInsideZipPath);
+				//System.out.println((System.currentTimeMillis() - start) + " " + fileInsideZipPath);
 				if(Files.exists(fileInsideZipPath)) {
 					Files.delete(fileInsideZipPath);
 				} else {
