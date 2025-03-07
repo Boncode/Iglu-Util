@@ -3,25 +3,24 @@ package org.ijsberg.iglu.util.collection;
 import org.ijsberg.iglu.util.misc.StringSupport;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-public class CompositeNode<T> {
+public class CompositeNode<O,E> {
 
-    private T reflectedObject;
+    private O reflectedObject;
     private String name;
-    private List<CompositeNode<T>> referencedNodes;
-    private CompositeNode<T> referringNode;
-    private T loopEntry;
+    private List<CompositeNode<O,E>> referencedNodes;
+    private CompositeNode<O,E> referringNode;
+    private O loopEntry;
 
-    public CompositeNode(T reflectedObject, String name) {
+  //  private LinkedHashMap<CompositeNode<T>,>
+
+    public CompositeNode(O reflectedObject, String name) {
         this.reflectedObject = reflectedObject;
         this.name = name;
     }
 
-    public void addReferencedNode(CompositeNode<T> referencedNode) {
+    public void addReferencedNode(CompositeNode<O,E> referencedNode) {
         if(referencedNodes == null) {
             referencedNodes = new ArrayList<>();
         }
@@ -29,7 +28,7 @@ public class CompositeNode<T> {
         referencedNode.setReferringNode(this);
     }
 
-    private void setReferringNode(CompositeNode<T> referringNode) {
+    private void setReferringNode(CompositeNode<O,E> referringNode) {
         this.referringNode = referringNode;
     }
 
@@ -61,22 +60,22 @@ public class CompositeNode<T> {
         return name;
     }
 
-    public List<CompositeNode<T>> getLeafs() {
-        List<CompositeNode<T>> retval = new ArrayList<>();
+    public List<CompositeNode<O,E>> getLeafs() {
+        List<CompositeNode<O,E>> retval = new ArrayList<>();
         if(referencedNodes == null || referencedNodes.isEmpty()) {
             retval.add(this);
         } else {
-            for(CompositeNode<T> referencedNode : referencedNodes) {
+            for(CompositeNode<O,E> referencedNode : referencedNodes) {
                 retval.addAll(referencedNode.getLeafs());
             }
         }
         return retval;
     }
 
-    public List<CompositeNode<T>> getLeafs(Class<?> type) {
-        List<CompositeNode<T>> retval = new ArrayList<>();
+    public List<CompositeNode<O,E>> getLeafs(Class<?> type) {
+        List<CompositeNode<O,E>> retval = new ArrayList<>();
         if(referencedNodes != null) {
-            for(CompositeNode<T> referencedNode : referencedNodes) {
+            for(CompositeNode<O,E> referencedNode : referencedNodes) {
                 retval.addAll(referencedNode.getLeafs(type));
             }
         }
@@ -88,8 +87,8 @@ public class CompositeNode<T> {
         return retval;
     }
 
-    public List<CompositeNode<T>> getPath() {
-        List<CompositeNode<T>> retval = new ArrayList<>();
+    public List<CompositeNode<O,E>> getPath() {
+        List<CompositeNode<O,E>> retval = new ArrayList<>();
         if(referringNode != null) {
             retval.addAll(referringNode.getPath());
         }
@@ -97,7 +96,7 @@ public class CompositeNode<T> {
         return retval;
     }
 
-    public boolean isInPath(T someNode) {
+    public boolean isInPath(O someNode) {
         if(reflectedObject.equals(someNode)) {
             return true;
         } else {
@@ -108,26 +107,26 @@ public class CompositeNode<T> {
         return false;
     }
 
-    public List<CompositeNode<T>> getAllFromTree() {
-        List<CompositeNode<T>> retval = new ArrayList<>();
+    public List<CompositeNode<O,E>> getAllFromTree() {
+        List<CompositeNode<O,E>> retval = new ArrayList<>();
         if(referencedNodes != null) {
             retval.addAll(referencedNodes);
-            for (CompositeNode<T> referencedNode : referencedNodes) {
+            for (CompositeNode<O,E> referencedNode : referencedNodes) {
                 retval.addAll(referencedNode.getAllFromTree());
             }
         }
         return retval;
     }
 
-    public List<CompositeNode<T>> getReferencedNodes() {
+    public List<CompositeNode<O,E>> getReferencedNodes() {
         return referencedNodes != null ? referencedNodes : Collections.EMPTY_LIST;
     }
 
-    public List<T> getAllNodesInHierarchy() {
-        List<T> retval = new ArrayList<>();
+    public List<O> getAllNodesInHierarchy() {
+        List<O> retval = new ArrayList<>();
         retval.add(this.reflectedObject);
         if(referencedNodes != null) {
-            for (CompositeNode<T> referencedNode : referencedNodes) {
+            for (CompositeNode<O,E> referencedNode : referencedNodes) {
                 retval.add(referencedNode.reflectedObject);
                 retval.addAll(referencedNode.getAllNodesInHierarchy());
             }
@@ -138,7 +137,7 @@ public class CompositeNode<T> {
     public int getDepth() {
         int largestDepthFound = 0;
         if(referencedNodes != null) {
-            for (CompositeNode<T> referencedNode : referencedNodes) {
+            for (CompositeNode<O,E> referencedNode : referencedNodes) {
                 int referencedNodeDepth = referencedNode.getDepth();
                 if(referencedNodeDepth > largestDepthFound) {
                     largestDepthFound = referencedNodeDepth;
@@ -148,8 +147,8 @@ public class CompositeNode<T> {
         return largestDepthFound + 1;
     }
 
-    public List<CompositeNode<T>> getPathUntilExaminedNode(T entryNode) {
-        List<CompositeNode<T>> retval = new ArrayList<>();
+    public List<CompositeNode<O,E>> getPathUntilExaminedNode(O entryNode) {
+        List<CompositeNode<O,E>> retval = new ArrayList<>();
         if(referringNode != null) {
             if(referringNode.getReflectedObject().equals(entryNode)) {
                 retval.add(referringNode);
@@ -160,15 +159,15 @@ public class CompositeNode<T> {
         retval.add(this);
         return retval;
     }
-    public T getReflectedObject() {
+    public O getReflectedObject() {
         return reflectedObject;
     }
 
-    public void setLoopEntry(T loopEntry) {
+    public void setLoopEntry(O loopEntry) {
         this.loopEntry = loopEntry;
     }
 
-    public T getLoopEntry() {
+    public O getLoopEntry() {
         return this.loopEntry;
     }
 
@@ -176,7 +175,7 @@ public class CompositeNode<T> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CompositeNode)) return false;
-        CompositeNode<?> that = (CompositeNode<?>) o;
+        CompositeNode<?,?> that = (CompositeNode<?,?>) o;
         return reflectedObject.equals(that.reflectedObject);
     }
 
@@ -185,7 +184,7 @@ public class CompositeNode<T> {
         return Objects.hash(reflectedObject);
     }
 
-    public void addReferencedNodes(List<CompositeNode<T>> referencedNodes) {
+/*    public void addReferencedNodes(List<CompositeNode<T>> referencedNodes) {
         referencedNodes.addAll(referencedNodes);
-    }
+    }*/
 }
