@@ -207,7 +207,7 @@ public abstract class AbstractListMap<K, V> implements Serializable, ListMap<K, 
 
     @Override
     public Map<K, V> toMap() {
-        HashMap<K, V> map = new HashMap<>();
+        LinkedHashMap<K, V> map = new LinkedHashMap<>();
         for(K key : internalMap.keySet()) {
             List<V> values = get(key);
             if(!values.isEmpty()) {
