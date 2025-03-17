@@ -135,16 +135,25 @@ public class CompositeNode<O,E> {
     }
 
     public int getDepth() {
+        return getDepth(new Matcher() {
+            @Override
+            public boolean matches(Object o) {
+                return true;
+            }
+        });
+    }
+
+    public int getDepth(Matcher matcher) {
         int largestDepthFound = 0;
         if(referencedNodes != null) {
             for (CompositeNode<O,E> referencedNode : referencedNodes) {
-                int referencedNodeDepth = referencedNode.getDepth();
+                int referencedNodeDepth = referencedNode.getDepth(matcher);
                 if(referencedNodeDepth > largestDepthFound) {
                     largestDepthFound = referencedNodeDepth;
                 }
             }
         }
-        return largestDepthFound + 1;
+        return largestDepthFound + (matcher.matches(this.reflectedObject) ? 1 : 0);
     }
 
     public List<CompositeNode<O,E>> getPathUntilExaminedNode(O entryNode) {
