@@ -87,6 +87,19 @@ public class CompositeNode<O,E> {
         return retval;
     }
 
+    public List<CompositeNode<O,E>> getNodesOfTypeInTree(Class<?> type) {
+        List<CompositeNode<O,E>> retval = new ArrayList<>();
+        if(referencedNodes != null) {
+            for(CompositeNode<O,E> referencedNode : referencedNodes) {
+                retval.addAll(referencedNode.getNodesOfTypeInTree(type));
+            }
+        }
+        if(type.isAssignableFrom(reflectedObject.getClass())) {
+            retval.add(this);
+        }
+        return retval;
+    }
+
     public List<CompositeNode<O,E>> getPath() {
         List<CompositeNode<O,E>> retval = new ArrayList<>();
         if(referringNode != null) {
