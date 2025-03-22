@@ -3,7 +3,10 @@ package org.ijsberg.iglu.util.collection;
 import org.ijsberg.iglu.util.misc.StringSupport;
 
 import java.io.PrintStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public class CompositeNode<O,E> {
 
