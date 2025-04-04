@@ -477,7 +477,7 @@ public abstract class StringSupport {
 	}
 
 	public static boolean containsIllegalFilenameCharacters(String valueToCheck) {
-		Pattern pattern = Pattern.compile("[*:\"\\\\|<>\\/?#]*");
+		Pattern pattern = Pattern.compile("[*\"\\\\|<>/?#]");
 		return pattern.matcher(valueToCheck).find();
 	}
 
