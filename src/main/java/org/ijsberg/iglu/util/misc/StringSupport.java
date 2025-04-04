@@ -25,6 +25,7 @@ import org.ijsberg.iglu.util.io.StreamSupport;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Helper class containing string manipulation functions.
@@ -473,6 +474,11 @@ public abstract class StringSupport {
 			}
 		}
 		return true;
+	}
+
+	public static boolean containsIllegalFilenameCharacters(String valueToCheck) {
+		Pattern pattern = Pattern.compile("[*:\"\\\\|<>\\/?#]*");
+		return pattern.matcher(valueToCheck).find();
 	}
 
 
