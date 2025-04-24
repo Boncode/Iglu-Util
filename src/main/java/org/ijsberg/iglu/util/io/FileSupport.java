@@ -481,7 +481,7 @@ public abstract class FileSupport {
 		Path zipFilePath = Paths.get(zipFileName);
 		FileSystem fs = null;
 		try {
-			fs = FileSystems.newFileSystem(zipFilePath, null);
+			fs = FileSystems.newFileSystem(zipFilePath);
 			Path fileInsideZipPath = fs.getPath(targetFileName);
 			if(Files.exists(fileInsideZipPath)) {
 				Files.delete(fileInsideZipPath);
@@ -511,7 +511,7 @@ public abstract class FileSupport {
 
 		FileSystem fs = null;
 		try {
-			fs = FileSystems.newFileSystem(zipFilePath, null);
+			fs = FileSystems.newFileSystem(zipFilePath);
 			for(String fileToCopyName : filesToMerge.getFileNames()) {
 				String fileToCopyPath = tmpDir.getPath() + "/" + fileToCopyName;
 				saveBinaryFile(filesToMerge.getFileContents(fileToCopyName), FileSupport.createFile(fileToCopyPath));
@@ -541,7 +541,7 @@ public abstract class FileSupport {
 
 		FileSystem fs = null;
 		try {
-			fs = FileSystems.newFileSystem(zipFilePath, null);
+			fs = FileSystems.newFileSystem(zipFilePath);
 //			for(String fileToCopyName : filesToMerge.getFileNames()) {
 				String fileToCopyPath = tmpDir.getPath() + "/" + targetFilePathAndName;
 				saveBinaryFile(fileContents, FileSupport.createFile(fileToCopyPath));
@@ -1079,13 +1079,13 @@ public abstract class FileSupport {
 		while (line != null) {
 			int occCount = -1;
 			while ((occCount = line.indexOf(searchString, occCount + 1)) != -1) {
-				Integer lineNo = new Integer(lineCount);
-				Integer nrofOccurrencesInLine = (Integer) retval.get(lineNo);
+				Integer lineNo = lineCount;
+				Integer nrofOccurrencesInLine = retval.get(lineNo);
 				if (nrofOccurrencesInLine == null) {
-					nrofOccurrencesInLine = new Integer(1);
+					nrofOccurrencesInLine = 1;
 				}
 				else {
-					nrofOccurrencesInLine = new Integer(nrofOccurrencesInLine.intValue() + 1);
+					nrofOccurrencesInLine = nrofOccurrencesInLine + 1;
 				}
 				retval.put(lineNo, nrofOccurrencesInLine);
 				System.out.println(">" + line + "<");
