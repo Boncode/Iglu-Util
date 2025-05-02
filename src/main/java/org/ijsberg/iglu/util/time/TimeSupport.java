@@ -271,5 +271,22 @@ public abstract class TimeSupport {
 		}
 		return nextDate;
 	}
+	public static Date getPreviousDate(Date initialDate, int nrTimeUnits, TimeUnit timeUnit) {
+		return getPreviousDate(new Date(), initialDate, nrTimeUnits, timeUnit);
+	}
+
+	public static Date getPreviousDate(Date referenceDate, Date initialDate, int nrTimeUnits, TimeUnit timeUnit) {
+		if(nrTimeUnits <= 0) {
+			throw new IllegalArgumentException("nr of timeunits (" + nrTimeUnits + ") should be larger than 0");
+		}
+		Date previousDate = initialDate;
+		Calendar calendar = new GregorianCalendar();
+		while(referenceDate.before(previousDate)) {
+			calendar.setTime(previousDate);
+			calendar.add(timeUnit.getCalendarConstant(), (-1 * nrTimeUnits));
+			previousDate = calendar.getTime();
+		}
+		return previousDate;
+	}
 
 }
