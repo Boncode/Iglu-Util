@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Scanner;
 
-public class SynchronizeDirectories {
+public class DirectorySynchronizer {
 
     private String sourceDir;
     private String targetDir;
@@ -24,11 +24,11 @@ public class SynchronizeDirectories {
 
     private FileCollectionComparison comparison;
 
-    public SynchronizeDirectories(String sourceDir, String targetDir) {
+    public DirectorySynchronizer(String sourceDir, String targetDir) {
         this(sourceDir, targetDir, new FileFilterRuleSet());
     }
 
-    public SynchronizeDirectories(String sourceDir, String targetDir, FileFilterRuleSet filter) throws ResourceException {
+    public DirectorySynchronizer(String sourceDir, String targetDir, FileFilterRuleSet filter) throws ResourceException {
 
         FileSupport.assertDirExists(new File(sourceDir));
         FileSupport.assertDirExists(new File(targetDir));
@@ -41,7 +41,7 @@ public class SynchronizeDirectories {
         targetCollection = new FSFileCollection(targetDir, filter);
     }
 
-    public void evaluate() throws IOException {
+    public void compareSourceToTarget() throws IOException {
         comparison = FileCollectionComparison.compare(sourceCollection, targetCollection);
     }
 
@@ -50,7 +50,7 @@ public class SynchronizeDirectories {
     }
 
 
-    public void synchronizeByApproval() throws IOException {
+    public void synchronizeSourceToTargetByApproval() throws IOException {
 
         boolean doAll = false;
         System.out.println("" + comparison.getFilesMissing().size() + " file(s) missing");
@@ -66,19 +66,19 @@ public class SynchronizeDirectories {
         }
     }
 
-    public void synchronize() throws IOException {
+    public void synchronizeSourceToTarget() throws IOException {
 
-        System.out.println("" + comparison.getFilesMissing().size() + " file(s) missing");
+        System.out.println("copying " + comparison.getFilesMissing().size() + " missing file(s)");
         for (String fileName : comparison.getFilesMissing().keySet()) {
             copyFile(fileName);
         }
-        System.out.println("" + comparison.getFilesOutdated().size() + " file(s) outdated");
+        System.out.println("copying " + comparison.getFilesOutdated().size() + " outdated file(s)");
         for (String fileName : comparison.getFilesOutdated().keySet()) {
             copyFile(fileName);
         }
     }
 
-    public boolean processCopyQuestion(boolean doAll, String fileName, String copyQuestion) throws IOException {
+    private boolean processCopyQuestion(boolean doAll, String fileName, String copyQuestion) throws IOException {
         if (!doAll) {
             System.out.print(copyQuestion);
             String input = getUserInput();
@@ -94,18 +94,17 @@ public class SynchronizeDirectories {
         return doAll;
     }
 
-    public void copyFile(String fileName) throws IOException {
+    private void copyFile(String fileName) throws IOException {
         System.out.println("copying " + printFileData(fileName, sourceCollection));
         sourceCollection.copyWithDateTo(fileName, targetCollection);
     }
 
-    public String getUserInput() throws IOException {
+    private String getUserInput() throws IOException {
         Scanner in = new Scanner(System.in);
         return in.next();
     }
 
-
-    public String printFileData(String fileName, FSFileCollection collection) throws IOException {
+    private String printFileData(String fileName, FSFileCollection collection) throws IOException {
         File fileA = collection.getActualFileByName(fileName);
         return "file " + fileName + " " + new Date(fileA.lastModified()) + " " + convertToReadableByteSize(fileA.length());
 
@@ -120,12 +119,5 @@ public class SynchronizeDirectories {
         }
         double sizeInMb = (1.0 * size) / (1024 * 1024);
         return numberFormatter.format(sizeInMb, 2) + " Mb";
-    }
-
-
-    public static void main(String[] args) throws IOException {
-        SynchronizeDirectories synchronizeDirectories = new SynchronizeDirectories("/tmp/syncTest/DIR_A", "/tmp/syncTest/DIR_B");
-        synchronizeDirectories.evaluate();
-        synchronizeDirectories.synchronizeByApproval();
     }
 }

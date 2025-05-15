@@ -20,7 +20,7 @@
 package org.ijsberg.iglu.util.io;
 
 
-import org.ijsberg.iglu.util.tool.SynchronizeDirectories;
+import org.ijsberg.iglu.util.tool.DirectorySynchronizer;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -87,7 +87,7 @@ public class FileSupportTest extends DirStructureDependentTest {
 		assertEquals(173, foundFiles.size());
 
 		for(File foundFile : foundFiles) {
-			System.out.println(foundFile.getName() + " : " + SynchronizeDirectories.convertToReadableByteSize(foundFile.length()));
+			System.out.println(foundFile.getName() + " : " + DirectorySynchronizer.convertToReadableByteSize(foundFile.length()));
 		}
 	}
 

@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
-public class SynchronizeDirectoriesTest {
+public class DirectorySynchronizerTest {
 
     private static final String RELATIVE_TARGET_DIR_A = "DIR_A";
     private static final String RELATIVE_TARGET_DIR_B = "DIR_B";
@@ -81,9 +81,9 @@ public class SynchronizeDirectoriesTest {
     }
 
     @Test
-    public void testEvaluate() throws IOException {
-        SynchronizeDirectories subject = new SynchronizeDirectories("src/test/resources", "src/test/resources");
-        subject.evaluate();
+    public void testCompareSourceToTarget() throws IOException {
+        DirectorySynchronizer subject = new DirectorySynchronizer("src/test/resources", "src/test/resources");
+        subject.compareSourceToTarget();
     }
 
 
