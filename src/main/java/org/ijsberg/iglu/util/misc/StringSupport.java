@@ -1150,6 +1150,15 @@ public abstract class StringSupport {
 		return input;
 	}
 
+	public static String trim(String input, String charactersToTrim) {
+		if(charactersToTrim.indexOf(input.charAt(0)) != -1) {
+			input = input.substring(1);
+		}
+		if(charactersToTrim.indexOf(input.charAt(input.length() - 1)) != -1) {
+			input = input.substring(0, input.length() - 1);
+		}
+		return input;
+	}
 
 
 	/**
