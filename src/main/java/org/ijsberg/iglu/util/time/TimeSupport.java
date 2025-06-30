@@ -34,6 +34,7 @@ import static java.util.Calendar.DATE;
 public abstract class TimeSupport {
 
     public static final String TIMESTAMP_FORMAT_EXCEL = "yyyy-MM-dd HH:mm";
+    public static final String TIMESTAMP_FORMAT_ISO8061 = "yyyy-MM-dd'T'HH:mm";
 
     public static Date makeDate(int year, int month, int day) {
 		return makeDate(year, month, day, 0, 0);
@@ -53,6 +54,16 @@ public abstract class TimeSupport {
 	public static String getTimeStampExcel(Date timestamp) {
 		return new SimpleDateFormat(TIMESTAMP_FORMAT_EXCEL).format(timestamp);
 	}
+
+	public static String getTimestampFormatIso8061(Date timestamp) {
+//		String timeStampExcel = TimeSupport.getTimeStampExcel(timestamp);
+		return new SimpleDateFormat(TIMESTAMP_FORMAT_ISO8061).format(timestamp);
+	}
+
+	public static Date getTimeStampIso8061(String timestampStr) throws ParseException {
+		return new SimpleDateFormat(TIMESTAMP_FORMAT_ISO8061).parse(timestampStr);
+	}
+
 
 	public static final int SECOND_IN_MS = 1000;
 	public static final int MINUTE_IN_MS = 60 * SECOND_IN_MS;
