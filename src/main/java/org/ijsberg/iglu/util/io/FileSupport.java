@@ -896,6 +896,8 @@ public abstract class FileSupport {
 		if(file.exists()) {
 			deleteContentsInDirectoryTree(file, null);
 			deleteActualFile(file.getPath());
+		} else {
+			throw new IOException("file " + file.getPath() + "(" + file.getAbsolutePath() + ") cannot be deleted because it does not exist");
 		}
 	}
 
