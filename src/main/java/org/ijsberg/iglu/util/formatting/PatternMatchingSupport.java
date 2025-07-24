@@ -132,7 +132,16 @@ public abstract class PatternMatchingSupport {
 		return -1;
 	}
 
-	
+	public static int indexOf(String val, String regexp, int fromIndex) {
+		Pattern p = Pattern.compile(regexp);
+		Matcher matcher = p.matcher(val);
+
+		if (matcher.find(fromIndex)) {
+			return matcher.start();
+		}
+		return -1;
+	}
+
 	
 	/**
 	 * Matches DOS-type wildcardexpressions rather than regular expressions.
