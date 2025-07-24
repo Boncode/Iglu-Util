@@ -625,11 +625,6 @@ public abstract class StringSupport {
 		return new StringSplitter(input, punctuationChars, quoteSymbols, sort, convertToLowerCase, distinct, keepQuotes).split();
 	}
 
-	//fixme remove
-	public static List<String> split2(String input, String punctuationChars, String quoteSymbols, boolean sort, boolean convertToLowerCase, boolean distinct, boolean keepQuotes) {
-		return new StringSplitter(input, punctuationChars, quoteSymbols, sort, convertToLowerCase, distinct, keepQuotes).split2();
-	}
-
 	private static final int ZERO_WIDTH_NO_BREAK_SPACE = 65279;
     public static String purgeIllegalCharacters(String line) {
 		StringBuffer result = new StringBuffer();
@@ -679,90 +674,6 @@ public abstract class StringSupport {
 			this.convertToLowerCase = convertToLowerCase;
 			this.distinct = distinct;
 			this.keepQuotes = keepQuotes;
-		}
-
-		public List<String> split2() {
-			if (input == null) {
-				return new ArrayList<>(0);
-			}
-			int nesting = 0;
-			for (int i = 0; i < input.length(); i++) {
-				if (readingWord) {
-					if (punctuationChars.indexOf(input.charAt(i)) != -1 && !insideQuotes) {
-						//check forbidden word list first
-						//or maybe make arrangements in Index
-						//e.g.: disable Index with too many (%) references
-
-						storeCurrentWordAndStartNew();
-						readingWord = false;
-					}
-					else {
-						if (quoteSymbols != null && quoteSymbols.indexOf(input.charAt(i)) != -1) {
-							if(!insideQuotes) {
-								storeCurrentWordAndStartNew();
-							}
-							if('(' == input.charAt(i)) {
-								nesting++;
-								insideQuotes = true;
-							} else if(')' == input.charAt(i)) {
-								nesting--;
-								if(nesting == 0) {
-									insideQuotes = false;
-								}
-							}
-
-//							insideQuote = input.charAt(i);
-//							insideQuotes = !insideQuotes;
-							if(keepQuotes) {
-								word.append(input.charAt(i));
-							}
-
-							if(!insideQuotes) {
-								storeCurrentWordAndStartNew();
-								readingWord = false;
-							}
-						}
-						else {
-							word.append(input.charAt(i));
-						}
-					}
-				}
-				else {
-					if (punctuationChars.indexOf(input.charAt(i)) == -1) {
-						word = new StringBuffer();
-						if (quoteSymbols != null && quoteSymbols.indexOf(input.charAt(i)) != -1) {
-							if('(' == input.charAt(i)) {
-								nesting++;
-								insideQuotes = true;
-							} else if(')' == input.charAt(i)) {
-								nesting--;
-								if(nesting == 0) {
-									insideQuotes = false;
-								}
-							}
-
-//							insideQuote = input.charAt(i);
-//							insideQuotes = !insideQuotes;
-							if(keepQuotes) {
-								word.append(input.charAt(i));
-							}
-						}
-						else {
-							word.append(input.charAt(i));
-						}
-						readingWord = true;
-					}
-				}
-			}
-			if (readingWord) {
-				storeCurrentWordAndStartNew();
-			}
-			if (sort) {
-				return new ArrayList<String>(storage.keySet());
-			}
-			else {
-				return unsortedStorage;
-			}
 		}
 
 		/**
