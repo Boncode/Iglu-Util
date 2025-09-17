@@ -1,5 +1,7 @@
 package org.ijsberg.iglu.util.io;
 
+import org.ijsberg.iglu.util.ResourceException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +12,8 @@ public class VirtualFileCollection implements FileCollection {
 
     private Map<String, byte[]> fileContentsByName = new HashMap<>();
     private String name;
+    private Directory rootDir = new Directory("ROOT");
+
 
     public VirtualFileCollection(String name) {
         this.name = name;
@@ -37,7 +41,7 @@ public class VirtualFileCollection implements FileCollection {
 
     @Override
     public Directory getRootDirectory() {
-        return null;
+        return rootDir;
     }
 
     @Override
@@ -62,6 +66,20 @@ public class VirtualFileCollection implements FileCollection {
 
     public void addFile(String name, byte[] fileContents) {
         fileContentsByName.put(name, fileContents);
+        rootDir.addFile(name);
+    }
+
+
+    public static VirtualFileCollection create(FileCollection fileCollection) {
+        VirtualFileCollection virtualFileCollection = new VirtualFileCollection("updatedNistEntries");
+        for(String fileName : fileCollection.getFileNames()) {
+            try {
+                virtualFileCollection.addFile(fileName, fileCollection.getFileContents(fileName));
+            } catch (IOException e) {
+                throw new ResourceException("Could not add file " + fileName, e);
+            }
+        }
+        return virtualFileCollection;
     }
 
 }

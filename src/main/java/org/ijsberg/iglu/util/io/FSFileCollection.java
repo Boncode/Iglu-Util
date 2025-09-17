@@ -109,7 +109,6 @@ public class FSFileCollection implements FileCollection {
 
 	@Override
 	public void close() throws IOException {
-		//To change body of implemented methods use File | Settings | File Templates.
 		filesByRelativePathAndName = null;
 	}
 
