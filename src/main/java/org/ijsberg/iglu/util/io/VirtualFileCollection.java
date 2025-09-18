@@ -11,12 +11,9 @@ import java.util.Map;
 public class VirtualFileCollection implements FileCollection {
 
     private Map<String, byte[]> fileContentsByName = new HashMap<>();
-    private String name;
     private Directory rootDir = new Directory("ROOT");
 
-
-    public VirtualFileCollection(String name) {
-        this.name = name;
+    public VirtualFileCollection() {
     }
 
     @Override
@@ -26,7 +23,11 @@ public class VirtualFileCollection implements FileCollection {
 
     @Override
     public byte[] getFileContents(String fileName) throws IOException {
-        return fileContentsByName.get(fileName);
+        String convertedFileName = FileSupport.convertToUnixStylePath(fileName);
+        if(!fileContentsByName.containsKey(convertedFileName)) {
+            throw new IOException("File not found: " + fileName);
+        }
+        return fileContentsByName.get(convertedFileName);
     }
 
     @Override
@@ -36,7 +37,7 @@ public class VirtualFileCollection implements FileCollection {
 
     @Override
     public boolean containsFile(String fileName) {
-        return fileContentsByName.containsKey(fileName);
+        return fileContentsByName.containsKey(FileSupport.convertToUnixStylePath(fileName));
     }
 
     @Override
@@ -56,7 +57,6 @@ public class VirtualFileCollection implements FileCollection {
 
     @Override
     public void close() throws IOException {
-
     }
 
     @Override
@@ -64,14 +64,14 @@ public class VirtualFileCollection implements FileCollection {
         return null;
     }
 
-    public void addFile(String name, byte[] fileContents) {
-        fileContentsByName.put(name, fileContents);
-        rootDir.addFile(name);
+    public void addFile(String fileName, byte[] fileContents) {
+        String convertedFileName = FileSupport.convertToUnixStylePath(fileName);
+        fileContentsByName.put(convertedFileName, fileContents);
+        rootDir.addFile(convertedFileName);
     }
 
-
     public static VirtualFileCollection create(FileCollection fileCollection) {
-        VirtualFileCollection virtualFileCollection = new VirtualFileCollection("updatedNistEntries");
+        VirtualFileCollection virtualFileCollection = new VirtualFileCollection();
         for(String fileName : fileCollection.getFileNames()) {
             try {
                 virtualFileCollection.addFile(fileName, fileCollection.getFileContents(fileName));
@@ -81,5 +81,4 @@ public class VirtualFileCollection implements FileCollection {
         }
         return virtualFileCollection;
     }
-
 }
