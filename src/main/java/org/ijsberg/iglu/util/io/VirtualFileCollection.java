@@ -3,14 +3,11 @@ package org.ijsberg.iglu.util.io;
 import org.ijsberg.iglu.util.ResourceException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class VirtualFileCollection implements FileCollection {
 
-    private Map<String, byte[]> fileContentsByName = new HashMap<>();
+    private Map<String, byte[]> fileContentsByName = new TreeMap<>();
     private Directory rootDir = new Directory("ROOT");
 
     public VirtualFileCollection() {
