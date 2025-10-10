@@ -117,6 +117,10 @@ public class FSFileCollection implements FileCollection {
 		return baseDir;
 	}
 
+	public String getBaseDir() {
+		return baseDir;
+	}
+
 	Directory rootDir = new Directory("ROOT");
 
 
