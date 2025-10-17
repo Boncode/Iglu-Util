@@ -35,25 +35,23 @@ public class FileData {
 	private byte[] rawData;
 	private String description = "";
 	//
-	private String fileName = "";
+	protected String fileName = "";
 	private String fileNameNoExt = "";
 	private String path = "";
 	private String extension = "";
 	private String mimeType = "";
 
-
-	/**
-	 */
-	public FileData() {
-	}
+	protected String fileNameAndPath;
 
 	public FileData(File file) {
 		this(file.getName());
 	}
+
 	/**
 	 * @param fullFileName
 	 */
 	public FileData(String fullFileName) {
+		fileNameAndPath = fullFileName;
 		setFullFileName(fullFileName);
 	}
 
@@ -65,6 +63,7 @@ public class FileData {
 	 * @param fileData
 	 */
 	public FileData(FileData fileData) {
+		fileNameAndPath = fileData.fileNameAndPath;
 		rawData = fileData.rawData;
 		description = fileData.description;
 		//
@@ -80,10 +79,14 @@ public class FileData {
 	 * @param mimeType
 	 */
 	public FileData(String fullFileName, String mimeType) {
+		fileNameAndPath = fullFileName;
 		setFullFileName(fullFileName);
 		this.mimeType = mimeType;
 	}
 
+	public String getFileNameAndPath() {
+		return fileNameAndPath;
+	}
 
 	/**
 	 * @param description
