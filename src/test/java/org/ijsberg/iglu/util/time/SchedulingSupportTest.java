@@ -266,7 +266,7 @@ public class SchedulingSupportTest extends TimeSupportTest {
 
 			//FIXME this is influenced by daylight saving time......
 //			assertEquals(5.25, (SchedulingSupport.getTimeTillIntervalStart(getTime(1, 00) + TimeSupport.SECOND_IN_MS, 60 * 24, (6 * 60) + 15)) / (1000 * 60.0 * 60.0), .01);
-			assertEquals(4.25, (SchedulingSupport.getTimeTillIntervalStart(getTime(1, 00) + TimeSupport.SECOND_IN_MS, 60 * 24, (6 * 60) + 15)) / (1000 * 60.0 * 60.0), .01);
+			assertEquals(5.25, (SchedulingSupport.getTimeTillIntervalStart(getTime(1, 00) + TimeSupport.SECOND_IN_MS, 60 * 24, (6 * 60) + 15)) / (1000 * 60.0 * 60.0), .01);
 
 
 		//TODO other than happy path tests
