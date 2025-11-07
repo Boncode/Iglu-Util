@@ -9,8 +9,10 @@ public class VirtualFileCollection implements FileCollection {
 
     private Map<String, byte[]> fileContentsByName = new TreeMap<>();
     private Directory rootDir = new Directory("ROOT");
+    private String name;
 
-    public VirtualFileCollection() {
+    public VirtualFileCollection(String name) {
+        this.name = name;
     }
 
     @Override
@@ -58,7 +60,7 @@ public class VirtualFileCollection implements FileCollection {
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     public void addFile(String fileName, byte[] fileContents) {
@@ -68,7 +70,7 @@ public class VirtualFileCollection implements FileCollection {
     }
 
     public static VirtualFileCollection create(FileCollection fileCollection) {
-        VirtualFileCollection virtualFileCollection = new VirtualFileCollection();
+        VirtualFileCollection virtualFileCollection = new VirtualFileCollection(fileCollection.getName());
         for(String fileName : fileCollection.getFileNames()) {
             try {
                 virtualFileCollection.addFile(fileName, fileCollection.getFileContents(fileName));

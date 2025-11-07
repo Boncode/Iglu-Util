@@ -67,7 +67,7 @@ public class PatternMatchingSupportTest {
 		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("hopla.mask", ".*mask"));
 		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("hopla.mask.mask", ".*mask"));
 
-
+		assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("<i>Version: 4.6</i><br>", ".*Version:.*"));
 		//assertTrue(PatternMatchingSupport.valueMatchesRegularExpression("assertEquals", "assert*"));
 	}
 
