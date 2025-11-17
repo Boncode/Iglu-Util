@@ -220,7 +220,7 @@ public abstract class FileSupport {
 	 * @return a list containing the found contents
 	 */
 	private static ListTreeMap<String, File> getSortedContentsInDirectoryTree(File directory, FileFilterRuleSet ruleSet, boolean returnFiles, boolean returnDirs) {
-		ListTreeMap<String, File> sortedResult = new ListTreeMap<String, File>();
+		ListTreeMap<String, File> sortedResult = new ListTreeMap<>();
 		if (directory != null && directory.exists() && directory.isDirectory()) {
 			File[] files = directory.listFiles();
 			if (files != null) {
