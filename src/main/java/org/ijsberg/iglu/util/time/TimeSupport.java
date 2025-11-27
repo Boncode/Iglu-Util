@@ -22,6 +22,9 @@ package org.ijsberg.iglu.util.time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.*;
@@ -62,6 +65,12 @@ public abstract class TimeSupport {
 
 	public static Date getTimeStampIso8061(String timestampStr) throws ParseException {
 		return new SimpleDateFormat(TIMESTAMP_FORMAT_ISO8061).parse(timestampStr);
+	}
+
+	public static String getLocalDateFormatted(Instant timestamp, String simpleDateFormat) {
+		LocalDateTime localDateTime = LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC);
+		Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+		return new SimpleDateFormat(simpleDateFormat).format(date);
 	}
 
 
