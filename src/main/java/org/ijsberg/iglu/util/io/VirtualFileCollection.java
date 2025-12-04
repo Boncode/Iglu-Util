@@ -3,7 +3,10 @@ package org.ijsberg.iglu.util.io;
 import org.ijsberg.iglu.util.ResourceException;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class VirtualFileCollection implements FileCollection {
 

@@ -70,6 +70,13 @@ public abstract class AbstractListMap<K, V> implements Serializable, ListMap<K, 
         return list;
     }
 
+    @Override
+    public void putAllDistinct(K key, Collection<V> values) {
+        for(V value : values) {
+            putDistinct(key, value);
+        }
+    }
+
     public List<V> addOrReplaceValues(K key, List<V> values) {
         List<V> list = createOrRetrieveList(key);
         list.clear();

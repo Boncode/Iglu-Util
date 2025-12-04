@@ -20,6 +20,8 @@ public interface ListMap<K, V> extends Serializable {
 
     List<V> put(K key, Collection<V> values);
 
+    void putAllDistinct(K key, Collection<V> values);
+
     void putAll(Map<K, V> values);
 
     void putAll(ListMap<K, V> values);
