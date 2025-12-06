@@ -4,10 +4,12 @@ public class FileDto {
 
     private String fileName;
     private String dirName;
+    private String lastModified;
 
-    public FileDto(String fileName, String dirName) {
+    public FileDto(String fileName, String dirName, String lastModifiedString) {
         this.fileName = fileName;
         this.dirName = dirName;
+        this.lastModified = lastModifiedString;
     }
 
     public String getFileName() {
@@ -24,5 +26,13 @@ public class FileDto {
 
     public void setDirName(String dirName) {
         this.dirName = dirName;
+    }
+
+    public String getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
     }
 }

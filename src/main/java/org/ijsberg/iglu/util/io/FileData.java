@@ -42,16 +42,18 @@ public class FileData {
 	private String mimeType = "";
 
 	protected String fileNameAndPath;
+	private long lastModified;
 
 	public FileData(File file) {
-		this(file.getName());
+		this(file.getName(), file.lastModified());
 	}
 
 	/**
 	 * @param fullFileName
 	 */
-	public FileData(String fullFileName) {
+	public FileData(String fullFileName, long lastModified) {
 		fileNameAndPath = fullFileName;
+		this.lastModified = lastModified;
 		setFullFileName(fullFileName);
 	}
 
@@ -72,6 +74,7 @@ public class FileData {
 		path = fileData.path;
 		extension = fileData.extension;
 		mimeType = fileData.mimeType;
+		lastModified = fileData.lastModified;
 	}
 
 	/**
@@ -222,6 +225,10 @@ public class FileData {
 			return rawData.length;
 		}
 		return 0;
+	}
+
+	public long lastModified() {
+		return lastModified;
 	}
 
 	/**

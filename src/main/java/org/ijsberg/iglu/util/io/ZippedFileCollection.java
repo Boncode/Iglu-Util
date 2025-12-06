@@ -92,6 +92,10 @@ public class ZippedFileCollection implements FileCollection {
         return FileSupport.getBinaryFromZip(relativeDir + fileName, zipFile);
     }
 
+	public FileData getFileData(String fileName) throws IOException {
+		return new FileData(fileName, filesNoDirectoriesByRelativePathAndName.get(fileName).getTime());
+	}
+
 	/**
 	 * Converts bytes in file to String, using default encoding
 	 * @param fileName

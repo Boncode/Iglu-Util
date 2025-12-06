@@ -58,6 +58,10 @@ public abstract class TimeSupport {
 		return new SimpleDateFormat(TIMESTAMP_FORMAT_EXCEL).format(timestamp);
 	}
 
+	public static String getTimeStampExcel(long timestamp) {
+		return getTimeStampExcel(new Date(timestamp));
+	}
+
 	public static String getTimestampFormatIso8061(Date timestamp) {
 //		String timeStampExcel = TimeSupport.getTimeStampExcel(timestamp);
 		return new SimpleDateFormat(TIMESTAMP_FORMAT_ISO8061).format(timestamp);

@@ -159,4 +159,12 @@ public class FSFileCollection implements FileCollection {
 	public void copyWithDateTo(String fileName, FSFileCollection targetCollection) throws IOException {
 		targetCollection.saveWithDate(fileName, new File(baseDir + "/" + fileName));
 	}
+
+	public FileData getFileData(String fileName) {
+		File file = filesByRelativePathAndName.get(fileName);
+		if(file != null) {
+			return new FileData(file);
+		}
+		return null;
+	}
 }

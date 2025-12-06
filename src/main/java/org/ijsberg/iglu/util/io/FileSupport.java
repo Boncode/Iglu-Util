@@ -393,7 +393,7 @@ public abstract class FileSupport {
 
 	public static void zip(File file) throws IOException {
 		String dirName = file.getParent();
-		FileData fileData = new FileData(file.getName());
+		FileData fileData = new FileData(file);
 		FSFileCollection fileCollection = new FSFileCollection(dirName, new FileFilterRuleSet().setIncludeFilesWithNameMask("*/" + fileData.getFileName()));
 		FileSupport.zip(dirName + "/" + fileData.getFileName() + ".zip", fileCollection);
 	}
@@ -949,6 +949,12 @@ public abstract class FileSupport {
 		deleteFile(sourceFile);
 	}
 
+	public static void moveFileKeepDate(String fileName, String newFileName, boolean overwriteExisting) throws IOException {
+		File sourceFile = new File(fileName);
+		copyFileKeepDate(new File(fileName), newFileName, overwriteExisting);
+		deleteFile(sourceFile);
+	}
+
 	public static void copyFileKeepDate(File file, String newFileName, boolean overwriteExisting) throws IOException {
 		copyFile(file, newFileName, overwriteExisting, true);
 	}
@@ -1023,7 +1029,7 @@ public abstract class FileSupport {
 		ZippedFileCollection fileCollection = new ZippedFileCollection(zipFileName, new FileFilterRuleSet().setIncludeFilesWithNameMask(sourceDirectoryName + "/*"));
 		for(String fileName : fileCollection.getFileNotDirectoryNames()) {
 			byte[] fileContents = fileCollection.getFileContents(fileName);
-			FileData fileData = new FileData(fileName);
+			FileData fileData = new FileData(fileName, 0);
 			File newFile =  new File(newDirectoryName + "/" + fileData.getFileName());
 			saveBinaryFile(fileContents, newFile);
 		}
