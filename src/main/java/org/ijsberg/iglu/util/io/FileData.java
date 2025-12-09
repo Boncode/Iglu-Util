@@ -51,6 +51,13 @@ public class FileData {
 	/**
 	 * @param fullFileName
 	 */
+	public FileData(String fullFileName) {
+		this(fullFileName, System.currentTimeMillis());
+	}
+
+	/**
+	 * @param fullFileName
+	 */
 	public FileData(String fullFileName, long lastModified) {
 		fileNameAndPath = fullFileName;
 		this.lastModified = lastModified;
