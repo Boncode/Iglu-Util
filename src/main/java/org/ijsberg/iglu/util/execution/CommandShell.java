@@ -250,12 +250,12 @@ public class CommandShell implements Transceiver {
 
 	/**
 	 * @param command
-	 * @param dir
+	 * @param workingDir
 	 * @return
 	 * @throws IOException
 	 */
-	public static int execute(String command, File dir) throws IOException {
-		return execute(command, null, dir);
+	public static int execute(String command, File workingDir) throws IOException {
+		return execute(command, null, workingDir);
 	}
 
 	/**
@@ -265,21 +265,21 @@ public class CommandShell implements Transceiver {
 	 *
 	 *
 	 * @param command
-	 * @param dir
+	 * @param workingDir
 	 * @return status code
 	 */
-	public static int execute(String command, String[] envVars, File dir, Receiver outputReceiver) throws IOException {
-		return execute(getCommandArrayForCurrentOS(command), envVars, dir, outputReceiver);
+	public static int execute(String command, String[] envVars, File workingDir, Receiver outputReceiver) throws IOException {
+		return execute(getCommandArrayForCurrentOS(command), envVars, workingDir, outputReceiver);
 	}
 
-	public static int execute(String command, String[] envVars, File dir) throws IOException {
-		return execute(getCommandArrayForCurrentOS(command), envVars, dir, new Forwarder(System.out));
+	public static int execute(String command, String[] envVars, File workingDir) throws IOException {
+		return execute(getCommandArrayForCurrentOS(command), envVars, workingDir, new Forwarder(System.out));
 	}
 
-	public static String executeAndGatherOutput(String command, File dir) throws IOException {
+	public static String executeAndGatherOutput(String command, File workingDir) throws IOException {
 
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		execute(getCommandArrayForCurrentOS(command), null, dir, new Forwarder(byteArrayOutputStream));
+		execute(getCommandArrayForCurrentOS(command), null, workingDir, new Forwarder(byteArrayOutputStream));
 		return new String(byteArrayOutputStream.toByteArray());
 	}
 
