@@ -504,6 +504,17 @@ public abstract class FileSupport {
 		fileCollection.close();
 	}
 
+	public static void mergeZipFilesSlow(String zipFileName1, String zipFileName2, String targetZipFileName) throws IOException {
+		File tmpDir = createTmpDir("mergeZipfiles");
+		try {
+			unzip(zipFileName1, tmpDir.getAbsolutePath());
+			unzip(zipFileName2, tmpDir.getAbsolutePath());
+			zip(tmpDir.getPath(), targetZipFileName, "*");
+		} finally {
+			deleteFile(tmpDir);
+		}
+	}
+
 	public static void mergeInZipFile(String zipFileName, FileCollection filesToMerge) throws IOException {
 
 		File tmpDir = createTmpDir("mergeInZipfile");
