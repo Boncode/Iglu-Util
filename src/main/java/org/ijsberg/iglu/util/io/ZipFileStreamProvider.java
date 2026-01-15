@@ -67,7 +67,7 @@ public class ZipFileStreamProvider implements FileStreamProvider {
 	@Override
 	public void close() {
 		try {
-			long start = System.currentTimeMillis();
+			//long start = System.currentTimeMillis();
 			//System.out.println(System.currentTimeMillis() - start + " : closing current stream");
 			closeCurrentStream();
 			//System.out.println(System.currentTimeMillis() - start + " : closing buffered out");
@@ -76,7 +76,7 @@ public class ZipFileStreamProvider implements FileStreamProvider {
 			out.close();
 			//System.out.println(System.currentTimeMillis() - start + " : closing file out");
 			fileOut.close();
-			System.out.println(System.currentTimeMillis() - start + " : zip output closed");
+			//System.out.println(System.currentTimeMillis() - start + " : zip output closed");
 		} catch (IOException e) {
 			throw new ResourceException("unable to close zipfile", e);
 		}
