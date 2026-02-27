@@ -7,7 +7,8 @@ import static java.time.temporal.ChronoUnit.*;
 import static java.util.Calendar.*;
 
 public enum TimeUnit {
-    NONE(0, FOREVER),
+    INDEFINITE(0, FOREVER),
+    SECOND(Calendar.SECOND, SECONDS),
     MINUTE(Calendar.MINUTE, MINUTES),
     HOUR(HOUR_OF_DAY, HOURS),
     DAY(DATE, DAYS),
