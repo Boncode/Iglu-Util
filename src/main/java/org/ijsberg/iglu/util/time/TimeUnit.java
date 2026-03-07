@@ -7,21 +7,27 @@ import static java.time.temporal.ChronoUnit.*;
 import static java.util.Calendar.*;
 
 public enum TimeUnit {
-    INDEFINITE(0, FOREVER),
-    SECOND(Calendar.SECOND, SECONDS),
-    MINUTE(Calendar.MINUTE, MINUTES),
-    HOUR(HOUR_OF_DAY, HOURS),
-    DAY(DATE, DAYS),
-    MONTH(Calendar.MONTH, MONTHS),
-    YEAR(Calendar.YEAR, YEARS),
-    WEEK(WEEK_OF_YEAR, WEEKS);
+    INDEFINITE(0, FOREVER, 0),
+    SECOND(Calendar.SECOND, SECONDS, 1000),
+    MINUTE(Calendar.MINUTE, MINUTES, 1000 * 60),
+    HOUR(HOUR_OF_DAY, HOURS, 1000 * 60 * 60),
+    DAY(DATE, DAYS, 1000 * 60 * 60 * 24),
+    MONTH(Calendar.MONTH, MONTHS, 0),
+    YEAR(Calendar.YEAR, YEARS, 0),
+    WEEK(WEEK_OF_YEAR, WEEKS, 1000 * 60 * 60 * 24 * 7);
 
     private int calendarConstant;
     private TemporalUnit temporalUnit;
+    private long durationInMs;
 
-    TimeUnit(int calendarConstant, TemporalUnit temporalUnit) {
+    TimeUnit(int calendarConstant, TemporalUnit temporalUnit, long durationInMs) {
         this.calendarConstant = calendarConstant;
         this.temporalUnit = temporalUnit;
+        this.durationInMs = durationInMs;
+    }
+
+    boolean hasFixedDuration() {
+        return durationInMs > 0;
     }
 
     int getCalendarConstant() {
@@ -30,5 +36,12 @@ public enum TimeUnit {
 
     public TemporalUnit getTemporalUnit() {
         return temporalUnit;
+    }
+
+    public long getDurationInMs() {
+        if(!hasFixedDuration()) {
+            throw new TimeUnitException("TimeUnit has no fixed duration");
+        }
+        return durationInMs;
     }
 }

@@ -16,4 +16,12 @@ public class TimePeriod {
     public TimeUnit getTimeUnit() {
         return timeUnit;
     }
+
+    public boolean hasFixedDuration() {
+        return timeUnit.hasFixedDuration();
+    }
+
+    public long getDurationInMs() {
+        return length * timeUnit.getDurationInMs();
+    }
 }
