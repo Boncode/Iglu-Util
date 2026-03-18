@@ -38,6 +38,7 @@ public class Transponder implements Receiver {
 	private Queue queue;
 	private boolean haltRequest;
 	protected Thread forwarderThread;
+	private Forwarder forwarder;
 
 
 	/**
@@ -53,7 +54,8 @@ public class Transponder implements Receiver {
 		this.outputTransmitter = outputTransmitter;
 		receiverQueue = new ReceiverQueue(queueSize);
 		this.queue = receiverQueue;
-		forwarderThread = new Thread(new Forwarder());
+		this.forwarder = new Forwarder();
+		forwarderThread = new Thread(forwarder);
 	}
 
 	/**
@@ -71,7 +73,8 @@ public class Transponder implements Receiver {
 		}
 		this.outputTransmitter = outputTransmitter;
 		this.queue = queue;
-		forwarderThread = new Thread(new Forwarder());
+		this.forwarder = new Forwarder();
+		forwarderThread = new Thread(forwarder);
 	}
 
 	/**
@@ -91,7 +94,8 @@ public class Transponder implements Receiver {
 		receiverQueue = new ReceiverQueue(queueSize);
 		this.queue = receiverQueue;
 		channel.registerReceiver(receiverQueue);
-		forwarderThread = new Thread(new Forwarder());
+		this.forwarder = new Forwarder();
+		forwarderThread = new Thread(forwarder);
 	}
 
 
@@ -113,7 +117,8 @@ public class Transponder implements Receiver {
 		}
 		this.inputStream = inputStream;
 		this.outputTransmitter = outputTransmitter;
-		forwarderThread = new Thread(new Forwarder());
+		this.forwarder = new Forwarder();
+		forwarderThread = new Thread(forwarder);
 	}
 
 	/**
@@ -126,42 +131,7 @@ public class Transponder implements Receiver {
 		public void run() {
 //			System.out.println("starting thread " + Thread.currentThread() + " for Transponder");
 			while (!haltRequest) {
-				if (inputStream != null) {
-					try {
-						byte[] buffer = new byte[bufferSize];
-						int count = 0;
-						while (count >= 0) {
-							//TODO nullpointer deeper down encountered (arraycopy)
-							count = inputStream.read(buffer);
-							if (count > 0) {
-								byte[] message = new byte[count];
-								System.arraycopy(buffer, 0, message, 0, count);
-								outputTransmitter.transmit(message);//deliver to transmitter
-							}
-							if (outputTransmitter.isClosed()) {
-								stop();
-							}
-						}
-						//loop is broken when count == -1 (inputsream closed)
-					}
-					catch (IOException e)//NullPointerException in FilterInpitStream.read() may occur instead of IOException
-					{
-						//abnormal termination
-						outputTransmitter.transmit("stream can no longer be forwarded...".getBytes());
-						stop();
-					}
-				}
-				else {
-					while (queue.available() > 0) {
-						outputTransmitter.transmit(queue.read());
-					}
-					if (queue.isClosed()) {
-						stop();
-					}
-					if (outputTransmitter.isClosed()) {
-						stop();
-					}
-				}
+				processInput();
 				try {
 					Thread.sleep(pollingInterval);
 				}
@@ -180,6 +150,45 @@ public class Transponder implements Receiver {
 			}
 //			System.out.println("stopping thread " + Thread.currentThread() + " for Transponder");
 		}
+
+		private void processInput() {
+			if (inputStream != null) {
+				try {
+					byte[] buffer = new byte[bufferSize];
+					int count = 0;
+					while (count >= 0) {
+						//TODO nullpointer deeper down encountered (arraycopy)
+						count = inputStream.read(buffer);
+						if (count > 0) {
+							byte[] message = new byte[count];
+							System.arraycopy(buffer, 0, message, 0, count);
+							outputTransmitter.transmit(message);//deliver to transmitter
+						}
+						if (outputTransmitter.isClosed()) {
+							stop();
+						}
+					}
+					//loop is broken when count == -1 (inputsream closed)
+				}
+				catch (IOException e)//NullPointerException in FilterInpitStream.read() may occur instead of IOException
+				{
+					//abnormal termination
+					outputTransmitter.transmit("stream can no longer be forwarded...".getBytes());
+					stop();
+				}
+			}
+			else {
+				while (queue.available() > 0) {
+					outputTransmitter.transmit(queue.read());
+				}
+				if (queue.isClosed()) {
+					stop();
+				}
+				if (outputTransmitter.isClosed()) {
+					stop();
+				}
+			}
+		}
 	}
 
 	/**
@@ -194,6 +203,9 @@ public class Transponder implements Receiver {
 	 */
 	public void stop() {
 		haltRequest = true;
+		//process possible remainder of input
+		forwarder.processInput();
+
 	}
 
 	/**

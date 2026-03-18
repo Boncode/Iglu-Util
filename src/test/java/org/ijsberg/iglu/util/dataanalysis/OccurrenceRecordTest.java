@@ -13,11 +13,11 @@ public class OccurrenceRecordTest {
     @Test
     public void testIsNrOccurrencesBelow() throws Exception {
         OccurrenceRecord record = new OccurrenceRecord();
-        record.recordOccurrence();
+        record.recordOccurrence("bla");
         Thread.sleep(1000);
-        record.recordOccurrence();
-        record.recordOccurrence();
-        record.recordOccurrence();
+        record.recordOccurrence("bla");
+        record.recordOccurrence("bla");
+        record.recordOccurrence("bla");
         Thread.sleep(1000);
         assertTrue(record.isNrOccurrencesBelow(5, new TimePeriod(5, TimeUnit.SECOND)));
         assertFalse(record.isNrOccurrencesBelow(4, new TimePeriod(5, TimeUnit.SECOND)));

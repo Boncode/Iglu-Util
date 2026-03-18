@@ -238,12 +238,14 @@ public class CommandShell implements Transceiver {
 
 		try {
 			int retval = proc.waitFor();//threads will stop when proc is done and InputStream and ErrorStream close
-			errorForwarder.stop();
-			outputForwarder.stop();
 			return retval;
 		}
 		catch (InterruptedException ie) {
-			//...
+			//handling left to finally block
+		}
+		finally {
+			errorForwarder.stop();
+			outputForwarder.stop();
 		}
 		return -1;
 	}

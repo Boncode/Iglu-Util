@@ -9,48 +9,51 @@ import static org.ijsberg.iglu.util.time.TimeUnit.INDEFINITE;
 
 public class OccurrenceRecord {
 
-    private ArrayList<Long> occurrences = new ArrayList<>();
+    private record Occurrence (Long timeMs, String remark) {}
+
+    private static final ArrayList<Occurrence> occurrences = new ArrayList<>();
 
     private TimeUnit storagePeriod = INDEFINITE;
 
     private long latestOccurrence;
 
-    public void recordOccurrence() {
-        latestOccurrence = System.currentTimeMillis();
-        occurrences.add(0, latestOccurrence);
+    public void recordOccurrence(String remark) {
+        synchronized (occurrences) {
+            latestOccurrence = System.currentTimeMillis();
+            occurrences.add(0, new Occurrence(latestOccurrence,remark));
+        }
     }
 
     public boolean isNrOccurrencesBelow(int threshold, TimePeriod window) {
-        if(occurrences.size() < threshold) {
-            return true;
+        synchronized (occurrences) {
+            if (occurrences.size() < threshold) {
+                return true;
+            }
         }
         long now = System.currentTimeMillis();
         long windowStartTime = now - window.getDurationInMs();
-        if(latestOccurrence < windowStartTime) {
+        if (latestOccurrence < windowStartTime) {
             return true;
         }
-        int count = 0;
-        for(Long occurrence : occurrences) {
-            if(occurrence > windowStartTime) {
-                count++;
-                if(count >= threshold) {
-                    return false;
+        synchronized (occurrences) {
+            int count = 0;
+            for (Occurrence occurrence : occurrences) {
+                if (occurrence.timeMs > windowStartTime) {
+                    count++;
+                    if (count >= threshold) {
+                        return false;
+                    }
+                } else {
+                    break;
                 }
-            } else {
-                break;
             }
+            return true;
         }
-        return true;
     }
 
 
-    public int getNrOccurrences(TimeUnit frequencyDenominator, TimeUnit window) {
-        int count = 0;
-        double total = 0;
-        for (Long occurrence : occurrences) {
-
-        }
-        return 0;
+    public int getNrOccurrences() {
+        return occurrences.size();
     }
 
 
