@@ -126,4 +126,8 @@ public class NumberSupport {
         }
         throw new IllegalArgumentException("type " + n.getClass().getSimpleName() + " not supported");
     }
+
+    public static <T extends Number> boolean isLargerThan(T a, T b, Double maxDelta) {
+        return Math.abs(a.doubleValue() - b.doubleValue()) > maxDelta;
+    }
 }
