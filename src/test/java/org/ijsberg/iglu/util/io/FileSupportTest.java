@@ -331,7 +331,7 @@ public class FileSupportTest extends DirStructureDependentTest {
 	public void testGetResourceFolderFilesRecursive() throws IOException, URISyntaxException {
 		List<String> fileNames = FileSupport.getResourceFolderFilesRecursive(this.getClass(), "");
 		//This changes every time test resources are added or removed
-		assertEquals(218, fileNames.size());
+		assertEquals(219, fileNames.size());
 		//System.out.println(fileNames);
 	}
 
