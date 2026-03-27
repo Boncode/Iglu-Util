@@ -4,10 +4,21 @@ import org.ijsberg.iglu.util.time.TimePeriod;
 import org.ijsberg.iglu.util.time.TimeUnit;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.ijsberg.iglu.util.time.TimeUnit.INDEFINITE;
 
 public class OccurrenceRecord {
+
+    public List<String> getDetails() {
+        List<String> details = new ArrayList<>();
+        synchronized (occurrences) {
+            for(Occurrence occurrence : occurrences) {
+                details.add(0, occurrence.remark);
+            }
+        }
+        return details;
+    }
 
     private record Occurrence (Long timeMs, String remark) {}
 
