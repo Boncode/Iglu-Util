@@ -202,10 +202,11 @@ public class Transponder implements Receiver {
 	 * Stops forwarding objects.
 	 */
 	public void stop() {
-		haltRequest = true;
-		//process possible remainder of input
-		forwarder.processInput();
-
+		if(!haltRequest) {
+			haltRequest = true;
+			//process possible remainder of input
+			forwarder.processInput();
+		}
 	}
 
 	/**
