@@ -76,6 +76,13 @@ public class NumberSupport {
                 }
                 return (V)total;
             }
+            if(n[0] instanceof Double) {
+                Double total = 0.0d;
+                for(Number a : n) {
+                    total += a.doubleValue();
+                }
+                return (V)total;
+            }
             if(n[0] instanceof Long) {
                 Long total = 0l;
                 for(Number a : n) {
