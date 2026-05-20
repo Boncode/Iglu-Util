@@ -636,6 +636,10 @@ public abstract class StringSupport {
 		return result.toString();
     }
 
+    public static String capitalizeFirst(String s) {
+        return !s.isEmpty() ? ("" + s.charAt(0)).toUpperCase() + s.substring(1) : s;
+    }
+
 
     static class StringSplitter {
 
