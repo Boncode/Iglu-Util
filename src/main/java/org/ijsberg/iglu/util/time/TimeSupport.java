@@ -313,4 +313,14 @@ public abstract class TimeSupport {
 		return previousDate;
 	}
 
+	public static Date getDateMinusTime(Date referenceDate, int nrTimeUnits, TimeUnit timeUnit) {
+		return getDatePlusTime(referenceDate, (-1 * nrTimeUnits), timeUnit);
+	}
+
+	public static Date getDatePlusTime(Date referenceDate, int nrTimeUnits, TimeUnit timeUnit) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(referenceDate);
+		calendar.add(timeUnit.getCalendarConstant(), nrTimeUnits);
+		return calendar.getTime();
+	}
 }
