@@ -1521,7 +1521,9 @@ public abstract class FileSupport {
 			try {
 				zipFile = new ZipFile(file, StandardCharsets.ISO_8859_1);
 			} catch (IOException ex) {
-				throw new IOException("Error while trying to read zipfile (iso-8859-1 encoding): " + file.getName(), ex);
+				System.out.println("Error while trying to read zipfile (iso-8859-1 encoding): " + file.getName());
+				ex.printStackTrace();
+				throw new IOException("Error while trying to read zipfile (both for UTF and iso-8859-1 encoding): " + file.getName(), e);
 			}
 		} catch (IOException otherIoExceptions) {
 			throw new IOException("Error while trying to read zipfile (utf-8 encoding): " + file.getName(), otherIoExceptions);
