@@ -28,7 +28,7 @@ public class ListLinkedHashMap<K, V> extends ListHashMap<K, V> {
     public Set<K> reverseKeySet() {
         List<K> list = new ArrayList<>(internalMap.keySet());
         Collections.reverse(list);
-        return new HashSet<>(list);
+        return new LinkedHashSet<>(list);
     }
 
 
