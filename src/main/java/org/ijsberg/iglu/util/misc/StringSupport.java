@@ -25,6 +25,7 @@ import org.ijsberg.iglu.util.io.StreamSupport;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -1114,6 +1115,15 @@ public abstract class StringSupport {
 		}
 		System.arraycopy(retval, 0, retval, i, size - i);
 		return retval;
+	}
+
+	public static String subStringFromRegex(String regex, String fullString) {
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(fullString);
+		if (matcher.find()) {
+			return matcher.group();
+		}
+		return null;
 	}
 
 
