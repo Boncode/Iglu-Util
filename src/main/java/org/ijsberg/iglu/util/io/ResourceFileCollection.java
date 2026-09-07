@@ -32,7 +32,7 @@ public class ResourceFileCollection implements FileCollection {
 
     @Override
     public byte[] getFileContents(String fileName) throws IOException {
-        return FileSupport.getBinaryFromClassLoader(fileName);
+        return FileSupport.getBinaryFromClassLoader(baseDir + fileName);
     }
 
     @Override
