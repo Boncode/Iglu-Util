@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+//Note: meant for test purposes, not suitable for production!
 public class ResourceFileCollection implements FileCollection {
 
     private Class clasz;
