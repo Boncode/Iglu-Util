@@ -721,6 +721,11 @@ public abstract class FileSupport {
 		//throw new UnsupportedOperationException("Cannot list files for path: " + path + ", URL: " + dirURL + ", protocol: " + dirURL.getProtocol());
 	}
 
+	public static boolean isResourceLoadableByClassLoader(String path) {
+		ClassLoader classLoader = FileSupport.class.getClassLoader();
+		return classLoader.getResource(path) != null;
+	}
+
 	/**
 	 *
 	 * @param path path with regular path separators ('/')
