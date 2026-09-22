@@ -214,12 +214,12 @@ public class CommandShell implements Transceiver {
 	 * @return
 	 * @throws IOException
 	 */
-	public static int execute(String[] commandArray, String[] alternativeEnvVars, File workingDir, Receiver outputReceiver) throws IOException {
+	public static int execute(String[] commandArray, String[] envVars, File workingDir, Receiver outputReceiver) throws IOException {
 		Runtime rt = Runtime.getRuntime();
 		//command + arguments, environment parameters, workingdir
         Process proc = null;
         try {
-		    proc = rt.exec(commandArray, alternativeEnvVars, workingDir);
+		    proc = rt.exec(commandArray, envVars, workingDir);
         } catch (Exception e) {
             System.out.println("unable to execute command: " + ArraySupport.format(commandArray, ", "));
             throw new RuntimeException("unable to execute command: " + ArraySupport.format(commandArray, ", "), e);
@@ -279,12 +279,26 @@ public class CommandShell implements Transceiver {
 	}
 
 	public static String executeAndGatherOutput(String command, File workingDir) throws IOException {
-
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		execute(getCommandArrayForCurrentOS(command), null, workingDir, new Forwarder(byteArrayOutputStream));
-		return new String(byteArrayOutputStream.toByteArray());
+		return executeAndGatherOutput(command, null, workingDir);
 	}
 
+	public static String executeAndGatherOutput(String command, String[] envVars, File workingDir) throws IOException {
+		return executeAndGatherOutput(getCommandArrayForCurrentOS(command), envVars, workingDir);
+	}
+
+	public static String executeAndGatherOutput(String command[], String[] envVars, File workingDir) throws IOException {
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		execute(command, envVars, workingDir, new Forwarder(byteArrayOutputStream));
+		return new String(byteArrayOutputStream.toByteArray());
+	}
+	/*
+        //consider implementing some extra time to gather output
+        public static String executeAndGatherOutput(String command, File workingDir, long outputWaitPeriod) throws IOException {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            execute(getCommandArrayForCurrentOS(command), null, workingDir, new Forwarder(byteArrayOutputStream));
+            return new String(byteArrayOutputStream.toByteArray());
+        }
+    */
 	public enum GuessedOS {
 		WINDOWS_95,
 		WINDOWS,
