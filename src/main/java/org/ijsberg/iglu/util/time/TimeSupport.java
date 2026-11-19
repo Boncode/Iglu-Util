@@ -323,4 +323,11 @@ public abstract class TimeSupport {
 		calendar.add(timeUnit.getCalendarConstant(), nrTimeUnits);
 		return calendar.getTime();
 	}
+
+	public static String formatMillisToHours(long durationInMs) {
+		return String.format("%02d:%02d:%02d",
+				java.util.concurrent.TimeUnit.MILLISECONDS.toHours(durationInMs),
+				java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(durationInMs) - java.util.concurrent.TimeUnit.HOURS.toMinutes(java.util.concurrent.TimeUnit.MILLISECONDS.toHours(durationInMs)),
+				java.util.concurrent.TimeUnit.MILLISECONDS.toSeconds(durationInMs) - java.util.concurrent.TimeUnit.MINUTES.toSeconds(java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(durationInMs)));
+	}
 }

@@ -291,5 +291,11 @@ public class TimeSupportTest {
 
 	}
 
+	@Test
+	public void testFormatMillisToHours() {
+		assertEquals("00:00:01", TimeSupport.formatMillisToHours(1000));
+		assertEquals("01:00:00", TimeSupport.formatMillisToHours(1000*60*60));
+	}
+
 }
 
